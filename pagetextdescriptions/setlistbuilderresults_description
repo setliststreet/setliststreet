@@ -1,0 +1,40 @@
+Setlist Builder Results Page:
+
+
+Title: View Guess the Setlist Results
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content
+
+Element 1:
+Contains our Set 1, Set 2, Encore template
+
+Songs added in real time through setlist.fm API (if they let us), or manually
+
+Set 1:
+
+
+Set 2:
+Drums/Space
+[Variable number of slots after Drums/Space]
+
+Encore:
+[Variable number of slots for encore 1, encore 2, etc]
+
+
+
+
+
+
+Element 2: to the right of element 1; real time scrolling display of top usernames and results
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street

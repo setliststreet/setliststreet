@@ -1,0 +1,16 @@
+Homescreen: home.tsx
+
+Title at top: Setlist Street
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Page: Rectangular Containers for each game that link to the respective game page
+
+Game 1: Guess the Opener
+Game 2: Guess the Encore
+Game 3: Guess the Bust Out
+Game 4: Setlist Bingo:
+Game 5: Setlist Builder
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street

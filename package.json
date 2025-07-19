@@ -1,0 +1,11 @@
+{
+  "name": "setlist-street",
+  "version": "1.0.0",
+  "description": "Dead & Company setlist prediction game platform",
+  "private": true,
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2"
+  }
+}

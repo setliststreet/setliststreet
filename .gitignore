@@ -1,0 +1,28 @@
+# Build outputs and dependencies
+node_modules/
+.next/
+out/
+dist/
+build/
+.turbo/
+package-lock.json
+
+# Environment files
+.env*
+
+# Logs and cache
+*.log
+.cache/
+.DS_Store
+
+# Large files - PowerPoint presentations
+*.pptx
+*.ppt
+
+# Other generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE files
+.vscode/settings.json
+.idea/

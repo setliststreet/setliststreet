@@ -1,0 +1,24 @@
+Guess the Opener/Encore/Bust Out Results Page
+
+ (this same architecture can be used for Guess the Opener, Guess the Encore, Guess the Bust Out games) 
+
+Title: View Setlist Bingo Results
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content
+
+Element 1:
+[Wheel of fortune wheel] that lands on the correct song. (Updated either through setlist.fm api or manually if they don't give permission
+
+Element 2: to the right of element 1; real time scrolling display of top usernames and results
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street

@@ -1,0 +1,118 @@
+#!/bin/bash
+cd "/Users/brianbonk/Downloads/Setlist Street GitHub"
+
+echo "🔥 Creating completely fresh repository (this will solve size and merge issues)..."
+
+# Backup current state
+echo "💾 Creating safety backup..."
+cp -r . "../Setlist Street GitHub Fresh Backup" 2>/dev/null || echo "Backup creation failed, continuing..."
+
+# Remove ALL git history
+echo "🗑️  Removing all git history..."
+rm -rf .git
+
+# Remove any remaining large files that shouldn't be in git
+echo "🧹 Final cleanup of large files..."
+find . -name "node_modules" -type d -exec rm -rf {} + 2>/dev/null || true
+find . -name ".next" -type d -exec rm -rf {} + 2>/dev/null || true
+find . -name "*.log" -delete 2>/dev/null || true
+find . -name ".DS_Store" -delete 2>/dev/null || true
+
+# Initialize completely fresh git repository
+echo "✨ Creating fresh git repository..."
+git init
+
+# Create comprehensive .gitignore FIRST (before adding files)
+echo "📝 Creating .gitignore..."
+cat > .gitignore << 'EOF'
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Large data files
+data/
+*.csv
+
+# Scripts that might contain sensitive info
+githubscript
+EOF
+
+# Add files (respecting .gitignore)
+echo "📦 Adding cleaned files..."
+git add .
+
+# Check repository size before committing
+echo "📊 Checking size before commit:"
+du -sh .git 2>/dev/null || echo "New git directory is minimal"
+
+# Create initial commit
+echo "💾 Creating fresh initial commit..."
+git commit -m "Initial commit: Setlist Street project (optimized for GitHub)
+
+✨ Fresh repository with cleaned files
+🧹 Removed large data files and build artifacts  
+📦 Optimized for GitHub's size requirements
+🚀 Ready for development and deployment"
+
+# Add remote and push
+echo "🔗 Connecting to GitHub..."
+git remote add origin https://github.com/setliststreet/setliststreet.git
+git branch -M main
+
+echo "🚀 Pushing fresh repository to GitHub..."
+git push -u origin main --force
+
+# Show final results
+echo ""
+echo "✅ SUCCESS! Fresh repository created and pushed!"
+echo "🌐 Visit: https://github.com/setliststreet/setliststreet"
+echo ""
+echo "📊 Final repository size:"
+du -sh .git
+echo ""
+echo "📁 Repository contents:"
+ls -la

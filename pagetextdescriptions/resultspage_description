@@ -1,0 +1,27 @@
+Main Results Page:
+
+Title: View Game Results
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content
+[A Container for each of the 5 games]
+Container 1: [Guess the Opener, Leaderboard]
+Container 2: [Guess the Encore, Leaderboard]
+Container 3: [Guess the Bust Out, Leaderboard]
+Container 5: [Setlist Bingo, Leaderboard]
+Container 2: [Setlist Builder, Leaderboard]
+
+
+In each container: display a dynamic list of the top 5 users for each game along with their play type (cash, prize, charity)
+
+Each container links to the game specific results pages.
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street

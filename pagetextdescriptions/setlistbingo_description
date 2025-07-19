@@ -1,0 +1,46 @@
+Setlist Bingo Game Page: setlistbingo.tsx
+
+Title at top: "Setlist Bingo"
+Subtext at top: Win by matching all four corners or getting 5 in a straight line.
+
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Three horizontally distributed elements:
+[Element 1] Scrolling list of songs to select from (links to our Subabase database
+[Element 2] 5x5 Bingo Board with free space in middle. Each bingo square is to be filled in with a song, either by typing, pressing random button or dragging from menu.
+
+
+
+[Element 3]
+To right of bingo board: 
+Lists display fun facts as hints:
+Most common songs
+Least common songs
+Most common song pairs:
+
+Functionality:
+Bingoboard should have option to 
+1) Generate random
+board from songs in Supabase
+database
+2) Allow user to type songs in manually (with autocomplete)
+in
+3) Allow user to modify random filling by typing in (with autocomplete)
+
+[Element 4] Somewhere above bingo board. Button that allows bingo board to be randomly filled in.
+
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street

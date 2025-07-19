@@ -1,0 +1,35 @@
+Guess the Encore Game Page: guesstheencore.tsx
+
+Title at top: "Guess the Encore"
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content 1
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+
+Main Content 2
+
+Three horizontally distributed elements:
+Box 1: Song Guess
+(To right of box 1): Ipod style scroll wheel over all the existing songs (fills in the box to the left that you have option to type in) - populates list and autocompletes from our supabase database
+
+To right of scroll wheel: 
+Lists display fun facts as hints:
+Top 10 most common encores ... Last 10 encores ...
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
