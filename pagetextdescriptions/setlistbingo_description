@@ -4,17 +4,17 @@ Title at top: "Setlist Bingo"
 
 Top navigation bar: Links to "How to Play", "FAQ", "Sign In", "Sign Up" (properly right-aligned)
 
-**MAJOR LAYOUT REDESIGN:**
-- Completely redesigned with left-right workflow (like Fantasy Setlist)
-- Song candidates positioned on LEFT (2/5 width)
-- Bingo board positioned on RIGHT (3/5 width)
-- Enhanced visual hierarchy and spacing
-- Streamlined user experience
+**MAJOR LAYOUT REDESIGN - THREE COLUMN LAYOUT:**
+- Complete 7-column grid system for optimal user experience
+- Song candidates positioned on LEFT (2/7 width)
+- Bingo board positioned in CENTER (3/7 width)
+- Hints & stats positioned on RIGHT (2/7 width)
+- Enhanced visual hierarchy and streamlined workflow
 
 **MAIN BINGO BUILDER:**
-Grid layout system (2/5 + 3/5 width):
+Three-column grid layout system (2/7 + 3/7 + 2/7 width):
 
-**LEFT SIDE - Song Candidates (2/5 width):**
+**LEFT SIDE - Song Candidates (2/7 width):**
 - Search input with instant filtering
 - Limited display (15 songs visible with scrolling)
 - "+X more songs (search to filter)" indicator
@@ -22,20 +22,28 @@ Grid layout system (2/5 + 3/5 width):
 - Clear instructions: "Available Songs → Drag to Board"
 - Board control buttons (Generate Random, Clear Board)
 
-**RIGHT SIDE - Bingo Board (3/5 width):**
+**CENTER - Bingo Board (3/7 width):**
 - 5x5 bingo grid as main focus
 - "Your Bingo Card → Drop Songs Here" heading
 - Enhanced visual design with better contrast
 - FREE space in center with purple styling
-- Remove buttons on filled squares
+- **IMPROVED X BUTTON POSITIONING:** Close buttons now positioned above song text for better visibility
 - Progress tracking with purple-themed status box
 
+**RIGHT SIDE - Hints & Stats (2/7 width):**
+- Quick Stats section with song probabilities
+- Strategy Tips for better gameplay
+- Winning Patterns reference
+- Song Statistics (Most Common, Rarest, Best Opener, Common Pairs)
+- All hints now positioned to the right of the board instead of below
+
 **BOARD FEATURES:**
-- Drag and drop from left candidates to right board squares
+- Drag and drop from left candidates to center board squares
 - Click to add first search result to square
 - Visual feedback during drag operations
 - Progress indicator: "Filled X/25 squares"
 - "Need at least 20 songs to submit" guidance
+- **FIXED X BUTTON VISIBILITY:** Close buttons positioned clearly above song text with white borders
 
 **WINNING CONDITIONS:**
 - Any complete row (5 songs)
@@ -50,11 +58,10 @@ Horizontal 4-column grid below main builder:
 - Consistent spacing and visual design
 - No redundant submit buttons
 
-**QUICK STATS SECTION:**
-Helpful reference information:
-- Most Common: Sugar Magnolia (78%)
-- Rarest: Dark Star (8%)
-- Best Opener: Feel Like a Stranger
-- Common Pair: Scarlet → Fire
+**USER EXPERIENCE IMPROVEMENTS:**
+- X close buttons no longer cover song text
+- Better positioning with white borders and higher z-index
+- Enhanced readability and visual clarity
+- Improved interaction feedback
 
 **CONTACT:** setliststreet@proton.me

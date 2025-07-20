@@ -1,0 +1,70 @@
+Song Prediction Games Hub Page: song-games.tsx
+
+Title at top: "Song Prediction Games"
+
+Top navigation bar: Links to "How to Play", "FAQ", "Sign In", "Sign Up" (properly right-aligned)
+
+**MAJOR LAYOUT IMPROVEMENTS:**
+- Changed from vertical grid to horizontal flex layout for better organization
+- Elements within each group now stack horizontally with proper spacing
+- Enhanced responsive design with flex-wrap functionality
+- Improved visual hierarchy and game organization
+
+**PAGE STRUCTURE:**
+Comprehensive hub page organizing 9 individual song prediction games by show structure
+
+**GAME CATEGORIES WITH HORIZONTAL LAYOUT:**
+
+**SET 1 PREDICTIONS (2 Games):**
+- Horizontal flex layout with proper spacing
+- "Guess the Opener" and "Set 1 Closer" side-by-side
+- Each game in individual containers (min-w-[280px] max-w-[320px])
+- Flex-wrap for responsive behavior
+
+**SET 2 PREDICTIONS (4 Games):**
+- Horizontal layout accommodating 4 games across
+- "Set 2 Opener", "Pre-Drums Song", "Post-Drums Song", "Set 2 Closer"
+- Responsive wrapping with min-w-[240px] max-w-[280px] per container
+- Proper spacing between all elements
+
+**ENCORE PREDICTIONS (1 Game):**
+- Single centered "Guess the Encore" game
+- Full width container for prominence
+
+**SPECIAL PREDICTIONS (2 Games):**
+- "Guess the Bust Out" and "Songs NOT Played" side-by-side
+- Horizontal layout with individual containers
+- Featured game highlighting for "Songs NOT Played"
+
+**LAYOUT IMPROVEMENTS:**
+- **Horizontal Stacking:** All games within groups arranged side-by-side instead of vertically
+- **Proper Padding:** Individual containers with px-2/px-3 padding for spacing
+- **Responsive Design:** Flex-wrap ensures proper display on all screen sizes
+- **Visual Consistency:** Uniform spacing and alignment across all game sections
+
+**GAME FEATURES:**
+- Difficulty indicators (Easy, Medium, Hard, Expert) with color coding
+- Live player counts for each game
+- Featured game highlighting with purple ring borders
+- Consistent "Make Prediction" buttons
+
+**SCORING SYSTEM:**
+- Exact match = 100 points
+- Bonus points for rare songs
+- Tiebreaker by submission time
+
+**DIFFICULTY LEVELS:**
+- Easy (green): Common patterns
+- Medium (blue): Some prediction skill needed  
+- Hard (orange): Requires deep knowledge
+- Expert (red): Nearly impossible to predict
+
+**PRO TIPS SECTION:**
+Comprehensive strategy guide including:
+- Recent setlist patterns and frequency data
+- Venue size and show type considerations
+- Song relationships and common pairings
+- Weather and seasonal influences
+- Band member birthday effects
+
+**CONTACT:** setliststreet@proton.me 
