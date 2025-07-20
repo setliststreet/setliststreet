@@ -346,7 +346,7 @@ export default function SponsorPage() {
                   something amazing together.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4 text-sm text-white/80">
-                  <div>📧 partnerships@setliststreet.com</div>
+                  <div>📧 setliststreet@proton.me</div>
                   <div>📱 Follow us for updates</div>
                   <div>🎵 Keep playing!</div>
                 </div>

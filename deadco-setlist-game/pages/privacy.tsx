@@ -75,7 +75,7 @@ export default function PrivacyPolicy() {
     {
       id: 'contact',
       title: 'Contact Us',
-      content: `For privacy questions, data requests, or concerns about how we handle your information, contact us at privacy@setliststreet.com. We'll respond within 48 hours during business days.`
+      content: `For privacy questions, data requests, or concerns about how we handle your information, contact us at setliststreet@proton.me. We'll respond within 48 hours during business days.`
     }
   ];
 
@@ -138,7 +138,7 @@ export default function PrivacyPolicy() {
                 Your privacy matters to us. This policy explains our commitment to protecting your personal information.
               </p>
               <p className="text-sm text-gray-500">
-                For privacy questions or data requests, contact us at privacy@setliststreet.com
+                For privacy questions or data requests, contact us at setliststreet@proton.me
               </p>
             </div>
           </div>

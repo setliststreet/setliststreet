@@ -141,7 +141,7 @@ export default function Legal() {
                   <div className="mt-4 p-4 bg-white/5 rounded-lg border border-white/10">
                     <div className="text-sm text-white/80">
                       <strong>Contact us:</strong> If you believe we've used copyrighted material improperly, 
-                      please email us at <span className="text-yellow-300">legal@setliststreet.com</span> with 
+                      please email us at <span className="text-yellow-300">setliststreet@proton.me</span> with 
                       details and we'll address it promptly.
                     </div>
                   </div>

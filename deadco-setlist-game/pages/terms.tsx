@@ -65,7 +65,7 @@ export default function TermsOfService() {
     {
       id: 'contact',
       title: 'Contact Information',
-      content: `If you have questions about these Terms of Service, please contact us at legal@setliststreet.com. We'll respond to inquiries within 48 hours during business days.`
+      content: `If you have questions about these Terms of Service, please contact us at setliststreet@proton.me. We'll respond to inquiries within 48 hours during business days.`
     }
   ];
 
@@ -128,7 +128,7 @@ export default function TermsOfService() {
                 These terms are effective as of the date above and apply to all users of Setlist Street.
               </p>
               <p className="text-sm text-gray-500">
-                For questions about these terms, contact us at legal@setliststreet.com
+                For questions about these terms, contact us at setliststreet@proton.me
               </p>
             </div>
           </div>

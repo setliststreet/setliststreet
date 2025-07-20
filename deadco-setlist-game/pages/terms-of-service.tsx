@@ -204,7 +204,7 @@ export default function TermsOfService() {
             For questions about these Terms of Service, please contact us at:
           </p>
           <p>
-            Email: legal@setliststreet.com
+            Email: setliststreet@proton.me
           </p>
         </section>
 

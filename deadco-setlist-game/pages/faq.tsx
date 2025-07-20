@@ -50,7 +50,7 @@ const FAQPage = () => {
         },
         {
           q: 'How can I submit game ideas?',
-          a: 'We love community input! Send your game ideas to suggestions@setliststreet.com. Include a brief description of how the game would work and what makes it fun or challenging.'
+          a: 'We love community input! Send your game ideas to setliststreet@proton.me. Include a brief description of how the game would work and what makes it fun or challenging.'
         },
         {
           q: 'What is the time frame for submissions?',
@@ -108,7 +108,7 @@ const FAQPage = () => {
         },
         {
           q: 'How can I become a sponsor?',
-          a: 'We welcome sponsors who want to support the Grateful Dead community! Contact sponsor@setliststreet.com for partnership opportunities. We offer various sponsorship tiers and custom packages.'
+          a: 'We welcome sponsors who want to support the Grateful Dead community! Contact setliststreet@proton.me for partnership opportunities. We offer various sponsorship tiers and custom packages.'
         }
       ]
     },
@@ -129,7 +129,7 @@ const FAQPage = () => {
         },
         {
           q: 'What if I find a bug?',
-          a: 'Please report bugs to support@setliststreet.com with details about what happened, what browser you\'re using, and steps to reproduce the issue. We respond to bug reports within 24 hours.'
+          a: 'Please report bugs to setliststreet@proton.me with details about what happened, what browser you\'re using, and steps to reproduce the issue. We respond to bug reports within 24 hours.'
         },
         {
           q: 'Do you have an API?',
@@ -242,7 +242,7 @@ const FAQPage = () => {
               Can't find what you're looking for? We're here to help!
             </p>
             <p className="text-gray-600">
-              Email us at <a href="mailto:support@setliststreet.com" className="text-purple-600 hover:text-purple-800 font-semibold">support@setliststreet.com</a>
+              Email us at <a href="mailto:setliststreet@proton.me" className="text-purple-600 hover:text-purple-800 font-semibold">setliststreet@proton.me</a>
             </p>
             <p className="text-gray-600 mt-4">
               Good luck and may the odds be ever in your favor!

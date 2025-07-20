@@ -209,7 +209,7 @@ const RulesPage = () => {
               Need clarification on scoring or game mechanics?
             </p>
             <p className="text-gray-600">
-              Contact us at <a href="mailto:rules@setliststreet.com" className="text-purple-600 hover:text-purple-800 font-semibold">rules@setliststreet.com</a>
+              Contact us at <a href="mailto:setliststreet@proton.me" className="text-purple-600 hover:text-purple-800 font-semibold">setliststreet@proton.me</a>
             </p>
           </div>
         </div>
