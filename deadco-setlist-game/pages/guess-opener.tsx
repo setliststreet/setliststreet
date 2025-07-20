@@ -259,9 +259,49 @@ const GuessOpenerPage = () => {
             )}
           </div>
 
-          {selectedSong && (
-            <FourWaysToPlay onSubmissionClick={handleSubmission} />
-          )}
+          {/* Strategy and Hints */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-xl font-semibold mb-4">Opener Predictions & Patterns</h3>
+              <div className="text-gray-600 space-y-2 text-sm">
+                <h4 className="font-semibold text-gray-800">Most Common Openers (2023-2024):</h4>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Feel Like a Stranger (12%)</li>
+                  <li>Hell in a Bucket (8%)</li>
+                  <li>Shakedown Street (7%)</li>
+                  <li>Jack Straw (6%)</li>
+                  <li>Truckin' (5%)</li>
+                </ul>
+                
+                <h4 className="font-semibold text-gray-800 mt-4">Venue Considerations:</h4>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Outdoor venues favor upbeat openers</li>
+                  <li>Special events often get rare openers</li>
+                  <li>Weather can influence song selection</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h3 className="text-xl font-semibold mb-4">Smart Strategy Tips</h3>
+              <div className="text-gray-600 space-y-2 text-sm">
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Check setlist patterns from recent shows</li>
+                  <li>Consider the significance of GD60 concerts</li>
+                  <li>Factor in Golden Gate Park's outdoor setting</li>
+                  <li>Look for songs that haven't been played recently</li>
+                  <li>Energy level often matches venue atmosphere</li>
+                  <li>Anniversary shows sometimes feature deep cuts</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <FourWaysToPlay 
+            onSubmissionClick={handleSubmission}
+            gameType="opener prediction"
+            disabled={!selectedSong}
+          />
         </div>
       </div>
     </MainLayout>

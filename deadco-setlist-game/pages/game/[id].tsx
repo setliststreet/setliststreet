@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import MainLayout from '../../components/MainLayout';
 import SongPicker from '../../components/SongPicker';
 import PaymentButton from '../../components/PaymentButton';
 import SetlistDragDropPicker from '../../components/SetlistDragDropPicker';
@@ -104,73 +105,60 @@ export default function GamePage() {
   const isPaid = (game?.entry_fee ?? 0) > 0;
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold mb-2">Game #{id}</h1>
-      {game && (
-        <div className="mb-6 text-center">
-          <div className="text-lg font-semibold">{game.type} &mdash; {new Date(game.show_date).toLocaleDateString()}</div>
-          <div className="text-sm text-white/80">Entry Fee: {game.entry_fee === 0 ? 'Free' : `$${game.entry_fee}`}</div>
-        </div>
-      )}
-      {isPaid && !hasPaid ? (
-        <div className="mb-8">
-          <PaymentButton amount={game?.entry_fee ?? 0} onSuccess={() => setHasPaid(true)} />
-          <p className="text-white/80 mt-2">You must pay to enter this game.</p>
-        </div>
-      ) : (
-        isFullSetlist ? (
-          <SetlistDragDropPicker availableSongs={songs} numSlots={numSlots} onSubmit={handleFullSetlistSubmit} />
-        ) : (
-          <SongPicker songs={songs} onSubmit={handleSingleSubmit} />
-        )
-      )}
-      {submitError && <p className="text-red-500 mt-4">{submitError}</p>}
-      {/* Voting Stats */}
-      <div className="w-full max-w-xl mt-10">
-        <h2 className="text-xl font-bold mb-2">Voting Stats</h2>
-        {isFullSetlist ? (
-          <div className="space-y-4">
-            {Array.from({ length: numSlots }).map((_, slot) => (
-              <div key={slot}>
-                <div className="font-semibold mb-1">Slot {slot + 1}</div>
-                <div className="space-y-2">
-                  {songs.map(song => (
-                    <div key={song.id} className="flex items-center gap-2">
-                      <span className="w-40 truncate">{song.name}</span>
-                      <div className="flex-1 bg-white/20 rounded h-4">
-                        <div
-                          className="bg-[#005BAC] h-4 rounded"
-                          style={{ width: `${((slotStats[slot]?.[song.id] || 0) / (Object.values(slotStats[slot] || {}).reduce((a, b) => a + b, 0) || 1)) * 100}%` }}
-                        />
-                      </div>
-                      <span className="w-8 text-right">{slotStats[slot]?.[song.id] || 0}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+    <MainLayout>
+      <div className="flex flex-col items-center justify-center min-h-screen py-8">
+        <h1 className="text-3xl font-bold mb-2">Game #{id}</h1>
+        {game && (
+          <div className="mb-6 text-center">
+            <div className="text-lg font-semibold">{game.type} &mdash; {new Date(game.show_date).toLocaleDateString()}</div>
+            <div className="text-sm text-gray-600">Entry Fee: {game.entry_fee === 0 ? 'Free' : `$${game.entry_fee}`}</div>
+          </div>
+        )}
+        {isPaid && !hasPaid ? (
+          <div className="mb-8">
+            <PaymentButton amount={game?.entry_fee ?? 0} onSuccess={() => setHasPaid(true)} />
+            <p className="text-gray-600 mt-2">You must pay to enter this game.</p>
           </div>
         ) : (
-          totalVotes === 0 ? (
-            <p className="text-white/70">No votes yet.</p>
+          isFullSetlist ? (
+            <SetlistDragDropPicker availableSongs={songs} numSlots={numSlots} onSubmit={handleFullSetlistSubmit} />
           ) : (
-            <div className="space-y-2">
-              {songs.map(song => (
-                <div key={song.id} className="flex items-center gap-2">
-                  <span className="w-40 truncate">{song.name}</span>
-                  <div className="flex-1 bg-white/20 rounded h-4">
-                    <div
-                      className="bg-[#005BAC] h-4 rounded"
-                      style={{ width: `${((voteCounts[song.id] || 0) / totalVotes) * 100}%` }}
-                    />
-                  </div>
-                  <span className="w-8 text-right">{voteCounts[song.id] || 0}</span>
-                </div>
-              ))}
-            </div>
+            <SongPicker songs={songs} onSubmit={handleSingleSubmit} />
           )
         )}
+        {submitError && <p className="text-red-500 mt-4">{submitError}</p>}
+
+        {/* Voting Stats */}
+        {Object.keys(voteCounts).length > 0 && (
+          <div className="mt-8 bg-white/10 backdrop-blur rounded-lg p-6 max-w-2xl w-full">
+            <h2 className="text-xl font-bold mb-4">Community Predictions ({totalVotes} votes)</h2>
+            <div className="space-y-2">
+              {Object.entries(voteCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10)
+                .map(([songId, count]) => {
+                  const song = songs.find(s => s.id === parseInt(songId));
+                  const percentage = Math.round((count / totalVotes) * 100);
+                  return (
+                    <div key={songId} className="flex justify-between items-center">
+                      <span className="text-white">{song?.name || 'Unknown Song'}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-24 bg-white/20 rounded-full h-2">
+                          <div 
+                            className="bg-purple-400 h-2 rounded-full transition-all duration-500"
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                        <span className="text-white/80 text-sm w-12">{percentage}%</span>
+                      </div>
+                    </div>
+                  );
+                })
+              }
+            </div>
+          </div>
+        )}
       </div>
-    </main>
+    </MainLayout>
   );
 } 

@@ -194,6 +194,15 @@ const HomePage = () => {
         </div>
       </div>
 
+      {/* Hero Section */}
+      <div className="text-center mb-16">
+        <div className="bg-purple-50 border border-purple-200 rounded-lg p-8 max-w-4xl mx-auto shadow-sm">
+          <p className="text-xl text-gray-700 leading-relaxed">
+            Created in honor of the <span className="font-semibold text-purple-700">Grateful Dead 60th Anniversary concerts</span> … a series of setlist prediction games.
+          </p>
+        </div>
+      </div>
+
       {/* Show Schedule - Properly Contained */}
       <div className="mb-16">
         <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">

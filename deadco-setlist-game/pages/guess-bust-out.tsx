@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
+import FourWaysToPlay from '../components/FourWaysToPlay';
 
 // Songs that Dead & Company have never played (rare/bust out candidates)
 const neverPlayedSongs = [
@@ -157,74 +159,20 @@ export default function GuessBustOut() {
           </div>
         </section>
 
-        <section>
-          <h2>Four Ways to Play</h2>
-          <div>
-            <button 
-              onClick={() => handlePlayModeSelect('fun')}
-              disabled={!selectedSong}
-            >
-              Play for Fun
-            </button>
-            <button 
-              onClick={() => handlePlayModeSelect('charity')}
-              disabled={!selectedSong}
-            >
-              Play for Charity
-            </button>
-            <button 
-              onClick={() => handlePlayModeSelect('cash')}
-              disabled={!selectedSong}
-            >
-              Play for Cash
-            </button>
-            <button 
-              onClick={() => handlePlayModeSelect('prize')}
-              disabled={!selectedSong}
-            >
-              Play for Prize
-            </button>
-          </div>
-          
-          {selectedPlayMode && (
-            <div>
-              <h3>Selected Mode: {selectedPlayMode}</h3>
-              <p>Song: {selectedSong}</p>
-              <p>Show: {shows.find(s => s.id === selectedShow)?.label}</p>
-              <button>Submit Guess</button>
-            </div>
-          )}
-        </section>
-
-        <section>
-          <h2>What is a "Bust Out"?</h2>
-          <div>
-            <p>
-              A "bust out" is when a band plays a song they haven't performed in a very long time, 
-              or in Dead & Company's case, a song that the Grateful Dead used to play but D&C has never performed.
-            </p>
-            
-            <h3>Why Bust Outs Are Special:</h3>
-            <ul>
-              <li>They're extremely rare and unexpected</li>
-              <li>Often huge crowd pleasers for longtime fans</li>
-              <li>Can be hints that the band is exploring deeper catalog</li>
-              <li>Sometimes tied to special occasions or venues</li>
-              <li>Create memorable "I was there" moments</li>
-            </ul>
-          </div>
-        </section>
-
-        <section>
-          <h2>Game Stats</h2>
-          <div>
-            <p>Total Players: 892</p>
-            <p>Average Success Rate: 3.2% (very difficult!)</p>
-            <p>Most Popular Guess: Alligator (31.2%)</p>
-            <p>Rarest Correct Guess: Cosmic Charlie (0.1%)</p>
-            <p>Last Correct Prediction: Caution - November 22, 2024</p>
-          </div>
-        </section>
+        <FourWaysToPlay 
+          onSubmissionClick={(playMode, amount) => {
+            console.log('Submitting bust out prediction:', {
+              song: selectedSong,
+              show: selectedShow,
+              playMode: playMode,
+              amount: amount,
+              game: 'guess-bust-out'
+            });
+            alert(`Bust out prediction submitted: ${selectedSong} for Show ${selectedShow} (${playMode} mode)`);
+          }}
+          gameType="bust out prediction"
+          disabled={!selectedSong || !selectedShow}
+        />
       </div>
     </MainLayout>
   );

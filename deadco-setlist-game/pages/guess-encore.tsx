@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
+import FourWaysToPlay from '../components/FourWaysToPlay';
 
 const allSongs = [
   'Ripple',
@@ -151,60 +153,19 @@ export default function GuessTheEncore() {
           </div>
         </section>
 
-        <section>
-          <h2>Four Ways to Play</h2>
-          <div>
-            <button 
-              onClick={() => handlePlayModeSelect('fun')}
-              disabled={!selectedSong}
-            >
-              Play for Fun
-            </button>
-            <button 
-              onClick={() => handlePlayModeSelect('charity')}
-              disabled={!selectedSong}
-            >
-              Play for Charity
-            </button>
-            <button 
-              onClick={() => handlePlayModeSelect('cash')}
-              disabled={!selectedSong}
-            >
-              Play for Cash
-            </button>
-            <button 
-              onClick={() => handlePlayModeSelect('prize')}
-              disabled={!selectedSong}
-            >
-              Play for Prize
-            </button>
-          </div>
-          
-          {selectedPlayMode && (
-            <div>
-              <h3>Selected Mode: {selectedPlayMode}</h3>
-              <p>Song: {selectedSong}</p>
-              <button>Submit Guess</button>
-            </div>
-          )}
-        </section>
-
-        <section>
-          <h2>Game Information</h2>
-          <div>
-            <h3>Current Show</h3>
-            <p>Date: 2025-07-25</p>
-            <p>Venue: Sphere Las Vegas</p>
-            <p>City: Las Vegas, NV</p>
-          </div>
-          
-          <div>
-            <h3>Stats</h3>
-            <p>Total Players: 1,547</p>
-            <p>Average Success Rate: 31.2%</p>
-            <p>Most Popular Guess: Ripple (24.3%)</p>
-          </div>
-        </section>
+        <FourWaysToPlay 
+          onSubmissionClick={(playMode, amount) => {
+            console.log('Submitting encore prediction:', {
+              song: selectedSong,
+              playMode: playMode,
+              amount: amount,
+              game: 'guess-encore'
+            });
+            alert(`Encore prediction submitted: ${selectedSong} (${playMode} mode)`);
+          }}
+          gameType="encore prediction"
+          disabled={!selectedSong}
+        />
       </div>
     </MainLayout>
   );
