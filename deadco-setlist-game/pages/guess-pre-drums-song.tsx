@@ -3,9 +3,11 @@ import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
 import FourWaysToPlay from '../components/FourWaysToPlay';
 import SongPicker from '../components/SongPicker';
+import ShowSelector from '../components/ShowSelector';
+import SetlistDragDropPicker from '../components/SetlistDragDropPicker';
 
 const GuessPreDrumsSongPage = () => {
-  const [selectedShow, setSelectedShow] = useState(1);
+  const [selectedShow, setSelectedShow] = useState(null);
   const [selectedSong, setSelectedSong] = useState('');
   const [timeToDeadline, setTimeToDeadline] = useState('');
 
@@ -38,6 +40,12 @@ const GuessPreDrumsSongPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const availableSongs = [
+    'Sugar Magnolia', 'Truckin\'', 'Casey Jones', 'Friend of the Devil',
+    'Uncle John\'s Band', 'Touch of Grey', 'Ripple', 'One More Saturday Night',
+    'Not Fade Away', 'Shakedown Street', 'Good Lovin\'', 'Fire on the Mountain'
+  ];
+
   return (
     <MainLayout>
       <Head>
@@ -46,9 +54,14 @@ const GuessPreDrumsSongPage = () => {
       </Head>
 
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-center text-purple-800 mb-8">
-          Guess the Pre Drums/Space Song
-        </h1>
+        {/* Header with sponsor logos */}
+        <div className="flex items-center justify-center mb-2 gap-4">
+          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+          <div className="w-2"></div>
+          <h1 className="text-4xl font-bold text-gray-800 text-center">Guess the Pre Drums/Space Song</h1>
+          <div className="w-2"></div>
+          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+        </div>
 
         <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-6 mb-8 text-center">
           <h2 className="text-xl font-semibold text-purple-800 mb-2">Time Until Deadline</h2>
@@ -61,64 +74,56 @@ const GuessPreDrumsSongPage = () => {
           <div className="bg-gray-200 rounded-lg p-8 text-gray-500">[SPONSOR LOGO PLACEHOLDER]</div>
         </div>
 
+        {/* Padding above ShowSelector */}
+        <div className="mt-4"></div>
         <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 text-center">Choose your show:</h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            {[
-              { id: 1, label: 'Show 1: Friday, August 1' },
-              { id: 2, label: 'Show 2: Saturday, August 2' },
-              { id: 3, label: 'Show 3: Sunday, August 3' },
-            ].map((show) => (
-              <button
-                key={show.id}
-                onClick={() => setSelectedShow(show.id)}
-                className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                  selectedShow === show.id ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                {show.label}
-              </button>
-            ))}
-          </div>
+          <ShowSelector
+            selectedShow={selectedShow}
+            onShowSelect={setSelectedShow}
+          />
         </div>
+        {/* Padding below ShowSelector */}
+        <div className="mb-4"></div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">Song Prediction</h3>
-              <input
-                type="text"
-                placeholder="Type song name or use wheel..."
-                value={selectedSong}
-                onChange={(e) => setSelectedSong(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 mb-4"
-              />
-              <SongPicker 
-                onSongSelect={setSelectedSong}
-                selectedSong={selectedSong}
-              />
+        {/* Main Game Grid */}
+        <div className="grid grid-cols-7 gap-0 mb-8">
+          {/* Col 1: Padding */}
+          <div></div>
+          {/* Col 2: Song Selection (Drag & Drop) */}
+          <div>
+            <SetlistDragDropPicker
+              availableSongs={availableSongs}
+              maxSongs={1}
+              onSetlistChange={(setlist) => setSelectedSong(setlist[0] || '')}
+            />
+          </div>
+          {/* Col 3: Small Padding */}
+          <div className="w-2"></div>
+          {/* Col 4: Selected Song */}
+          <div>
+            <div className="bg-white border border-gray-200 rounded-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+              <h4 className="font-semibold mb-2 text-gray-800">Selected Song</h4>
+              {selectedSong ? (
+                <span className="text-lg font-bold text-purple-700">{selectedSong}</span>
+              ) : (
+                <span className="text-gray-400">No song selected</span>
+              )}
             </div>
           </div>
-
-          <div className="lg:col-span-1"></div>
-
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">Hints</h3>
-              <div className="text-gray-600">
-                <p className="mb-2">[PLACEHOLDER - Pre drums/space-specific hints to be added later]</p>
-                <ul className="list-disc list-inside space-y-1 text-sm">
-                  <li>Common pre-drums songs</li>
-                  <li>Jam-heavy transitions</li>
-                  <li>Set 2 mid-point favorites</li>
-                  <li>Space-launching songs</li>
-                </ul>
-              </div>
-            </div>
+          {/* Col 5: Small Padding */}
+          <div className="w-2"></div>
+          {/* Col 6: Stats (optional) */}
+          <div>
+            {/* Add stats or hints here if desired */}
           </div>
+          {/* Col 7: Padding */}
+          <div></div>
         </div>
 
-        <FourWaysToPlay />
+        {/* Four Ways to Play */}
+        <div className="mt-4 mb-4">
+          <FourWaysToPlay />
+        </div>
       </div>
     </MainLayout>
   );

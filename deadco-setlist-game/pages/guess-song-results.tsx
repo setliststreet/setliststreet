@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MainLayout from '../components/MainLayout';
+import ShowSelector from '../components/ShowSelector';
 
 // Mock wheel data and results
 const wheelSongs = [
@@ -53,7 +54,7 @@ const mockLeaderboards = {
 };
 
 export default function GuessSongResults() {
-  const [selectedShow, setSelectedShow] = useState('show1');
+  const [selectedShow, setSelectedShow] = useState(null);
   const [selectedGame, setSelectedGame] = useState<'opener' | 'encore' | 'bustout'>('opener');
   const [isSpinning, setIsSpinning] = useState(false);
   const [wheelPosition, setWheelPosition] = useState(0);
@@ -96,19 +97,11 @@ export default function GuessSongResults() {
         <h1>View Song Guess Results</h1>
         
         <section>
-          <h2>Choose your show:</h2>
-          <div>
-            {shows.map((show) => (
-              <button
-                key={show.id}
-                onClick={() => setSelectedShow(show.id)}
-                disabled={selectedShow === show.id}
-              >
-                {show.label}
-              </button>
-            ))}
-          </div>
-          <p>Viewing results for: {shows.find(s => s.id === selectedShow)?.label}</p>
+          <ShowSelector
+            selectedShow={selectedShow}
+            onShowSelect={setSelectedShow}
+          />
+          <p>Viewing results for: {selectedShow ? `${selectedShow.date} - ${selectedShow.guest}` : 'None'}</p>
         </section>
 
         <section>

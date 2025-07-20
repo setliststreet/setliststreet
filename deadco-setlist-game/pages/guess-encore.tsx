@@ -2,33 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
 import FourWaysToPlay from '../components/FourWaysToPlay';
+import ShowSelector from '../components/ShowSelector';
+import PoolSizeDisplay from '../components/PoolSizeDisplay';
+import SetlistDragDropPicker from '../components/SetlistDragDropPicker';
+import { Show } from '../types/show';
 
-const allSongs = [
-  'Ripple',
-  'Touch of Grey',
-  'Black Muddy River',
-  'Brokedown Palace',
-  'Box of Rain',
-  'Attics of My Life',
-  'Sugar Magnolia',
-  'Uncle John\'s Band',
-  'The Weight',
-  'Knockin\' on Heaven\'s Door',
-  'Johnny B. Goode',
-  'Casey Jones',
-  'One More Saturday Night',
-  'U.S. Blues',
-  'Friend of the Devil',
-  'Fire on the Mountain',
-  'Not Fade Away',
-  'Good Lovin\'',
-  'Truckin\'',
-  'Eyes of the World',
-  'Stella Blue',
-  'Morning Dew',
-  'Wharf Rat',
-  'China Cat Sunflower',
-  'I Know You Rider'
+const availableSongs = [
+  'Ripple', 'Touch of Grey', 'Black Muddy River', 'Brokedown Palace',
+  'Box of Rain', 'Attics of My Life', 'Sugar Magnolia', 'Uncle John\'s Band',
+  'The Weight', 'Knockin\' on Heaven\'s Door', 'Johnny B. Goode', 'Casey Jones',
+  'One More Saturday Night', 'U.S. Blues', 'Friend of the Devil', 'Fire on the Mountain',
+  'Not Fade Away', 'Good Lovin\'', 'Truckin\'', 'Eyes of the World', 'Stella Blue',
+  'Morning Dew', 'Wharf Rat', 'China Cat Sunflower', 'I Know You Rider'
 ];
 
 const top10CommonEncores = [
@@ -61,6 +46,7 @@ export default function GuessTheEncore() {
   const [selectedSong, setSelectedSong] = useState('');
   const [selectedPlayMode, setSelectedPlayMode] = useState('');
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [selectedShow, setSelectedShow] = useState<Show | null>(null);
 
   const handleSongSelect = (song: string) => {
     setSelectedSong(song);
@@ -83,89 +69,88 @@ export default function GuessTheEncore() {
   return (
     <MainLayout>
       <div>
-        <h1>Guess the Encore</h1>
+        {/* Header with sponsor logos */}
+        <div className="flex items-center justify-center mb-2 gap-4">
+          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+          <div className="w-2"></div>
+          <h1 className="text-4xl font-bold text-gray-800 text-center">Guess the Encore</h1>
+          <div className="w-2"></div>
+          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+        </div>
         
-        <section>
-          <h2>Main Content</h2>
-          
+        {/* Show Selection */}
+        <div className="max-w-md mx-auto mb-8">
+          <ShowSelector 
+            onShowSelect={(show: Show) => setSelectedShow(show)}
+            selectedShow={selectedShow ?? undefined}
+          />
+        </div>
+        {/* Sponsor summary and live pool summary */}
+        {selectedShow && (
+          <div className="flex flex-col items-center mb-8">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <span className="text-lg font-semibold text-gray-700">[PLACEHOLDER SPONSOR NAME]</span>
+              <span className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-2xl">[PLACEHOLDER SPONSOR LOGO]</span>
+            </div>
+            <PoolSizeDisplay 
+              gameId="guess-encore" 
+              showId={selectedShow.id}
+              showDate={selectedShow.date}
+            />
+          </div>
+        )}
+
+        {/* Main Game Grid */}
+        <div className="grid grid-cols-7 gap-0 mb-8">
+          {/* Col 1: Padding */}
+          <div></div>
+          {/* Col 2: Song Selection (Drag & Drop) */}
           <div>
-            {/* Box 1: Song Guess */}
-            <div>
-              <h3>Song Guess</h3>
-              <input 
-                type="text" 
-                value={selectedSong} 
-                onChange={(e) => setSelectedSong(e.target.value)}
-                placeholder="Type or select a song"
-              />
-            </div>
-
-            {/* iPod Style Scroll Wheel */}
-            <div>
-              <h3>Song Selector</h3>
-              <div>
-                <button onClick={() => handleScrollWheel('up')}>↑ Up</button>
-                <div>
-                  <p>Current: {allSongs[scrollPosition] || 'Select a song'}</p>
-                  <button onClick={() => handleSongSelect(allSongs[scrollPosition])}>
-                    Select This Song
-                  </button>
-                </div>
-                <button onClick={() => handleScrollWheel('down')}>↓ Down</button>
-              </div>
-              
-              <div>
-                <h4>All Songs</h4>
-                <select 
-                  value={selectedSong} 
-                  onChange={(e) => handleSongSelect(e.target.value)}
-                >
-                  <option value="">Choose a song...</option>
-                  {allSongs.map((song) => (
-                    <option key={song} value={song}>{song}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Fun Facts / Hints */}
-            <div>
-              <h3>Hints & Fun Facts</h3>
-              
-              <div>
-                <h4>Top 10 Most Common Encores</h4>
-                <ul>
-                  {top10CommonEncores.map((encore, index) => (
-                    <li key={index}>{encore}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h4>Last 10 Encores</h4>
-                <ul>
-                  {last10Encores.map((encore, index) => (
-                    <li key={index}>{encore}</li>
-                  ))}
-                </ul>
-              </div>
+            <SetlistDragDropPicker
+              availableSongs={availableSongs}
+              maxSongs={1}
+              onSetlistChange={(setlist) => setSelectedSong(setlist[0] || '')}
+            />
+          </div>
+          {/* Col 3: Small Padding */}
+          <div className="w-2"></div>
+          {/* Col 4: Selected Song */}
+          <div>
+            <div className="bg-white border border-gray-200 rounded-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+              <h4 className="font-semibold mb-2 text-gray-800">Selected Song</h4>
+              {selectedSong ? (
+                <span className="text-lg font-bold text-purple-700">{selectedSong}</span>
+              ) : (
+                <span className="text-gray-400">No song selected</span>
+              )}
             </div>
           </div>
-        </section>
+          {/* Col 5: Small Padding */}
+          <div className="w-2"></div>
+          {/* Col 6: Stats (optional) */}
+          <div>
+            {/* Add stats or hints here if desired */}
+          </div>
+          {/* Col 7: Padding */}
+          <div></div>
+        </div>
 
-        <FourWaysToPlay 
-          onSubmissionClick={(playMode, amount) => {
-            console.log('Submitting encore prediction:', {
-              song: selectedSong,
-              playMode: playMode,
-              amount: amount,
-              game: 'guess-encore'
-            });
-            alert(`Encore prediction submitted: ${selectedSong} (${playMode} mode)`);
-          }}
-          gameType="encore prediction"
-          disabled={!selectedSong}
-        />
+        {/* Four Ways to Play */}
+        <div className="mt-4 mb-4">
+          <FourWaysToPlay 
+            onSubmissionClick={(playMode, amount) => {
+              console.log('Submitting encore prediction:', {
+                song: selectedSong,
+                playMode: playMode,
+                amount: amount,
+                game: 'guess-encore'
+              });
+              alert(`Encore prediction submitted: ${selectedSong} (${playMode} mode)`);
+            }}
+            gameType="encore prediction"
+            disabled={!selectedSong}
+          />
+        </div>
       </div>
     </MainLayout>
   );

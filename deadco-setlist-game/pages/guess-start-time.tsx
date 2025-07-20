@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
 import FourWaysToPlay from '../components/FourWaysToPlay';
+import ShowSelector from '../components/ShowSelector';
 
 const GuessStartTimePage = () => {
-  const [selectedShow, setSelectedShow] = useState(1);
+  const [selectedShow, setSelectedShow] = useState(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [timeToDeadline, setTimeToDeadline] = useState('');
 
@@ -74,29 +75,17 @@ const GuessStartTimePage = () => {
           </div>
         </div>
 
+        {/* Padding above ShowSelector */}
+        <div className="mt-4"></div>
         {/* Show Selector */}
         <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 text-center">Choose your show:</h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            {[
-              { id: 1, label: 'Show 1: Friday, August 1' },
-              { id: 2, label: 'Show 2: Saturday, August 2' },
-              { id: 3, label: 'Show 3: Sunday, August 3' },
-            ].map((show) => (
-              <button
-                key={show.id}
-                onClick={() => setSelectedShow(show.id)}
-                className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                  selectedShow === show.id
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                {show.label}
-              </button>
-            ))}
-          </div>
+          <ShowSelector
+            selectedShow={selectedShow}
+            onShowSelect={setSelectedShow}
+          />
         </div>
+        {/* Padding below ShowSelector */}
+        <div className="mb-4"></div>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -136,7 +125,9 @@ const GuessStartTimePage = () => {
         </div>
 
         {/* Four Ways to Play */}
-        <FourWaysToPlay />
+        <div className="mt-4 mb-4">
+          <FourWaysToPlay />
+        </div>
       </div>
     </MainLayout>
   );

@@ -176,6 +176,7 @@ export default function AboutThisApp() {
             Dead & Company, or any related organizations. This is a labor of love created by fans, for fans.
           </p>
         </section>
+        <p className="mt-8 text-center text-purple-700 font-semibold">This is also dedicated wedding gift to my two favorite deadheads K&amp;L - you know who you are.</p>
       </div>
     </MainLayout>
   );

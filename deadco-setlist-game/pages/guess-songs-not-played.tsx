@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
 import FourWaysToPlay from '../components/FourWaysToPlay';
+import ShowSelector from '../components/ShowSelector';
+import SetlistDragDropPicker from '../components/SetlistDragDropPicker';
 
 const GuessSongsNotPlayedPage = () => {
-  const [selectedShow, setSelectedShow] = useState(1);
+  const [selectedShow, setSelectedShow] = useState(null);
   const [selectedSongs, setSelectedSongs] = useState<string[]>([]);
   const [timeToDeadline, setTimeToDeadline] = useState('');
 
@@ -36,6 +38,8 @@ const GuessSongsNotPlayedPage = () => {
     { name: 'The Other One', popularity: 24, points: 2 },
     { name: 'Attics of My Life', popularity: 25, points: 1 },
   ];
+
+  const availableSongs = top25Songs.map(s => s.name);
 
   useEffect(() => {
     const calculateTimeToDeadline = () => {
@@ -89,9 +93,14 @@ const GuessSongsNotPlayedPage = () => {
       </Head>
 
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-center text-purple-800 mb-8">
-          Guess Songs NOT Played
-        </h1>
+        {/* Header with sponsor logos */}
+        <div className="flex items-center justify-center mb-2 gap-4">
+          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+          <div className="w-2"></div>
+          <h1 className="text-4xl font-bold text-gray-800 text-center">Guess Songs NOT Played</h1>
+          <div className="w-2"></div>
+          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+        </div>
 
         <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-6 mb-8 text-center">
           <h2 className="text-xl font-semibold text-purple-800 mb-2">Time Until Deadline</h2>
@@ -104,26 +113,16 @@ const GuessSongsNotPlayedPage = () => {
           <div className="bg-gray-200 rounded-lg p-8 text-gray-500">[SPONSOR LOGO PLACEHOLDER]</div>
         </div>
 
+        {/* Padding above ShowSelector */}
+        <div className="mt-4"></div>
         <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 text-center">Choose your show:</h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            {[
-              { id: 1, label: 'Show 1: Friday, August 1' },
-              { id: 2, label: 'Show 2: Saturday, August 2' },
-              { id: 3, label: 'Show 3: Sunday, August 3' },
-            ].map((show) => (
-              <button
-                key={show.id}
-                onClick={() => setSelectedShow(show.id)}
-                className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                  selectedShow === show.id ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                {show.label}
-              </button>
-            ))}
-          </div>
+          <ShowSelector
+            selectedShow={selectedShow}
+            onShowSelect={setSelectedShow}
+          />
         </div>
+        {/* Padding below ShowSelector */}
+        <div className="mb-4"></div>
 
         {/* Game Instructions */}
         <div className="bg-blue-50 rounded-lg p-6 mb-8">
@@ -142,100 +141,68 @@ const GuessSongsNotPlayedPage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          {/* Song Selection */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">
-                Top 25 Most Popular Songs
-                <span className="text-sm font-normal text-gray-600 ml-2">
-                  (Select songs you predict WON'T be played)
-                </span>
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-96 overflow-y-auto">
-                {top25Songs.map((song) => (
-                  <label
-                    key={song.name}
-                    className={`flex items-center p-3 rounded-lg border-2 cursor-pointer transition-colors ${
-                      selectedSongs.includes(song.name)
-                        ? 'border-red-500 bg-red-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    } ${selectedSongs.length >= 15 && !selectedSongs.includes(song.name) ? 'opacity-50' : ''}`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedSongs.includes(song.name)}
-                      onChange={() => handleSongToggle(song.name)}
-                      disabled={selectedSongs.length >= 15 && !selectedSongs.includes(song.name)}
-                      className="mr-3 h-4 w-4 text-red-600"
-                    />
-                    <div className="flex-1">
-                      <div className="font-medium">{song.name}</div>
-                      <div className="text-sm text-gray-600">
-                        Rank #{song.popularity} • {song.points} pts if not played
-                      </div>
-                    </div>
-                  </label>
-                ))}
+        {/* Song Selection */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Select Songs You Predict WON'T Be Played</h2>
+          <SetlistDragDropPicker
+            availableSongs={availableSongs}
+            maxSongs={15}
+            onSetlistChange={setSelectedSongs}
+          />
+        </div>
+
+        {/* Selection Summary & Hints */}
+        <div className="lg:col-span-1 space-y-6">
+          {/* Current Selection */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-xl font-semibold mb-4">Your Predictions</h3>
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 mb-2">Songs you predict WON'T be played:</p>
+              <div className="text-2xl font-bold text-red-600">
+                {selectedSongs.length} selected
               </div>
-              
-              <div className="mt-4 text-center text-sm text-gray-600">
-                Selected: {selectedSongs.length}/15 songs
+              <div className="text-lg font-semibold text-green-600">
+                Potential: {calculatePotentialPoints()} points
               </div>
             </div>
+            
+            {selectedSongs.length > 0 && (
+              <div>
+                <p className="text-sm font-medium mb-2">Selected Songs:</p>
+                <div className="space-y-1 max-h-40 overflow-y-auto">
+                  {selectedSongs.map((songName) => {
+                    const song = top25Songs.find(s => s.name === songName);
+                    return (
+                      <div key={songName} className="flex justify-between text-sm">
+                        <span className="truncate">{songName}</span>
+                        <span className="text-green-600 font-medium">+{song?.points}pt</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Selection Summary & Hints */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Current Selection */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">Your Predictions</h3>
-              <div className="mb-4">
-                <p className="text-sm text-gray-600 mb-2">Songs you predict WON'T be played:</p>
-                <div className="text-2xl font-bold text-red-600">
-                  {selectedSongs.length} selected
-                </div>
-                <div className="text-lg font-semibold text-green-600">
-                  Potential: {calculatePotentialPoints()} points
-                </div>
-              </div>
-              
-              {selectedSongs.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium mb-2">Selected Songs:</p>
-                  <div className="space-y-1 max-h-40 overflow-y-auto">
-                    {selectedSongs.map((songName) => {
-                      const song = top25Songs.find(s => s.name === songName);
-                      return (
-                        <div key={songName} className="flex justify-between text-sm">
-                          <span className="truncate">{songName}</span>
-                          <span className="text-green-600 font-medium">+{song?.points}pt</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Hints */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">Strategy Hints</h3>
-              <div className="text-gray-600 space-y-2 text-sm">
-                <p>[PLACEHOLDER - Songs NOT played-specific hints to be added later]</p>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Historical venue patterns</li>
-                  <li>Recent tour frequencies</li>
-                  <li>GD60 special considerations</li>
-                  <li>Popular vs. likely pairings</li>
-                </ul>
-              </div>
+          {/* Hints */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h3 className="text-xl font-semibold mb-4">Strategy Hints</h3>
+            <div className="text-gray-600 space-y-2 text-sm">
+              <p>[PLACEHOLDER - Songs NOT played-specific hints to be added later]</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>Historical venue patterns</li>
+                <li>Recent tour frequencies</li>
+                <li>GD60 special considerations</li>
+                <li>Popular vs. likely pairings</li>
+              </ul>
             </div>
           </div>
         </div>
 
-        <FourWaysToPlay />
+        {/* Four Ways to Play */}
+        <div className="mt-4 mb-4">
+          <FourWaysToPlay />
+        </div>
       </div>
     </MainLayout>
   );

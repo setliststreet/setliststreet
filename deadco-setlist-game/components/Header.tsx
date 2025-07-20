@@ -16,7 +16,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation Links - Always visible, right justified */}
-          <nav className="flex items-center space-x-2 lg:space-x-4">
+          <nav className="flex items-center gap-4 lg:gap-6">
             <Link 
               href="/rules" 
               className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
@@ -28,6 +28,18 @@ export default function Header() {
               className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
             >
               FAQ
+            </Link>
+            <Link 
+              href="/setlist-hints" 
+              className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
+            >
+              Setlist Hints
+            </Link>
+            <Link 
+              href="/view-results" 
+              className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
+            >
+              Live Results
             </Link>
             <Link 
               href="/login" 

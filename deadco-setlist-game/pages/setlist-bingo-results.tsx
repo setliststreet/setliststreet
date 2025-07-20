@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MainLayout from '../components/MainLayout';
+import ShowSelector from '../components/ShowSelector';
 
 // Mock live setlist data
 const liveSetlist = [
@@ -22,12 +23,13 @@ const mockLeaderboard = [
 ];
 
 export default function SetlistBingoResults() {
-  const [selectedShow, setSelectedShow] = useState('show1');
+  const [selectedShow, setSelectedShow] = useState(null);
 
+  // Mock shows data for ShowSelector
   const shows = [
-    { id: 'show1', label: 'Show 1: Friday, August 1' },
-    { id: 'show2', label: 'Show 2: Saturday, August 2' },
-    { id: 'show3', label: 'Show 3: Sunday, August 3' }
+    { id: 'show1', date: 'Friday, August 1', guest: 'Show 1' },
+    { id: 'show2', date: 'Saturday, August 2', guest: 'Show 2' },
+    { id: 'show3', date: 'Sunday, August 3', guest: 'Show 3' }
   ];
 
   // Mock bingo board that gets filled as songs are played
@@ -60,19 +62,11 @@ export default function SetlistBingoResults() {
         <h1>View Setlist Bingo Results</h1>
         
         <section>
-          <h2>Choose your show:</h2>
-          <div>
-            {shows.map((show) => (
-              <button
-                key={show.id}
-                onClick={() => setSelectedShow(show.id)}
-                disabled={selectedShow === show.id}
-              >
-                {show.label}
-              </button>
-            ))}
-          </div>
-          <p>Viewing results for: {shows.find(s => s.id === selectedShow)?.label}</p>
+          <ShowSelector
+            selectedShow={selectedShow}
+            onShowSelect={setSelectedShow}
+          />
+          <p>Viewing results for: {selectedShow ? `${selectedShow.date} - ${selectedShow.guest}` : 'None'}</p>
         </section>
 
         <section>

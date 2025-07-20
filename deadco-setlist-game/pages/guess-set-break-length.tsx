@@ -60,6 +60,8 @@ const GuessSetBreakLengthPage = () => {
           <div className="bg-gray-200 rounded-lg p-8 text-gray-500">[SPONSOR LOGO PLACEHOLDER]</div>
         </div>
 
+        {/* Padding above ShowSelector */}
+        <div className="mt-4"></div>
         <div className="mb-8">
           <h3 className="text-xl font-semibold mb-4 text-center">Choose your show:</h3>
           <div className="flex flex-wrap justify-center gap-4">
@@ -80,6 +82,8 @@ const GuessSetBreakLengthPage = () => {
             ))}
           </div>
         </div>
+        {/* Padding below ShowSelector */}
+        <div className="mb-4"></div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           <div className="lg:col-span-1">
@@ -117,7 +121,10 @@ const GuessSetBreakLengthPage = () => {
           </div>
         </div>
 
-        <FourWaysToPlay />
+        {/* Four Ways to Play */}
+        <div className="mt-4 mb-4">
+          <FourWaysToPlay />
+        </div>
       </div>
     </Layout>
   );

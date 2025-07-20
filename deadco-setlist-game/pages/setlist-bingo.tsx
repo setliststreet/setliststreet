@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import MainLayout from '../components/MainLayout';
+import FourWaysToPlay from '../components/FourWaysToPlay';
+import ShowSelector from '../components/ShowSelector';
+import PoolSizeDisplay from '../components/PoolSizeDisplay'; // Added import for PoolSizeDisplay
 
 // Mock database songs for bingo
 const allSongs = [
@@ -25,6 +28,7 @@ export default function SetlistBingo() {
   });
   
   const [selectedPlayMode, setSelectedPlayMode] = useState('');
+  const [selectedShow, setSelectedShow] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [draggedSong, setDraggedSong] = useState<string | null>(null);
@@ -123,44 +127,40 @@ export default function SetlistBingo() {
     <MainLayout>
       <div className="bg-white min-h-screen">
         <div className="container mx-auto px-6 py-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Setlist Bingo
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Create your 5x5 bingo card and win with lines, columns, diagonals, or four corners!
-            </p>
+          {/* Header with sponsor logos */}
+          <div className="flex items-center justify-center mb-8 gap-4">
+            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+            <div className="w-2"></div>
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">Setlist Bingo</h1>
+            <div className="w-2"></div>
+            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
           </div>
 
-          {/* Game Instructions */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-8">
-            <h2 className="text-lg font-bold text-gray-800 mb-3">How to Play</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Winning Combinations:</h3>
-                <ul className="space-y-1 text-xs">
-                  <li>• Any complete row (5 songs)</li>
-                  <li>• Any complete column (5 songs)</li>
-                  <li>• Any complete diagonal (5 songs)</li>
-                  <li>• Four corners (4 songs)</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Strategy Tips:</h3>
-                <ul className="space-y-1 text-xs">
-                  <li>• Mix common and rare songs</li>
-                  <li>• Consider song relationships</li>
-                  <li>• Use the center FREE space wisely</li>
-                  <li>• Multiple winners possible!</li>
-                </ul>
-              </div>
-            </div>
+          {/* Show Selection */}
+          <div className="max-w-md mx-auto mb-8">
+            <ShowSelector 
+              onShowSelect={(show: Show) => setSelectedShow(show)}
+              selectedShow={selectedShow ?? undefined}
+            />
           </div>
+          {/* Sponsor summary and live pool summary */}
+          {selectedShow && (
+            <div className="flex flex-col items-center mb-8">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <span className="text-lg font-semibold text-gray-700">[PLACEHOLDER SPONSOR NAME]</span>
+                <span className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-2xl">[PLACEHOLDER SPONSOR LOGO]</span>
+              </div>
+              <PoolSizeDisplay 
+                gameId="setlist-bingo" 
+                showId={selectedShow.id}
+                showDate={selectedShow.date}
+              />
+            </div>
+          )}
 
           {/* Main Bingo Builder with Three-Column Layout - IMPROVED SPACING */}
-          <div className="grid grid-cols-7 gap-12 mb-12">
-            {/* LEFT: Song Candidates (2/7 width) */}
+          <div className="grid grid-cols-12 gap-4 max-w-7xl mx-auto mb-6">
+            <div className="col-span-1"></div>
             <div className="col-span-2 bg-gray-50 rounded-lg p-6 border border-gray-200">
               <h3 className="font-semibold text-gray-800 mb-6 text-base">Available Songs → Drag to Board</h3>
               
@@ -236,9 +236,8 @@ export default function SetlistBingo() {
                 </button>
               </div>
             </div>
-
-            {/* CENTER: Bingo Board (3/7 width) */}
-            <div className="col-span-3 bg-white rounded-lg p-8 border-2 border-purple-200 shadow-lg">
+            <div className="col-span-1"></div>
+            <div className="col-span-4 bg-white rounded-lg p-8 border-2 border-purple-200 shadow-lg">
               <h3 className="font-semibold text-gray-800 mb-6 text-base">Your Bingo Card → Drop Songs Here</h3>
               
               <div className="bg-white border-2 border-gray-300 rounded-lg p-4 shadow-sm">
@@ -289,8 +288,7 @@ export default function SetlistBingo() {
                 </div>
               </div>
             </div>
-
-            {/* RIGHT: Hints & Stats (2/7 width) */}
+            <div className="col-span-1"></div>
             <div className="col-span-2 bg-gray-50 rounded-lg p-6 border border-gray-200">
               <h3 className="font-semibold text-gray-800 mb-6 text-base">Quick Stats & Hints</h3>
               
@@ -341,37 +339,17 @@ export default function SetlistBingo() {
                 </div>
               </div>
             </div>
+            <div className="col-span-1"></div>
           </div>
 
-          {/* Play Mode Selection & Submit */}
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Choose Your Play Mode</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              {[
-                { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
-                { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
-                { id: 'cash', title: 'Play for Cash', desc: 'Entry fee builds prize pool' },
-                { id: 'prize', title: 'Play for Prize', desc: 'Compete for sponsored rewards' }
-              ].map((mode) => (
-                <button
-                  key={mode.id}
-                  onClick={() => {
-                    setSelectedPlayMode(mode.id);
-                    // Auto-submit when mode is selected
-                    setTimeout(() => handleSubmit(), 100);
-                  }}
-                  className={`p-4 rounded-lg border-2 text-left transition-all shadow-sm hover:shadow-md ${
-                    selectedPlayMode === mode.id
-                      ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-gray-300 bg-white'
-                  }`}
-                >
-                  <h3 className="font-semibold text-gray-800 mb-2 text-sm">{mode.title}</h3>
-                  <p className="text-xs text-gray-600">{mode.desc}</p>
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Standardized Payment Component */}
+          <FourWaysToPlay 
+            onSubmissionClick={(playMode, amount) => {
+              setSelectedPlayMode(playMode);
+              handleSubmit();
+            }}
+            gameType="bingo card"
+          />
 
 {/* Hints are now integrated into the right column above */}
         </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
 import FourWaysToPlay from '../components/FourWaysToPlay';
+import ShowSelector from '../components/ShowSelector';
 
 // Songs that Dead & Company have never played (rare/bust out candidates)
 const neverPlayedSongs = [
@@ -33,7 +34,7 @@ const last10BustOuts = [
 ];
 
 export default function GuessBustOut() {
-  const [selectedShow, setSelectedShow] = useState('show1');
+  const [selectedShow, setSelectedShow] = useState(null);
   const [selectedSong, setSelectedSong] = useState('');
   const [selectedPlayMode, setSelectedPlayMode] = useState('');
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -56,31 +57,21 @@ export default function GuessBustOut() {
     setSelectedPlayMode(mode);
   };
 
-  const shows = [
-    { id: 'show1', label: 'Show 1: Friday, August 1' },
-    { id: 'show2', label: 'Show 2: Saturday, August 2' },
-    { id: 'show3', label: 'Show 3: Sunday, August 3' }
-  ];
-
   return (
     <MainLayout>
       <div>
         <h1>Guess the Bust Out</h1>
         
         <section>
-          <h2>Choose your show:</h2>
-          <div>
-            {shows.map((show) => (
-              <button
-                key={show.id}
-                onClick={() => setSelectedShow(show.id)}
-                disabled={selectedShow === show.id}
-              >
-                {show.label}
-              </button>
-            ))}
-          </div>
-          <p>Selected: {shows.find(s => s.id === selectedShow)?.label}</p>
+          {/* Padding above ShowSelector */}
+          <div className="mt-4"></div>
+          <ShowSelector
+            selectedShow={selectedShow}
+            onShowSelect={setSelectedShow}
+          />
+          {/* Padding below ShowSelector */}
+          <div className="mb-4"></div>
+          <p>Selected: {selectedShow ? `${selectedShow.date} - ${selectedShow.guest}` : 'None'}</p>
         </section>
 
         <section>
@@ -159,20 +150,23 @@ export default function GuessBustOut() {
           </div>
         </section>
 
-        <FourWaysToPlay 
-          onSubmissionClick={(playMode, amount) => {
-            console.log('Submitting bust out prediction:', {
-              song: selectedSong,
-              show: selectedShow,
-              playMode: playMode,
-              amount: amount,
-              game: 'guess-bust-out'
-            });
-            alert(`Bust out prediction submitted: ${selectedSong} for Show ${selectedShow} (${playMode} mode)`);
-          }}
-          gameType="bust out prediction"
-          disabled={!selectedSong || !selectedShow}
-        />
+        {/* Four Ways to Play */}
+        <div className="mt-4 mb-4">
+          <FourWaysToPlay 
+            onSubmissionClick={(playMode, amount) => {
+              console.log('Submitting bust out prediction:', {
+                song: selectedSong,
+                show: selectedShow,
+                playMode: playMode,
+                amount: amount,
+                game: 'guess-bust-out'
+              });
+              alert(`Bust out prediction submitted: ${selectedSong} for Show ${selectedShow} (${playMode} mode)`);
+            }}
+            gameType="bust out prediction"
+            disabled={!selectedSong || !selectedShow}
+          />
+        </div>
       </div>
     </MainLayout>
   );

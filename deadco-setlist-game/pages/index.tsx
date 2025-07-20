@@ -109,41 +109,18 @@ const HomePage = () => {
   }
 
   const GameCard = ({ game }: { game: Game }) => {
-    const isFeatured = game.featured;
-    
     return (
       <Link href={game.href} className="group">
-        <div className={`
-          bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 
-          border-2 border-gray-200 hover:border-gray-300 h-full
-          ${isFeatured ? 'ring-2 ring-purple-300' : ''}
-        `}>
-          <div className="text-center h-full flex flex-col">
-            <h3 className="text-xl font-bold mb-2 text-gray-800">
+        <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 border-2 border-gray-200 hover:border-gray-300 h-full">
+          <div className="flex flex-col items-center text-center h-full">
+            <h3 className="text-xl font-bold mb-3 text-gray-800">
               {game.title}
             </h3>
-            <p className="text-gray-600 text-sm mb-3 flex-grow">
+            <p className="text-gray-600 text-base mb-4">
               {game.description}
             </p>
-            <div className="mt-auto">
-              <div className="flex justify-between items-center mb-2">
-                <div className="text-xs text-purple-600 font-medium">
-                  {game.category}
-                </div>
-                {game.gameCount && (
-                  <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                    {game.gameCount}
-                  </div>
-                )}
-              </div>
-              {isFeatured && (
-                <div className="text-xs text-purple-700 font-bold mb-2">
-                  FEATURED
-                </div>
-              )}
-              <button className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium">
-                {game.gameCount?.includes('games') ? 'View All Games' : 'Play Now'}
-              </button>
+            <div className="flex flex-col items-center gap-1 mt-auto">
+              {/* Removed category and gameCount display */}
             </div>
           </div>
         </div>
@@ -181,17 +158,6 @@ const HomePage = () => {
         <h1 className="text-4xl font-bold text-gray-800 mb-6">
           Setlist Street
         </h1>
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            Grateful Dead 60th Anniversary Concerts (GD60)
-          </h2>
-          <p className="text-lg text-gray-600 mb-2">
-            Golden Gate Park, San Francisco
-          </p>
-          <p className="text-lg text-gray-600">
-            Dead & Company - August 1, 2, 3, 2025
-          </p>
-        </div>
       </div>
 
       {/* Hero Section */}
@@ -200,11 +166,14 @@ const HomePage = () => {
           <p className="text-xl text-gray-700 leading-relaxed">
             Created in honor of the <span className="font-semibold text-purple-700">Grateful Dead 60th Anniversary concerts</span> … a series of setlist prediction games.
           </p>
+          <p className="text-xl text-gray-700 leading-relaxed mt-4">
+            16 Games Available | Statistical Insights | Cash Prizes | Charity Donations | Exclusive Prizes
+          </p>
         </div>
       </div>
 
       {/* Show Schedule - Properly Contained */}
-      <div className="mb-16">
+      <div className="mb-8 mt-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
           Show Schedule
         </h2>
@@ -212,17 +181,20 @@ const HomePage = () => {
           <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow">
             <h3 className="font-semibold text-purple-700 text-sm">Show 1</h3>
             <p className="text-gray-600 text-sm mt-1">Friday, August 1</p>
-            <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
+            <div className="text-xs text-blue-700 font-semibold mt-1">Guest: Billy Strings</div>
+            <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
           </div>
           <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow">
             <h3 className="font-semibold text-purple-700 text-sm">Show 2</h3>
             <p className="text-gray-600 text-sm mt-1">Saturday, August 2</p>
-            <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
+            <div className="text-xs text-blue-700 font-semibold mt-1">Guest: Sturgill “Johnny Blue Skies” Simpson</div>
+            <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
           </div>
           <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow">
             <h3 className="font-semibold text-purple-700 text-sm">Show 3</h3>
             <p className="text-gray-600 text-sm mt-1">Sunday, August 3</p>
-            <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
+            <div className="text-xs text-blue-700 font-semibold mt-1">Guest: Trey Anastasio Band</div>
+            <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
           </div>
         </div>
       </div>
@@ -242,34 +214,25 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Game Count Banner */}
-      <div className="mb-16">
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center shadow-sm">
-          <p className="text-xl font-bold text-gray-800">
-            16 Games Available | Statistical Insights | Cash Prizes | Charity Donations | Exclusive Prizes
-          </p>
-        </div>
-      </div>
-
-      {/* All Games Grid - Force Visible Margins */}
-      <div className="mb-16 mx-4 sm:mx-8 lg:mx-16">
+      {/* All Games - 3 Column Layout with Centered Game Cards */}
+      <div className="mb-8 mt-8">
         <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Choose Your Game</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          {mainGames.map((game, index) => (
-            <GameCard key={index} game={game} />
-          ))}
+        <div className="grid grid-cols-12 max-w-4xl mx-auto">
+          {/* Left Padding */}
+          <div className="col-span-3"></div>
+          {/* Center: Game Cards */}
+          <div className="col-span-6 flex flex-col gap-6">
+            {mainGames.map((game, index) => (
+              <GameCard key={index} game={game} />
+            ))}
+          </div>
+          {/* Right Padding */}
+          <div className="col-span-3"></div>
         </div>
       </div>
 
       {/* Utility Tools - Force Visible Margins */}
-      <div className="mb-8 mx-4 sm:mx-8 lg:mx-16">
-        <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Tools & Results</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-xl mx-auto">
-          {utilityLinks.map((item, index) => (
-            <UtilityCard key={index} item={item} />
-          ))}
-        </div>
-      </div>
+      {/* Remove the UtilityCard and utilityLinks rendering section entirely. Do not render any tools/results cards or sections. */}
     </MainLayout>
   );
 };

@@ -13,6 +13,8 @@ export default function FourWaysToPlay({
 }: FourWaysToPlayProps) {
   const [selectedMode, setSelectedMode] = useState<string>('');
   const [customAmount, setCustomAmount] = useState<number>(5);
+  const [isCustomAmount, setIsCustomAmount] = useState<boolean>(false);
+  const [customInput, setCustomInput] = useState<string>('');
 
   const playModes = [
     {
@@ -46,10 +48,16 @@ export default function FourWaysToPlay({
     
     setSelectedMode(modeId);
     
-    // Auto-submit when mode is selected
+    // Auto-submit when mode is selected, but validate amounts first
     setTimeout(() => {
       if (modeId === 'charity' || modeId === 'cash') {
-        onSubmissionClick(modeId, customAmount);
+        // Validate amount before submission
+        if (customAmount >= 1 && customAmount <= 1000) {
+          onSubmissionClick(modeId, customAmount);
+        } else {
+          // Don't submit if amount is invalid - user needs to fix it
+          console.log('Invalid amount, not submitting');
+        }
       } else {
         onSubmissionClick(modeId);
       }
@@ -57,43 +65,22 @@ export default function FourWaysToPlay({
   };
 
   return (
-    <div className="mt-16 mb-8">
+    <div className="mt-6 mb-6">
       <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">
         Choose Your Play Mode
       </h2>
       
       {/* Standardized Horizontal 4-Column Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-4xl mx-auto">
-        {playModes.map((mode) => (
-          <button
-            key={mode.id}
-            onClick={() => handleModeSelection(mode.id)}
-            disabled={disabled}
-            className={`p-4 rounded-lg border-2 text-left transition-all shadow-sm hover:shadow-md ${
-              disabled 
-                ? 'border-gray-200 bg-gray-100 cursor-not-allowed opacity-50'
-                : selectedMode === mode.id
-                  ? 'border-purple-500 bg-purple-50'
-                  : 'border-gray-200 hover:border-gray-300 bg-white'
-            }`}
-          >
-            <h3 className="font-semibold text-gray-800 mb-2 text-sm">
-              {mode.title}
-            </h3>
-            <p className="text-xs text-gray-600 mb-3">
-              {mode.description}
-            </p>
-            <div className={`text-xs font-medium ${
-              disabled
-                ? 'text-gray-400'
-                : selectedMode === mode.id 
-                  ? 'text-purple-700' 
-                  : 'text-gray-500'
-            }`}>
-              {mode.buttonText}
-            </div>
-          </button>
-        ))}
+      <div className="grid grid-cols-9 w-full items-center">
+        <div className="w-4"></div>
+        <button onClick={() => handleModeSelection('fun')}>Play for Fun</button>
+        <div className="w-0.5"></div>
+        <button onClick={() => handleModeSelection('charity')}>Play for Charity</button>
+        <div className="w-0.5"></div>
+        <button onClick={() => handleModeSelection('cash')}>Play for Cash</button>
+        <div className="w-0.5"></div>
+        <button onClick={() => handleModeSelection('prize')}>Play for Prize</button>
+        <div className="w-4"></div>
       </div>
 
       {/* Amount Selection for Charity/Cash Modes */}
@@ -102,13 +89,19 @@ export default function FourWaysToPlay({
           <h4 className="font-medium text-gray-800 mb-3 text-center">
             {selectedMode === 'charity' ? 'Donation Amount' : 'Entry Amount'}
           </h4>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
+          
+          {/* Preset Amount Buttons */}
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-4">
             {[1, 2, 5, 10, 15, 20].map((amount) => (
               <button
                 key={amount}
-                onClick={() => setCustomAmount(amount)}
+                onClick={() => {
+                  setCustomAmount(amount);
+                  setIsCustomAmount(false);
+                  setCustomInput('');
+                }}
                 className={`py-2 px-3 rounded text-sm font-medium transition-colors ${
-                  customAmount === amount
+                  customAmount === amount && !isCustomAmount
                     ? 'bg-purple-600 text-white'
                     : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
                 }`}
@@ -116,6 +109,47 @@ export default function FourWaysToPlay({
                 ${amount}
               </button>
             ))}
+          </div>
+          
+          {/* Custom Amount Input */}
+          <div className="border-t border-gray-200 pt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Or enter custom amount:
+            </label>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500">$</span>
+              <input
+                type="number"
+                min="1"
+                max="1000"
+                step="1"
+                value={customInput}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCustomInput(value);
+                  if (value && !isNaN(Number(value))) {
+                    setCustomAmount(Number(value));
+                    setIsCustomAmount(true);
+                  }
+                }}
+                placeholder="Enter amount"
+                className={`flex-1 px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                  isCustomAmount 
+                    ? 'border-purple-500 bg-purple-50' 
+                    : 'border-gray-300'
+                }`}
+              />
+              {isCustomAmount && customInput && (
+                <span className="text-purple-600 text-sm font-medium">
+                  Selected: ${customAmount}
+                </span>
+              )}
+            </div>
+            {isCustomAmount && customInput && (customAmount < 1 || customAmount > 1000) && (
+              <p className="text-red-600 text-xs mt-1">
+                Amount must be between $1 and $1000
+              </p>
+            )}
           </div>
         </div>
       )}
@@ -133,4 +167,4 @@ export default function FourWaysToPlay({
       )}
     </div>
   );
-} 
+}

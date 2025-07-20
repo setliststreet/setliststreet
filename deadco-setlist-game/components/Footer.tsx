@@ -21,7 +21,7 @@ export default function Footer() {
 
           {/* Center Navigation Links */}
           <div className="flex-grow flex flex-col items-center">
-            <nav className="flex flex-wrap justify-center items-center gap-6 mb-3">
+            <nav className="flex flex-wrap justify-center items-center gap-8 mb-3">
               <Link 
                 href="/terms" 
                 className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-100 border border-transparent hover:border-gray-200"

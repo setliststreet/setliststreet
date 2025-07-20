@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
+import ShowSelector from '../components/ShowSelector';
+import PoolSizeDisplay from '../components/PoolSizeDisplay';
+import type { Show } from '../components/ShowSelector';
+import SetlistDragDropPicker from '../components/SetlistDragDropPicker';
 
 const GuessSet1CloserPage = () => {
-  const [selectedShow, setSelectedShow] = useState(1);
+  const [selectedShow, setSelectedShow] = useState<Show | null>(null);
   const [selectedSong, setSelectedSong] = useState('');
   const [timeToDeadline, setTimeToDeadline] = useState('');
 
   // Mock song database - would come from Supabase
-  const songs = [
+  const availableSongs = [
     'Sugar Magnolia', 'Truckin\'', 'Casey Jones', 'Friend of the Devil',
     'Uncle John\'s Band', 'Touch of Grey', 'Ripple', 'One More Saturday Night',
     'Not Fade Away', 'Shakedown Street', 'Good Lovin\'', 'Fire on the Mountain'
@@ -61,15 +65,17 @@ const GuessSet1CloserPage = () => {
 
       <div className="bg-white min-h-screen">
         <div className="container mx-auto px-6 py-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Guess the Set 1 Closer
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Predict which song will close the first set for Dead & Company
-            </p>
+          {/* Header with sponsor logos */}
+          <div className="flex items-center justify-center mb-2 gap-4">
+            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+            <div className="w-2"></div>
+            <h1 className="text-4xl font-bold text-gray-800 text-center">Guess the Set 1 Closer</h1>
+            <div className="w-2"></div>
+            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
           </div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 text-center">
+            Predict which song will close the first set for Dead & Company
+          </p>
 
           {/* Countdown */}
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
@@ -84,45 +90,71 @@ const GuessSet1CloserPage = () => {
             </p>
           </div>
 
+          {/* Padding above ShowSelector */}
+          <div className="mt-4"></div>
           {/* Show Selection */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Select Show</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[1, 2, 3].map((show) => (
-                <button
-                  key={show}
-                  onClick={() => setSelectedShow(show)}
-                  className={`p-4 rounded-lg border-2 text-center transition-all ${
-                    selectedShow === show
-                      ? 'border-purple-500 bg-purple-50 text-purple-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="font-semibold">Show {show}</div>
-                  <div className="text-sm">August {show}, 2025</div>
-                </button>
-              ))}
+          <div className="max-w-md mx-auto mb-8">
+            <ShowSelector 
+              onShowSelect={(show: Show) => setSelectedShow(show)}
+              selectedShow={selectedShow ?? undefined}
+            />
+          </div>
+          {/* Sponsor summary and live pool summary */}
+          {selectedShow && (
+            <div className="flex flex-col items-center mb-8">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <span className="text-lg font-semibold text-gray-700">[PLACEHOLDER SPONSOR NAME]</span>
+                <span className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-2xl">[PLACEHOLDER SPONSOR LOGO]</span>
+              </div>
+              <PoolSizeDisplay 
+                gameId="guess-set1-closer" 
+                showId={selectedShow?.id}
+                showDate={selectedShow?.date}
+              />
             </div>
+          )}
+          {/* Padding below ShowSelector */}
+          <div className="mb-4"></div>
+
+          {/* Four Ways to Play */}
+          <div className="mt-4 mb-4">
+            {/* This component is not defined in the original file, so it's commented out */}
+            {/* <FourWaysToPlay /> */}
           </div>
 
-          {/* Song Selection */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Select Song</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {songs.map((song) => (
-                <button
-                  key={song}
-                  onClick={() => setSelectedSong(song)}
-                  className={`p-3 rounded-lg border-2 text-left transition-all ${
-                    selectedSong === song
-                      ? 'border-purple-500 bg-purple-50 text-purple-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  {song}
-                </button>
-              ))}
+          {/* Main Game Grid */}
+          <div className="grid grid-cols-7 gap-0 mb-8">
+            {/* Col 1: Padding */}
+            <div></div>
+            {/* Col 2: Song Selection (Drag & Drop) */}
+            <div>
+              <SetlistDragDropPicker
+                availableSongs={availableSongs}
+                maxSongs={1}
+                onSetlistChange={(setlist) => setSelectedSong(setlist[0] || '')}
+              />
             </div>
+            {/* Col 3: Small Padding */}
+            <div className="w-2"></div>
+            {/* Col 4: Selected Song */}
+            <div>
+              <div className="bg-white border border-gray-200 rounded-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+                <h4 className="font-semibold mb-2 text-gray-800">Selected Song</h4>
+                {selectedSong ? (
+                  <span className="text-lg font-bold text-purple-700">{selectedSong}</span>
+                ) : (
+                  <span className="text-gray-400">No song selected</span>
+                )}
+              </div>
+            </div>
+            {/* Col 5: Small Padding */}
+            <div className="w-2"></div>
+            {/* Col 6: Stats (optional) */}
+            <div>
+              {/* Add stats or hints here if desired */}
+            </div>
+            {/* Col 7: Padding */}
+            <div></div>
           </div>
 
           {/* Submit Button */}

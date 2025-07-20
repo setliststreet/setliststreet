@@ -3,9 +3,12 @@ import Head from 'next/head';
 import MainLayout from '../components/MainLayout';
 import FourWaysToPlay from '../components/FourWaysToPlay';
 import PoolSizeDisplay from '../components/PoolSizeDisplay';
+import ShowSelector from '../components/ShowSelector';
+import { Show } from '../components/ShowSelector';
+import SetlistDragDropPicker from '../components/SetlistDragDropPicker';
 
 const GuessOpenerPage = () => {
-  const [selectedShow, setSelectedShow] = useState(1);
+  const [selectedShow, setSelectedShow] = useState<Show | null>(null);
   const [selectedSong, setSelectedSong] = useState('');
   const [timeToDeadline, setTimeToDeadline] = useState('');
   const [showTooltip, setShowTooltip] = useState(false);
@@ -80,13 +83,13 @@ const GuessOpenerPage = () => {
     return 'Unlikely';
   };
 
-  const handleShowSelect = (showId: number) => {
-    setSelectedShow(showId);
+  const handleShowSelect = (show: Show) => {
+    setSelectedShow(show);
     // Reset any show-specific selections when switching shows
     setSelectedSong('');
   };
 
-  const handleSubmission = (playMode: 'fun' | 'charity' | 'cash' | 'prize', amount?: number) => {
+  const handleSubmission = (playMode: string, amount?: number) => {
     if (!selectedSong) {
       alert('Please select a song first');
       return;
@@ -102,7 +105,7 @@ const GuessOpenerPage = () => {
     
     // Here would be actual submission logic
     const amountText = amount ? ` ($${amount})` : '';
-    alert(`Prediction submitted for Show ${selectedShow}: ${selectedSong} (${playMode} mode${amountText})`);
+    alert(`Prediction submitted for Show ${selectedShow ? selectedShow.id : ''}: ${selectedSong} (${playMode} mode${amountText})`);
   };
 
   const handlePrizeInfoClick = () => {
@@ -118,16 +121,17 @@ const GuessOpenerPage = () => {
 
       <div className="bg-white min-h-screen">
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
-            Guess the Opener
-          </h1>
-
-          {/* Live Pool Size Display */}
-          <PoolSizeDisplay 
-            gameId="guess-opener" 
-            showId={selectedShow} 
-            onPrizeInfoClick={handlePrizeInfoClick}
-          />
+          {/* Header with sponsor logos */}
+          <div className="flex items-center justify-center mb-2 gap-4">
+            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+            <div className="w-2"></div>
+            <h1 className="text-3xl font-bold text-center">Guess the Opener</h1>
+            <div className="w-2"></div>
+            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+          </div>
+          <div className="text-center text-gray-600 mb-6">
+            Guess the opener for each show! Each show is its own game.
+          </div>
 
           {/* Prize Info Modal */}
           {showPrizeInfo && (
@@ -166,142 +170,152 @@ const GuessOpenerPage = () => {
             </div>
           )}
 
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Time Until Deadline</h2>
-            <div className="text-2xl font-bold text-purple-600">{timeToDeadline}</div>
-            <p className="text-sm text-gray-600 mt-2">Submissions close at 7:00 PM PT before each show</p>
-          </div>
-
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
-            <p className="text-lg font-semibold text-gray-700 mb-2">Sponsored by: [PLACEHOLDER SPONSOR NAME]</p>
-            <div className="bg-gray-200 rounded-lg p-8 text-gray-500">[SPONSOR LOGO PLACEHOLDER]</div>
-          </div>
-
+          {/* Padding above ShowSelector */}
+          <div className="mt-4"></div>
           <div className="mb-8">
-            <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Choose your show:</h3>
-            <div className="flex flex-wrap justify-center gap-4">
-              {[
-                { id: 1, label: 'Show 1: Friday, August 1' },
-                { id: 2, label: 'Show 2: Saturday, August 2' },
-                { id: 3, label: 'Show 3: Sunday, August 3' },
-              ].map((show) => (
-                <button
-                  key={show.id}
-                  onClick={() => handleShowSelect(show.id)}
-                  className={`px-6 py-3 rounded-lg border-2 transition-colors ${
-                    selectedShow === show.id
-                      ? 'border-purple-500 bg-purple-50 text-purple-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  {show.label}
-                </button>
-              ))}
-            </div>
+            <ShowSelector
+              selectedShow={selectedShow || undefined}
+              onShowSelect={handleShowSelect}
+            />
           </div>
+          {/* Padding below ShowSelector */}
+          <div className="mb-4"></div>
 
-          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
-            <h4 className="font-semibold mb-2 text-gray-800">Opener Statistics</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h5 className="font-medium text-sm text-gray-600 mb-2">Top Openers (All Time)</h5>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>1. Jack Straw (18.9% of shows)</li>
-                  <li>2. Casey Jones (15.2% of shows)</li>
-                  <li>3. Feel Like a Stranger (14.6% of shows)</li>
-                  <li>4. Shakedown Street (13.1% of shows)</li>
-                  <li>5. Truckin' (12.3% of shows)</li>
-                </ul>
+          {/* Sponsor section moved here */}
+          {selectedShow && (
+            <div className="flex items-center justify-center mb-8 gap-4">
+              <span className="text-lg font-semibold text-gray-700">[PLACEHOLDER SPONSOR NAME]</span>
+              <span className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-2xl">[PLACEHOLDER SPONSOR LOGO]</span>
+            </div>
+          )}
+
+          {/* Show-dependent sections */}
+          {selectedShow ? (
+            <>
+              {/* Live Pool Size Display */}
+              <PoolSizeDisplay 
+                gameId="guess-opener" 
+                showId={selectedShow.id} 
+                onPrizeInfoClick={handlePrizeInfoClick}
+                showDate={selectedShow.date}
+              />
+
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Time Until Deadline</h3>
+                <div className="text-2xl font-bold text-purple-600">{timeToDeadline}</div>
+                <p className="text-sm text-gray-600 mt-2">Submissions close at 7:00 PM PT before each show</p>
               </div>
-              <div>
-                <h5 className="font-medium text-sm text-gray-600 mb-2">Recent Openers</h5>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>2024-08-01: Casey Jones</li>
-                  <li>2024-07-28: Jack Straw</li>
-                  <li>2024-07-20: Feel Like a Stranger</li>
-                  <li>2024-07-15: Sugar Magnolia</li>
-                  <li>2024-07-10: Deal</li>
-                </ul>
+            </>
+          ) : (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8 text-center text-yellow-800 font-semibold">
+              Please select a show to view pool sizes, time, and sponsors.
+            </div>
+          )}
+
+          {/* Main Game Grid Title */}
+          <h2 className="text-2xl font-bold text-center mb-4">Opener Guess</h2>
+
+          {/* Main Game Grid */}
+          <div className="grid grid-cols-7 gap-0 mb-8">
+            {/* Col 1: Padding */}
+            <div></div>
+            {/* Col 2: Song Selection (List + Type-in) */}
+            <div>
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <h4 className="font-semibold mb-2 text-gray-800">Song Selection</h4>
+                {/* Song List (drag/click to select) */}
+                <div className="mb-2">
+                  <div className="h-48 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50">
+                    {songs.map((song) => (
+                      <div
+                        key={song.name}
+                        draggable
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData('text/plain', song.name);
+                        }}
+                        onClick={() => setSelectedSong(song.name)}
+                        className={`p-2 bg-white border border-gray-200 rounded cursor-move hover:bg-blue-50 hover:border-blue-300 text-xs transition-all shadow-sm mb-1 ${selectedSong === song.name ? 'bg-blue-100 border-blue-400' : ''}`}
+                      >
+                        {song.name}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* Type-in input */}
+                <input
+                  type="text"
+                  placeholder="Type song name or use wheel..."
+                  value={selectedSong}
+                  onChange={(e) => setSelectedSong(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 mb-2"
+                  onDrop={(e) => {
+                    const name = e.dataTransfer.getData('text/plain');
+                    if (name) setSelectedSong(name);
+                  }}
+                  onDragOver={(e) => e.preventDefault()}
+                />
               </div>
             </div>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">Select Your Opener Prediction for Show {selectedShow}:</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-              {songs.map((song) => {
-                const isSelected = selectedSong === song.name;
-                return (
-                  <button
-                    key={song.name}
-                    onClick={() => setSelectedSong(song.name)}
-                    className={`p-4 rounded-lg border-2 text-left transition-colors ${
-                      isSelected
-                        ? 'border-purple-500 bg-purple-50'
-                        : 'border-gray-200 bg-white hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="font-medium text-gray-800">{song.name}</div>
-                    <div className={`text-sm ${getProbabilityColor(song.openerProbability)}`}>
-                      {song.openerProbability}% probability ({getProbabilityLabel(song.openerProbability)})
+            {/* Col 3: Small Padding */}
+            <div className="w-2"></div>
+            {/* Col 4: Selected Song */}
+            <div>
+              <div
+                className="bg-white border border-gray-200 rounded-lg p-4 min-h-[120px] flex flex-col items-center justify-center"
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const name = e.dataTransfer.getData('text/plain');
+                  if (name) setSelectedSong(name);
+                }}
+                onDragOver={(e) => e.preventDefault()}
+              >
+                <h4 className="font-semibold mb-2 text-gray-800">Selected Song</h4>
+                {selectedSong ? (
+                  <div className="text-lg font-bold text-purple-700">{selectedSong}</div>
+                ) : (
+                  <div className="text-gray-400">No song selected</div>
+                )}
+              </div>
+            </div>
+            {/* Col 5: Small Padding */}
+            <div className="w-2"></div>
+            {/* Col 6: Opener Statistics */}
+            <div>
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <h4 className="font-semibold mb-2 text-gray-800">Opener Statistics</h4>
+                {selectedSong && getSelectedSongData() ? (
+                  <>
+                    <div className="text-sm text-gray-600 mb-1">
+                      Probability: <span className={getProbabilityColor(getSelectedSongData()!.openerProbability)}>
+                        {getSelectedSongData()!.openerProbability}%
+                      </span> ({getProbabilityLabel(getSelectedSongData()!.openerProbability)})
                     </div>
-                  </button>
-                );
-              })}
-            </div>
-            
-            {selectedSong && (
-              <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                <p className="text-sm text-gray-700">
-                  <strong>Data Insight:</strong> Songs with 15%+ probability have opened 67% of recent shows.
-                </p>
+                    <div className="text-sm text-gray-600 mb-1">
+                      Last Opened: {getSelectedSongData()!.lastOpener}
+                    </div>
+                    <div className="text-sm text-gray-600 mb-1">
+                      Frequency: {getSelectedSongData()!.frequency}
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-gray-400">Select a song to see stats</div>
+                )}
               </div>
-            )}
+            </div>
+            {/* Col 7: Padding */}
+            <div></div>
           </div>
 
-          {/* Strategy and Hints */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">Opener Predictions & Patterns</h3>
-              <div className="text-gray-600 space-y-2 text-sm">
-                <h4 className="font-semibold text-gray-800">Most Common Openers (2023-2024):</h4>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Feel Like a Stranger (12%)</li>
-                  <li>Hell in a Bucket (8%)</li>
-                  <li>Shakedown Street (7%)</li>
-                  <li>Jack Straw (6%)</li>
-                  <li>Truckin' (5%)</li>
-                </ul>
-                
-                <h4 className="font-semibold text-gray-800 mt-4">Venue Considerations:</h4>
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Outdoor venues favor upbeat openers</li>
-                  <li>Special events often get rare openers</li>
-                  <li>Weather can influence song selection</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold mb-4">Smart Strategy Tips</h3>
-              <div className="text-gray-600 space-y-2 text-sm">
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Check setlist patterns from recent shows</li>
-                  <li>Consider the significance of GD60 concerts</li>
-                  <li>Factor in Golden Gate Park's outdoor setting</li>
-                  <li>Look for songs that haven't been played recently</li>
-                  <li>Energy level often matches venue atmosphere</li>
-                  <li>Anniversary shows sometimes feature deep cuts</li>
-                </ul>
-              </div>
-            </div>
+          {/* Four Ways to Play */}
+          <div className="mt-4 mb-4">
+            <FourWaysToPlay 
+              onSubmissionClick={handleSubmission}
+              gameType="opener prediction"
+              disabled={!selectedSong}
+            />
           </div>
-
-          <FourWaysToPlay 
-            onSubmissionClick={handleSubmission}
-            gameType="opener prediction"
-            disabled={!selectedSong}
-          />
+          {/* Only a small row of padding before footer */}
+          <div className="mb-4"></div>
         </div>
       </div>
     </MainLayout>
