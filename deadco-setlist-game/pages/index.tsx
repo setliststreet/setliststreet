@@ -190,9 +190,6 @@ const HomePage = () => {
           ${isFeatured ? 'ring-2 ring-purple-300' : ''}
         `}>
           <div className="text-center h-full flex flex-col">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-gray-200 transition-colors">
-              <span className="text-2xl text-gray-600">G</span>
-            </div>
             <h3 className="text-xl font-bold mb-2 text-gray-800">
               {game.title}
             </h3>
@@ -222,9 +219,6 @@ const HomePage = () => {
     <Link href={item.href} className="group">
       <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 border-2 border-gray-200 hover:border-gray-300">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-gray-200 transition-colors">
-            <span className="text-2xl text-gray-600">T</span>
-          </div>
           <h3 className="text-xl font-bold mb-2 text-gray-800">
             {item.title}
           </h3>
