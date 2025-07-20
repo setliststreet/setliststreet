@@ -158,29 +158,26 @@ export default function SetlistBingo() {
             </div>
           </div>
 
-          {/* Main Bingo Builder - Left/Right Layout */}
-          <div className="grid grid-cols-5 gap-6 mb-8">
-            
-            {/* Song Candidates - Left Side (2/5 width) */}
-            <div className="col-span-2 space-y-4">
-              <h2 className="text-xl font-bold text-gray-800">Available Songs</h2>
+          {/* Main Bingo Builder with Three-Column Layout */}
+          <div className="grid grid-cols-7 gap-6 mb-8">
+            {/* LEFT: Song Candidates (2/7 width) */}
+            <div className="col-span-2">
+              <h3 className="font-semibold text-gray-800 mb-4 text-sm">Available Songs → Drag to Board</h3>
               
               {/* Search Input */}
-              <div>
-                <input
-                  type="text"
-                  placeholder="Search for songs..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearchChange(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
-                />
-              </div>
+              <input
+                type="text"
+                placeholder="Search songs..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-lg mb-4 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+              />
 
-              {/* Search Results - Limited Display */}
+              {/* Search Results */}
               {suggestions.length > 0 && (
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-2 text-sm">Search Results:</h3>
-                  <div className="h-32 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50">
+                  <div className="h-32 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50 mb-4">
                     <div className="space-y-1">
                       {suggestions.map((song, index) => (
                         <div
@@ -224,7 +221,7 @@ export default function SetlistBingo() {
               </div>
 
               {/* Board Controls */}
-              <div className="space-y-2">
+              <div className="space-y-2 mt-4">
                 <button
                   onClick={generateRandomBoard}
                   className="w-full bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-colors text-sm"
@@ -240,48 +237,36 @@ export default function SetlistBingo() {
               </div>
             </div>
 
-            {/* Bingo Board - Right Side (3/5 width) */}
+            {/* CENTER: Bingo Board (3/7 width) */}
             <div className="col-span-3">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Your Bingo Card → Drop Songs Here</h2>
+              <h3 className="font-semibold text-gray-800 mb-4 text-sm">Your Bingo Card → Drop Songs Here</h3>
+              
               <div className="bg-white border-2 border-gray-300 rounded-lg p-4 shadow-sm">
-                <div className="grid grid-cols-5 gap-2 aspect-square max-w-lg mx-auto">
+                <div className="grid grid-cols-5 gap-2">
                   {bingoBoard.map((row, rowIndex) =>
-                    row.map((cell, colIndex) => (
+                    row.map((cell, cellIndex) => (
                       <div
-                        key={`${rowIndex}-${colIndex}`}
-                        onDragOver={handleDragOver}
-                        onDrop={(e) => handleDrop(e, rowIndex, colIndex)}
+                        key={`${rowIndex}-${cellIndex}`}
+                        onDragOver={(e) => handleDragOver(e)}
+                        onDrop={(e) => handleDrop(e, rowIndex, cellIndex)}
                         className={`
-                          border-2 border-gray-300 rounded text-center flex items-center justify-center text-xs font-medium
-                          min-h-20 cursor-pointer transition-all relative
-                          ${rowIndex === 2 && colIndex === 2 
-                            ? 'bg-purple-100 text-purple-800 border-purple-300' 
-                            : cell 
-                              ? 'bg-blue-50 text-blue-800 hover:bg-blue-100 border-blue-200' 
-                              : 'bg-gray-50 hover:bg-gray-100 border-gray-300'
-                          }
+                          aspect-square border-2 border-gray-300 rounded-lg p-2 text-xs flex items-center justify-center text-center relative transition-all
+                          ${draggedSong ? 'border-purple-400 bg-purple-50' : 'hover:border-gray-400 hover:bg-gray-50'}
+                          ${rowIndex === 2 && cellIndex === 2 ? 'bg-purple-100 border-purple-400 font-bold text-purple-800' : ''}
                         `}
-                        onClick={() => {
-                          if (suggestions.length > 0 && suggestions[0] && (rowIndex !== 2 || colIndex !== 2)) {
-                            updateBingoSquare(rowIndex, colIndex, suggestions[0]);
-                          }
-                        }}
                       >
-                        {cell === 'FREE' ? (
-                          <span className="font-bold text-purple-700">FREE</span>
+                        {rowIndex === 2 && cellIndex === 2 ? (
+                          <span className="text-purple-800 font-bold">FREE</span>
                         ) : cell ? (
-                          <>
-                            <span className="truncate px-1 leading-tight">{cell}</span>
+                          <div className="w-full h-full flex flex-col items-center justify-center relative">
                             <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                clearSquare(rowIndex, colIndex);
-                              }}
-                              className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-sm"
+                              onClick={() => clearSquare(rowIndex, cellIndex)}
+                              className="absolute -top-3 -right-3 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-lg z-10 border-2 border-white"
                             >
                               ×
                             </button>
-                          </>
+                            <span className="text-gray-800 leading-tight text-center px-1">{cell}</span>
+                          </div>
                         ) : (
                           <span className="text-gray-400 text-xs">Empty</span>
                         )}
@@ -301,6 +286,58 @@ export default function SetlistBingo() {
                   <p className="text-purple-600 text-xs mt-1">
                     Need at least 20 songs to submit
                   </p>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT: Hints & Stats (2/7 width) */}
+            <div className="col-span-2">
+              <h3 className="font-semibold text-gray-800 mb-4 text-sm">Quick Stats & Hints</h3>
+              
+              <div className="space-y-4">
+                {/* Quick Stats */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-800 mb-3 text-sm">Song Statistics</h4>
+                  <div className="text-sm text-blue-700 space-y-2">
+                    <p className="flex justify-between">
+                      <span>Most Common:</span>
+                      <span className="font-medium">Sugar Magnolia (78%)</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span>Rarest:</span>
+                      <span className="font-medium">Dark Star (8%)</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span>Best Opener:</span>
+                      <span className="font-medium">Feel Like a Stranger</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span>Common Pair:</span>
+                      <span className="font-medium">Scarlet → Fire</span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Strategy Tips */}
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-800 mb-3 text-sm">Strategy Tips</h4>
+                  <div className="text-sm text-green-700 space-y-2">
+                    <p>• Mix common and rare songs</p>
+                    <p>• Include guaranteed opener candidates</p>
+                    <p>• Consider song pairs (Scarlet/Fire)</p>
+                    <p>• Watch for venue patterns</p>
+                  </div>
+                </div>
+
+                {/* Winning Patterns */}
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-purple-800 mb-3 text-sm">Winning Patterns</h4>
+                  <div className="text-sm text-purple-700 space-y-2">
+                    <p>• Any complete row (5 songs)</p>
+                    <p>• Any complete column (5 songs)</p>
+                    <p>• Any diagonal (5 songs)</p>
+                    <p>• Four corners (4 songs)</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -336,18 +373,7 @@ export default function SetlistBingo() {
             </div>
           </div>
 
-          {/* Quick Stats Sidebar */}
-          <div className="mt-8 max-w-md mx-auto">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="font-semibold text-blue-800 mb-3">Quick Stats</h3>
-              <div className="text-sm text-blue-700 space-y-1">
-                <p>• Most Common: Sugar Magnolia (78%)</p>
-                <p>• Rarest: Dark Star (8%)</p>
-                <p>• Best Opener: Feel Like a Stranger</p>
-                <p>• Common Pair: Scarlet → Fire</p>
-              </div>
-            </div>
-          </div>
+{/* Hints are now integrated into the right column above */}
         </div>
       </div>
     </MainLayout>

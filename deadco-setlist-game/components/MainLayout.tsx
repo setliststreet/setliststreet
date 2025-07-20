@@ -14,8 +14,8 @@ export default function MainLayout({ children, title, description }: MainLayoutP
       <Header />
       
       <main className="flex-grow">
-        {/* Global Container with Enhanced Margins */}
-        <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 xl:px-20">
+        {/* Enhanced Global Container with Generous Left/Right Padding */}
+        <div className="max-w-7xl mx-auto px-12 sm:px-16 lg:px-20 xl:px-24">
           {title && (
             <div className="text-center mb-12 pt-12">
               <h1 className="text-4xl font-bold text-gray-900 mb-6">
@@ -29,8 +29,8 @@ export default function MainLayout({ children, title, description }: MainLayoutP
             </div>
           )}
           
-          {/* Content with proper spacing */}
-          <div className="pb-12">
+          {/* Content with proper spacing and additional side margins */}
+          <div className="pb-12 px-4 sm:px-6 lg:px-8">
             {children}
           </div>
         </div>

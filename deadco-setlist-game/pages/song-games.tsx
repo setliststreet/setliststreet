@@ -187,9 +187,11 @@ const SongGamesHub = () => {
             {/* Set 1 Games */}
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Set 1 Predictions</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto">
                 {gamesBySection.set1.map((game, index) => (
-                  <GameCard key={index} game={game} />
+                  <div key={index} className="flex-1 min-w-[280px] max-w-[320px] px-3">
+                    <GameCard game={game} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -197,9 +199,11 @@ const SongGamesHub = () => {
             {/* Set 2 Games */}
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Set 2 Predictions</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-4 max-w-6xl mx-auto">
                 {gamesBySection.set2.map((game, index) => (
-                  <GameCard key={index} game={game} />
+                  <div key={index} className="flex-1 min-w-[240px] max-w-[280px] px-2">
+                    <GameCard game={game} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -207,9 +211,11 @@ const SongGamesHub = () => {
             {/* Encore Games */}
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Encore Predictions</h2>
-              <div className="grid grid-cols-1 max-w-md mx-auto">
+              <div className="flex justify-center max-w-md mx-auto px-3">
                 {gamesBySection.encore.map((game, index) => (
-                  <GameCard key={index} game={game} />
+                  <div key={index} className="w-full">
+                    <GameCard game={game} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -217,9 +223,11 @@ const SongGamesHub = () => {
             {/* Special/Advanced Games */}
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Special Predictions</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto">
                 {gamesBySection.special.map((game, index) => (
-                  <GameCard key={index} game={game} />
+                  <div key={index} className="flex-1 min-w-[280px] max-w-[320px] px-3">
+                    <GameCard game={game} />
+                  </div>
                 ))}
               </div>
             </div>
