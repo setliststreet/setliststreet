@@ -1,0 +1,123 @@
+Rules Page: rules.tsx
+
+Title at top: "How to Play & Scoring Rules"
+
+Top navigation bar: Links to "How to Play", "View Results", "Setlist Hints", "FAQ", "Sign In/Sign Up"
+
+**SHOW INFORMATION:**
+Grateful Dead 60th Anniversary Concerts (GD60)
+Golden Gate Park, San Francisco
+Shows: Friday August 1, Saturday August 2, Sunday August 3
+Submission deadline: 7:00 PM PT before each show
+
+Main Content
+
+**GAME TYPES & SCORING:**
+
+**1. Simple Song Games (Opener, Encore, Bust Out, Set Closers, etc.)**
+- Right or Wrong answer system
+- **Cash Games**: Winners share the pot equally. Single winner takes entire pot.
+- **Charity Games**: Winners split donation pool between their chosen charities
+- **Prize Games**: Single winner selected randomly if multiple correct answers
+- **Fun Games**: Bragging rights and leaderboard placement
+
+**2. Setlist Bingo**
+- Real-time board updates as songs are played
+- **First to complete bingo pattern wins**
+- Standard winning patterns: lines, corners, full board
+- **Tie-breaker**: Same prize distribution as song games
+- Multiple boards allowed per user
+
+**3. Setlist Builder (Most Complex Scoring)**
+
+**Base Points:**
+- 1 point: Each song guessed correctly (any position)
+- 0.5 points: Song guessed in correct set but wrong position
+
+**Bonus Points (Key Positions):**
+- +1 additional point for correct placement in key positions:
+  - Set 1 opener, Set 1 closer
+  - Set 2 opener, Set 2 closer  
+  - Pre drums/space song, Post drums/space song
+  - 2 songs before drums/space, 2 songs after drums/space
+  - Encore songs (any order within encore)
+  - Set 1: 2nd song, 2nd-to-last song
+  - Set 2: 2nd song, 2nd-to-last song
+
+**Song Specifics:**
+- Song pairs (China Cat → Rider) count as separate songs
+- Reprises count as separate songs
+- "Playing in the Band (Reprise)" ≠ "Playing in the Band"
+
+**Sequence Bonus:**
+- Perfect relative order of correctly guessed songs = +1 point per song
+- Partial order scoring based on sequence accuracy
+- Complete reverse order = 0 bonus points
+
+**4. Songs NOT Played Game**
+- Predict which top 25 popular songs WON'T be played
+- Winner: Most correct "not played" predictions
+- Points based on song popularity rankings
+
+**5. Guess Next Song (Live Game)**
+- Real-time predictions during shows
+- Community voting and live bar charts
+- Points for correctly predicting immediate next song
+- Bonus points for prediction streaks
+- WebSocket-powered live updates
+
+**6. Late Submission Penalty**
+- Submissions during shows allowed
+- **Penalty**: -2 points per song already played at submission time
+- Encourages early submissions while allowing late participation
+
+**PRIZE POOLS & DISTRIBUTION:**
+
+**Pool Types:**
+- **Cash Pools**: Based on number of paid entries per game
+- **Prize Pools**: Sponsored prizes (guitars, merchandise, experiences)
+- **Charity Pools**: Donated to winners' chosen charities
+- **Sponsor Seeding**: Additional funds added by sponsors
+
+**Payment Methods:**
+- Stripe, PayPal, Crypto, Credit Cards, Venmo, Cash App
+- Multiple options for maximum accessibility
+
+**Winner Contact & Prizes:**
+- Winners contacted individually by app management
+- Prize distribution handled by Setlist Street team
+- Tax reporting responsibility of individual winners
+- Charity confirmations provided post-event
+
+**REAL-TIME FEATURES:**
+
+**Live Updates:**
+- Song results updated in real-time during shows
+- Leaderboards refresh as songs are played
+- Bingo boards update automatically
+- Countdown timers to submission deadlines
+- Next Song predictions with community voting
+
+**Wheel of Fortune Results:**
+- Visual spinning wheel for song reveals
+- Stops on correct song when announced
+- Real-time updates via setlist.fm API or manual entry
+
+**Admin Backup:**
+- Manual song entry interface for app management
+- Setlist.fm API integration when commercially approved
+- Real-time leaderboard management
+
+**DATA & INSIGHTS:**
+- **Setlist Hints & Statistics page** provides data-driven insights
+- Song probability tooltips on all prediction interfaces
+- Historical performance data and venue-specific patterns
+- Machine learning-powered recommendations
+
+**GAME SUBMISSION DEADLINES:**
+All games close at 7:00 PM PT before each show start time.
+Late submissions allowed with point penalties during shows.
+Live games (Next Song) available throughout show duration.
+
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
+Bottom Text: Copyright 2025, Setlist Street 

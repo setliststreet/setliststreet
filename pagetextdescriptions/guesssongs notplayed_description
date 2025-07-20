@@ -1,0 +1,65 @@
+Guess Songs NOT Played Game Page: guesssongs-notplayed.tsx
+
+Title at top: "Guess Songs NOT Played"
+
+Top navigation bar: Links to "How to Play", "View Results", "Sign In/Sign Up"
+
+**COUNTDOWN TIMER:**
+Live countdown to 7:00 PM PT deadline for next show
+Shows: Friday 8/1, Saturday 8/2, Sunday 8/3
+
+**SPONSOR SECTION:**
+[Sponsored by: PLACEHOLDER SPONSOR NAME]
+[SPONSOR LOGO PLACEHOLDER]
+
+Main Content 1
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content 2
+
+Three horizontally distributed elements:
+
+Element 1: Song Selection Interface (Left)
+Display of Top 25 Most Popular Dead & Company Songs
+Checkbox interface allowing users to select songs they predict WON'T be played
+Multi-select functionality for up to 15 predictions per show
+
+Element 2: Selected Songs Display (Center)
+Shows user's current "NOT PLAYED" predictions
+Allows removal of selected songs
+Running count of selections
+Preview of potential points based on song popularity rankings
+
+Element 3: Helper Information (Right)
+[PLACEHOLDER - Songs NOT played-specific hints to be added later]
+Song popularity rankings and play frequency
+Historical "not played" statistics for venue/tour
+
+**SCORING SYSTEM:**
+- Points awarded based on song popularity ranking
+- Higher points for correctly predicting popular songs won't be played
+- Most popular songs = highest point values when not played
+- Winner: Highest total points from correct "not played" predictions
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+**TECHNICAL SPECS:**
+- Submission deadline: 7:00 PM PT before each show
+- Top 25 song list fetched from Supabase database with popularity rankings
+- Multi-select checkbox interface
+- Live results displayed during shows
+- Users can play same game on all 3 shows individually
+- Scoring based on song popularity inverse correlation
+- Maximum 15 song selections per show to prevent gaming
+
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy"
+Bottom Text: Copyright 2025, Setlist Street 

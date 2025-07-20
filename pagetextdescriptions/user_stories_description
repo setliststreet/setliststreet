@@ -1,0 +1,190 @@
+User Stories & Requirements: user-stories.md
+
+**SETLIST STREET - USER STORIES & REQUIREMENTS**
+
+**🎸 EPIC USER STORY:**
+As a Deadhead fan, I want to guess and compete on Dead & Company setlists in real-time, so that I can test my knowledge, connect with fellow fans, and win prizes or support charity during live shows.
+
+**🧩 CORE USER STORIES:**
+
+**1. Pre-Show Prediction Experience**
+As an in-venue attendee, I want to submit my predicted setlist before each show, so that I can track my accuracy against other fans at the show.
+
+As a remote viewer, I want to participate live from afar, so that I can still join the fun while streaming or following online.
+
+As a casual fan, I want to play prediction games for free, so that I can enjoy the experience without financial commitment while still competing for bragging rights.
+
+As a strategic player, I want to choose between different game types (cash, charity, prizes, fun), so that I can play according to my preferences and budget.
+
+**2. Live Show Experience**
+As a competitive user, I want to see a leaderboard, so that I can compare my predictions with other fans in real-time.
+
+As a live show participant, I want real-time updates during the performance, so that I can see how my predictions are scoring as songs are played.
+
+As a next-song guesser, I want to predict the immediate next song during live shows, so that I can participate in real-time community prediction with live voting charts.
+
+As a mobile user at the venue, I want a fully responsive interface, so that I can easily participate on my phone while at the show.
+
+**3. Data-Driven Strategy**
+As a community member, I want to view historical patterns or stats of setlists, so that I can learn what tends to appear in each show over time.
+
+As a statistical user, I want probability tooltips when selecting songs, so that I can make more informed predictions based on historical data.
+
+As a data enthusiast, I want access to the Setlist Hints page, so that I can analyze song position probabilities, pairing statistics, and venue-specific patterns.
+
+As a pattern analyst, I want machine learning insights, so that I can understand advanced statistical relationships between songs and show factors.
+
+**4. Community & Social Features**
+As a social user, I want to share my wins and predictions on social media, so that I can celebrate with friends and attract other fans to the platform.
+
+As a community member, I want to see total participation numbers and prize pools, so that I can feel part of a larger community event.
+
+As a friend group, I want to compare our predictions and results, so that we can compete and strategize together.
+
+As a regional participant, I want to see geographic participation data, so that I can connect with fans from my area.
+
+**5. Prize & Charity Features**
+As an admin or organizer, I want to set up prize or charity features, so that I can incentivize participation and support good causes.
+
+As a charity supporter, I want to donate entry fees to causes I care about, so that I can support charity while enjoying the games.
+
+As a prize winner, I want clear instructions for claiming rewards, so that I can easily receive my winnings or prizes.
+
+As a cash game player, I want secure payment processing, so that I can confidently enter paid competitions.
+
+**6. Game Variety & Complexity**
+As a simple game player, I want straightforward prediction games (opener, encore), so that I can participate without learning complex rules.
+
+As a strategic player, I want complex games like Setlist Builder, so that I can use detailed knowledge for higher point potential.
+
+As a timing enthusiast, I want to predict show timing aspects (start time, break length, end time), so that I can use my knowledge of venue and band patterns.
+
+As a reverse-psychology player, I want to predict songs that WON'T be played, so that I can use a different strategic approach.
+
+As a bingo player, I want visual bingo boards that update in real-time, so that I can track my progress and compete for pattern completion.
+
+**7. Technical & Accessibility**
+As a user with disabilities, I want accessible interfaces with screen reader support, so that I can fully participate regardless of ability.
+
+As a mobile-first user, I want touch-optimized interfaces, so that I can easily use the app on smartphones and tablets.
+
+As a user experiencing connectivity issues, I want offline functionality for viewing results, so that I can check my standings even with poor internet.
+
+As a user in different time zones, I want clear deadline information, so that I know exactly when submissions close relative to my location.
+
+**8. Administrative & Content Management**
+As an admin, I want real-time control over game status, so that I can handle technical issues or delays during live shows.
+
+As an admin, I want manual setlist entry capabilities, so that I can ensure accurate results if automated systems fail.
+
+As a content manager, I want sponsor integration tools, so that I can manage partnerships and promotional content.
+
+As a support team member, I want user communication tools, so that I can help participants with issues during events.
+
+**9. Future Growth & Expansion**
+As a fan of other jam bands, I want versions for Phish, Widespread Panic, DMB, etc., so that I can use this concept for all my favorite artists.
+
+As a tour follower, I want year-round prediction games, so that I can stay engaged with the platform between major events.
+
+As an app developer collaborator, I want to partner on band-specific versions, so that we can expand to new audiences with expert knowledge.
+
+As a mobile app user, I want native iOS/Android apps, so that I can have enhanced features like push notifications and offline functionality.
+
+**10. Game Innovation & Features**
+As a creative user, I want to suggest new game ideas, so that I can help evolve the platform with innovative prediction concepts.
+
+As a real-time participant, I want live chat during shows, so that I can discuss predictions and celebrate with other fans.
+
+As a streak player, I want bonus points for consecutive correct predictions, so that I can be rewarded for sustained accuracy.
+
+As a venue expert, I want location-specific insights, so that I can use my knowledge of how the band performs at different venues.
+
+**🎯 ACCEPTANCE CRITERIA PATTERNS:**
+
+**User Interface:**
+- All games must be playable on mobile devices
+- Response times under 2 seconds for all interactions
+- Accessibility compliance (WCAG AA)
+- Consistent visual design across all game types
+
+**Payment & Security:**
+- Secure payment processing for all paid games
+- Clear pricing and fee structures
+- Transparent prize distribution processes
+- Data protection and privacy compliance
+
+**Real-Time Features:**
+- Live updates during shows with < 30 second delay
+- Reliable leaderboard synchronization
+- Graceful handling of connectivity issues
+- Manual override capabilities for admin
+
+**Community Features:**
+- Social sharing integration
+- Leaderboard and statistics tracking
+- Communication tools for user support
+- Regional and demographic analytics
+
+**Content Management:**
+- Flexible sponsor integration
+- Easy game configuration
+- Historical data preservation
+- Scalable architecture for growth
+
+**🔄 USER JOURNEY MAPPING:**
+
+**Pre-Event Journey:**
+1. Discover platform → Learn about games → Create account
+2. Browse game types → Read rules and FAQs → View historical data
+3. Select games → Make predictions → Complete payment
+4. Receive confirmation → Share with friends → Wait for event
+
+**Live Event Journey:**
+1. Receive notifications → Open app → View real-time updates
+2. Track predictions → See leaderboards → Participate in live games
+3. Celebrate wins → Share results → Engage with community
+4. Monitor prize status → Plan for next event
+
+**Post-Event Journey:**
+1. Review final results → Claim prizes → Analyze performance
+2. Study statistics → Plan improvements → Provide feedback
+3. Share experience → Recruit friends → Prepare for future events
+
+**🚀 FUTURE ENHANCEMENT STORIES:**
+
+As a VIP user, I want premium features like advanced analytics and early access, so that I can have an enhanced experience.
+
+As a band member or crew, I want to interact with fan predictions, so that we can engage with our community in new ways.
+
+As a venue operator, I want to partner with prediction platforms, so that we can enhance the fan experience at our shows.
+
+As a music journalist, I want access to prediction data and trends, so that I can write informed articles about fan engagement and expectations.
+
+**📊 SUCCESS METRICS:**
+
+**User Engagement:**
+- Daily/monthly active users
+- Games played per user
+- Session duration and return visits
+- Social sharing and referral rates
+
+**Financial Performance:**
+- Revenue per user
+- Prize pool growth
+- Sponsor partnership value
+- Payment conversion rates
+
+**Community Health:**
+- User-generated content
+- Support ticket resolution
+- Community feedback scores
+- Feature request adoption
+
+**Technical Performance:**
+- System uptime during events
+- Real-time update reliability
+- Mobile performance metrics
+- Security incident prevention
+
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
+Bottom Text: Copyright 2025, Setlist Street 

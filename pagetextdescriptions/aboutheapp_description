@@ -1,16 +1,42 @@
-About the App abouttheapp.tsx
+About This App Page: about-this-app.tsx
 
-Title at top: About this App
+Title at top: "About Setlist Street"
 
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+Top navigation bar: Links to "How to Play", "FAQ", "Sign In", "Sign Up" (properly right-aligned)
 
-Main Content
+**LAYOUT IMPROVEMENTS:**
+- Enhanced margins and proper container spacing
+- Better visual hierarchy and typography
+- Improved responsive design
 
-This app was created for fun by a Dead and Company fan and Engineering PhD who has attended 25+ shows and was born out of a nerdy fascination with guessing D&C setlists and desire to analyze which songs are played together most often.
-This is the first debut. It was hacked together in 3 days before the G60 concerts.
-If you like this app and want to see it for future D&C shows or other bands feel free to like our social media page and leave a comment!
-For game ideas, comments or future collaboration ideas feel free to email setliststreet@proton.me.
+**APP DESCRIPTION:**
+Setlist Street is the ultimate prediction platform for Grateful Dead and Dead & Company fans. Test your knowledge of setlist patterns, song relationships, and band tendencies across multiple game formats.
 
+**GAME CATEGORIES:**
+- Song Prediction Games (9 games organized by show structure)
+- Fantasy Setlist Builder (complete setlist construction)
+- Setlist Bingo (5x5 card with strategic song placement)
+- Timing Games (start times, end times, set lengths)
+- Live Games (real-time predictions during shows)
 
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
-Bottom Text: Copyright 2025, Setlist Street
+**RECENT IMPROVEMENTS:**
+- Redesigned user interfaces with intuitive left-right workflows
+- Enhanced drag-and-drop functionality
+- Standardized payment sections across all games
+- Improved mobile responsiveness
+- Better visual feedback and game progression tracking
+
+**CONTACT INFORMATION:**
+For game ideas, comments, technical feedback, or collaboration opportunities, feel free to email: setliststreet@proton.me
+
+**TECHNICAL FEATURES:**
+- Real-time pool size displays
+- Live countdown timers to submission deadlines
+- Statistical insights and historical data
+- Multiple payment options (fun, charity, cash, prizes)
+- Community leaderboards and results tracking
+
+**FOOTER:**
+Horizontal layout: Terms of Service | About this App | Privacy Policy
+Email: setliststreet@proton.me
+© 2025 Setlist Street. All rights reserved.

@@ -1,16 +1,55 @@
-Homescreen: home.tsx
+Homescreen: index.tsx
 
-Title at top: Setlist Street
+Title at top: "Setlist Street"
 
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+Top navigation bar: Links to "How to Play", "FAQ", "Sign In", "Sign Up" 
+**NAVIGATION IMPROVEMENTS:** Properly right-aligned with better spacing, no longer clustered in center
 
-Main Page: Rectangular Containers for each game that link to the respective game page
+**GRATEFUL DEAD 60TH ANNIVERSARY CONCERTS (GD60) - DEAD & COMPANY EXCLUSIVE**
+Golden Gate Park, San Francisco
+Dead & Company shows: Friday 8/1, Saturday 8/2, Sunday 8/3, 2025
 
-Game 1: Guess the Opener
-Game 2: Guess the Encore
-Game 3: Guess the Bust Out
-Game 4: Setlist Bingo:
-Game 5: Setlist Builder
+**RECENT MAJOR LAYOUT IMPROVEMENTS:**
+- Fixed edge-to-edge container issues with enhanced global margins
+- Proper padding system (px-8 sm:px-12 lg:px-16 xl:px-20) 
+- Better vertical spacing between all page elements
+- Show schedule now compact and horizontal (not vertical)
+- Improved footer with horizontal spacing and even distribution
+- All game containers properly contained within margins
 
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
-Bottom Text: Copyright 2025, Setlist Street
+**SHOW SCHEDULE:**
+Horizontal layout with three cards side-by-side:
+- Show 1: Friday, August 1 | Deadline: 7:00 PM PT
+- Show 2: Saturday, August 2 | Deadline: 7:00 PM PT  
+- Show 3: Sunday, August 3 | Deadline: 7:00 PM PT
+
+**MAIN GAMES GRID - CONSOLIDATED TO 5 GAMES:**
+Grid layout: 1 column mobile → 2 medium → 3 large → 5 extra-large
+
+1. **Song Prediction Games** (Hub page with 9 games organized by show structure)
+2. **Fantasy Setlist** (Renamed from "Setlist Builder" - full setlist prediction)
+3. **Setlist Bingo** (5x5 bingo card with drag-and-drop)
+4. **Timing Predictions** (Hub page with 3 timing games)
+5. **Guess Next Song (Live)** (Featured - real-time during shows)
+
+**GAME COUNT BANNER:**
+"16 Games Available | Statistical Insights | Cash Prizes | Charity Donations | Exclusive Prizes"
+
+**TOOLS & RESULTS GRID:**
+2-column section for utility functions:
+- Setlist Hints & Statistics → /setlist-hints
+- Live Results → /view-results
+
+**DESIGN IMPROVEMENTS:**
+- No placeholder icons ("G" or "T") on game cards
+- Consistent purple theming throughout
+- Better hover effects and visual feedback
+- Enhanced responsive design
+- Proper margins and spacing on all screen sizes
+
+**CONTACT:** All email references updated to setliststreet@proton.me
+
+**FOOTER IMPROVEMENTS:**
+Horizontal layout with evenly distributed spacing:
+Terms of Service | About this App | Privacy Policy
+© 2025 Setlist Street. All rights reserved.

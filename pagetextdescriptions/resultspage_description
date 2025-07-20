@@ -1,27 +1,217 @@
-Main Results Page:
+Results Page: results.tsx
 
-Title: View Game Results
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+Title at top: "Live Results & Leaderboards"
+
+Top navigation bar: Links to "How to Play", "View Results", "Setlist Hints", "FAQ", "Sign In/Sign Up"
+
+**LIVE RESULTS DASHBOARD**
+
+Show selector: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+Status indicator: "Pre-Show", "Live", "Completed"
 
 Main Content
 
-Element 1
-Selector for each of the three shows: 
-Text: Choose your show:
-Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+**REAL-TIME LEADERBOARDS**
 
-Main Content
-[A Container for each of the 5 games]
-Container 1: [Guess the Opener, Leaderboard]
-Container 2: [Guess the Encore, Leaderboard]
-Container 3: [Guess the Bust Out, Leaderboard]
-Container 5: [Setlist Bingo, Leaderboard]
-Container 2: [Setlist Builder, Leaderboard]
+**Main Games (5 Games):**
+1. Guess the Opener - Current leaders and predictions
+2. Guess the Encore - Live standings 
+3. Guess the Bust Out - Rarity predictions and results
+4. Setlist Bingo - Active boards and completion status
+5. Setlist Builder - Point rankings and accuracy scores
 
+**Timing Games (3 Games):**
+1. Guess Start Time - Accuracy rankings
+2. Guess End Time - Duration predictions
+3. Guess Set Break Length - Break timing results
 
-In each container: display a dynamic list of the top 5 users for each game along with their play type (cash, prize, charity)
+**Advanced Song Games (5 Games):**
+1. Guess Set 2 Opener - Second set predictions
+2. Guess Set 1 Closer - First set conclusion
+3. Guess Set 2 Closer - Pre-encore predictions
+4. Guess Pre Drums/Space Song - Before the jam
+5. Guess Post Drums/Space Song - After the jam
 
-Each container links to the game specific results pages.
+**Special Games (2 Games):**
+1. Songs NOT Played - Reverse psychology predictions
+2. Guess Next Song (Live) - Real-time community predictions with live bar charts
 
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+**LIVE SETLIST DISPLAY**
+Real-time setlist updates as songs are performed:
+- Set 1: [Songs as they're played] ✅
+- Currently Playing: [Song Name] 🎵 [Duration]
+- Set Break: [Duration] ☕
+- Set 2: [Songs as they're played] ✅
+- Drums/Space: [Duration] 🥁
+- Encore: [Songs as they're played] 🎸
+
+**SCORING UPDATES**
+Live point calculations and leaderboard movements:
+- Instant scoring for simple prediction games
+- Real-time Setlist Builder point accumulation
+- Bingo board completion notifications
+- Next Song live prediction scoring
+- Late submission penalty tracking
+
+**COMMUNITY FEATURES**
+- Total players across all games
+- Prize pool sizes (cash, charity, sponsored)
+- Regional participation maps
+- Social sharing of predictions and results
+- Live chat during shows (optional)
+
+**WINNER ANNOUNCEMENTS**
+- Game-by-game winner reveals as results are determined
+- Prize distribution notifications
+- Charity donation confirmations
+- Multiple winner tie-breaking procedures
+- Contact information for prize claims
+
+**HISTORICAL COMPARISON**
+- Previous show results
+- Accuracy trends across games
+- Popular prediction patterns
+- Upset victories and surprising results
+- Statistical analysis of community predictions
+
+**MOBILE OPTIMIZATION**
+- Real-time push notifications for score updates
+- Responsive design for all devices
+- Live refresh without page reloads
+- Offline viewing of completed results
+- Social media integration for sharing wins
+
+**VISUAL LAYOUT SPECIFICATIONS:**
+
+**Page Structure:**
+- Container: max-width 6xl (1152px), centered with horizontal padding
+- Background: White with dynamic status indicators
+- Typography: Purple-800 headers, gray-700/600 body text
+- Real-time update indicators throughout
+
+**Header Section:**
+- Title: 4xl font-bold, purple-800, center-aligned
+- Status indicator: Dynamic colored badge (pre-show/live/completed)
+- Show selector: Tab-style navigation with show dates
+- Margin bottom: mb-8 (32px)
+
+**Show Status Indicators:**
+- Pre-show: Blue-100 background, blue-800 text, "📅 Submissions Open"
+- Live: Red-100 background, red-800 text, "🔴 Show In Progress"  
+- Completed: Green-100 background, green-800 text, "✅ Results Final"
+- Container: Rounded-lg, padding 4, center-aligned
+
+**Show Selector Tabs:**
+- Layout: Flex justify-center, gap-2
+- Active tab: Purple-600 background, white text
+- Inactive tabs: Gray-200 background, gray-700 text
+- Hover: Gray-300 background for inactive
+- Padding: px-4 py-2, rounded-lg, font-medium
+- Transition: Smooth color changes
+
+**Game Category Sections:**
+- Headers: 2xl font-bold, gray-800, mb-6
+- Layout: Space-y-6 between categories
+- Category icons: Emoji prefixes for visual organization
+
+**Leaderboard Cards:**
+- Container: White background, shadow-lg, rounded-lg
+- Header: Game title with participant count
+- Padding: p-6 (24px all around)
+- Grid layout: Varies by game complexity
+- Real-time indicator: Small green dot for live updates
+
+**Individual Game Leaderboards:**
+- Header row: Gray-50 background, font-semibold
+- Player rows: Alternating white/gray-50 backgrounds
+- Position numbers: Bold, purple-600 color
+- Player names: font-medium, gray-800
+- Scores/predictions: Right-aligned, gray-600
+- Play type badges: Small colored badges (💰🎁🏆🎮)
+
+**Live Setlist Display:**
+- Container: Sticky position or prominent placement
+- Background: Gradient purple-100 to blue-100
+- Currently playing: Animated pulse effect, larger text
+- Completed songs: Checkmark icons, grayed text
+- Set breaks: Coffee icon with timer
+- Drums/Space: Special drumstick icon with duration
+
+**Real-time Features:**
+- Update notifications: Toast messages in top-right
+- Live status dots: Small green circles next to live elements
+- Countdown timers: Red text for urgency
+- Progress bars: For game completion status
+- Auto-refresh indicators: Spinner icons during updates
+
+**Community Statistics:**
+- Total players: Large number display with icons
+- Prize pools: Dollar amounts with colored backgrounds
+- Regional participation: Map visualization area
+- Social sharing: Button cluster with platform icons
+
+**Winner Announcements:**
+- Container: Gold gradient background for winners
+- Trophy icons: Large centered trophies
+- Winner badges: Special colored badges with names
+- Prize details: Clear typography with amounts/details
+- Contact instructions: Highlighted call-to-action buttons
+
+**Responsive Design:**
+- Mobile: Single column leaderboards, collapsible sections
+- Tablet: 2-column layout for smaller leaderboards
+- Desktop: Multi-column grid layout, full table displays
+- Large screens: Side-by-side game categories
+
+**Live Update Animations:**
+- New entries: Slide-in animation from top
+- Score changes: Highlight with color pulse
+- Position changes: Smooth vertical movement
+- Status updates: Fade transition between states
+- Loading states: Skeleton loaders maintaining layout
+
+**Typography Scale:**
+- Page title: text-4xl (36px)
+- Category headers: text-2xl (24px)
+- Game titles: text-xl (20px)
+- Player names: text-base (16px), font-medium
+- Scores: text-base (16px)
+- Helper text: text-sm (14px)
+- Timestamps: text-xs (12px)
+
+**Color Coding System:**
+- Leaderboard positions: Gold (1st), Silver (2nd), Bronze (3rd)
+- Play types: Cash (green), Charity (blue), Prize (purple), Fun (gray)
+- Game status: Active (purple), Pending (gray), Complete (green)
+- Live indicators: Red for live, blue for pre-show, green for final
+
+**Status & Badge System:**
+- Winner badges: Gold background with trophy icons
+- Live indicators: Pulsing red dots
+- Play type badges: Small rounded pills with icons
+- Position rankings: Numbered badges with color coding
+- Update timestamps: "Updated X seconds ago" in small text
+
+**Interactive Elements:**
+- Expandable sections: Accordion-style for detailed stats
+- Sort controls: Dropdown menus for leaderboard sorting
+- Filter options: Checkboxes for play types and games
+- Share buttons: Social media integration
+- Refresh button: Manual update trigger
+
+**Spacing Framework:**
+- Section spacing: mb-12 (48px) between major categories
+- Card spacing: mb-6 (24px) between game cards
+- Row spacing: py-2 (8px) for leaderboard rows
+- Grid gaps: gap-6 (24px) for card grids
+- Button spacing: gap-4 (16px) between action buttons
+
+**Performance Optimizations:**
+- Lazy loading: For non-visible leaderboards
+- Virtual scrolling: For large participant lists
+- Debounced updates: To prevent excessive re-renders
+- Cached data: For completed games and static content
+- Progressive enhancement: Core functionality without JavaScript
+
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
 Bottom Text: Copyright 2025, Setlist Street

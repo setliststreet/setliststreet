@@ -1,0 +1,318 @@
+Setlist Hints Page: setlist-hints.tsx
+
+Title at top: "Setlist Hints & Statistics"
+
+Top navigation bar: Links to "How to Play", "View Results", "Setlist Hints", "FAQ", "Sign In/Sign Up"
+
+**GRATEFUL DEAD 60TH ANNIVERSARY CONCERTS (GD60)**
+Golden Gate Park, San Francisco
+Dead & Company shows: Friday 8/1, Saturday 8/2, Sunday 8/3, 2025
+
+Main Content
+
+**DATA-DRIVEN INSIGHTS FOR BETTER PREDICTIONS**
+
+Welcome to your statistical advantage! This page provides comprehensive data analysis to help you make smarter predictions across all 15 Setlist Street games.
+
+**SONG POSITION STATISTICS**
+
+**Set 1 Openers:**
+[PLACEHOLDER - Top 20 most likely Set 1 openers with percentages]
+Table showing:
+- Song name
+- Probability percentage
+- Last used as opener
+- Venue type preference (indoor/outdoor)
+- Tour position factor
+- Weather correlation
+
+**Set 1 Closers:**
+[PLACEHOLDER - Top 20 most likely Set 1 closers with percentages]
+Table showing:
+- Song name
+- Probability percentage
+- Average set length when used as closer
+- Transition patterns to Set 2
+- Seasonal preferences
+
+**Set 2 Openers:**
+[PLACEHOLDER - Top 20 most likely Set 2 openers with percentages]
+Table showing:
+- Song name
+- Probability percentage
+- Set break length correlation
+- Connection to Set 1 closer
+- Energy level classification
+
+**Set 2 Closers:**
+[PLACEHOLDER - Top 20 most likely Set 2 closers with percentages]
+Table showing:
+- Song name
+- Probability percentage
+- Encore prediction factor
+- Show length correlation
+- Venue capacity influence
+
+**Encore Songs:**
+[PLACEHOLDER - Top 20 most likely encore songs with percentages]
+Table showing:
+- Song name
+- Probability percentage
+- Position in encore (E1, E2, E3)
+- Show end time correlation
+- Audience energy factor
+
+**Drums/Space Analysis:**
+[PLACEHOLDER - Pre/Post Drums/Space song statistics]
+Tables showing:
+- Most likely pre-drums songs
+- Most likely post-drums songs
+- Drums/Space duration correlations
+- Song transition patterns
+
+**SONG RELATIONSHIP MATRIX**
+
+**Most Likely Song Pairs:**
+[PLACEHOLDER - Song combination statistics]
+Table showing:
+- Song A → Song B probability
+- Frequency of pairing
+- Position correlation
+- Set preferences
+- Recent trend analysis
+
+**Song Groupings:**
+[PLACEHOLDER - Multi-song sequence analysis]
+- Three-song sequences most likely to appear together
+- Set flow patterns
+- Thematic groupings (ballads, rockers, jams)
+- Key signature relationships
+
+**TIMING PATTERNS**
+
+**Show Start Times:**
+[PLACEHOLDER - Historical start time data]
+- Most common start times by venue type
+- Day of week correlations
+- Weather impact on start times
+- Holiday/special event adjustments
+
+**Set Break Lengths:**
+[PLACEHOLDER - Set break duration statistics]
+- Average break length by venue
+- Set 1 length correlation to break time
+- Outdoor vs. indoor venue differences
+- Temperature impact on break length
+
+**Show End Times:**
+[PLACEHOLDER - Show duration analysis]
+- Average total show length
+- Day of week patterns
+- Venue curfew considerations
+- Encore length impact
+
+**ADVANCED ANALYTICS**
+
+**Song Rarity Index:**
+[PLACEHOLDER - Bust out potential rankings]
+- Songs by last played date
+- Rarity scoring algorithm
+- Anniversary show bust out likelihood
+- Historical special event patterns
+
+**Weather Correlations:**
+[PLACEHOLDER - Environmental impact data]
+- Rain impact on song selection
+- Temperature influence on setlist length
+- Wind effects on acoustic songs
+- Sunset timing and show atmosphere
+
+**Venue-Specific Patterns:**
+[PLACEHOLDER - Golden Gate Park historical data]
+- Previous Dead & Company shows at outdoor SF venues
+- Grateful Dead historical SF patterns
+- Park-specific considerations
+- Local audience preferences
+
+**PREDICTIVE MODELS**
+
+**Machine Learning Insights:**
+[PLACEHOLDER - AI-powered predictions]
+- Neural network song probability rankings
+- Pattern recognition for song sequences
+- Anomaly detection for special shows
+- Confidence intervals for predictions
+
+**Seasonal Adjustments:**
+[PLACEHOLDER - Time-based modifications]
+- Summer tour vs. fall tour differences
+- Anniversary show special considerations
+- Final show vs. opening show patterns
+- Weekend vs. weekday variations
+
+**USER STRATEGY GUIDES**
+
+**Game-Specific Tips:**
+- Setlist Builder: Optimal song placement strategies
+- Bingo: Square selection for maximum win probability
+- Songs NOT Played: Identifying overrated popular songs
+- Timing Games: Using venue and weather data
+- Next Song Live: Real-time decision making
+
+**Risk Management:**
+- High-confidence vs. high-reward predictions
+- Diversification strategies across multiple games
+- Bankroll management for cash games
+- When to trust the data vs. intuition
+
+**DATA SOURCES & METHODOLOGY**
+
+All statistics derived from:
+- setlist.fm historical database
+- Dead & Company tour archives (2015-2024)
+- Grateful Dead historical patterns (1965-1995)
+- Venue-specific performance data
+- Weather and timing correlations
+- Machine learning pattern analysis
+
+Last updated: [TIMESTAMP]
+Next update: After each show completion
+
+**DISCLAIMER:**
+Past performance does not guarantee future results. These statistics are provided for entertainment and educational purposes. The magic of live music means anything can happen!
+
+**VISUAL LAYOUT SPECIFICATIONS:**
+
+**Page Structure:**
+- Container: max-width 6xl (1152px), centered with horizontal padding
+- Background: White base with colored accent sections
+- Typography: Purple-800 headers, gray-700/600 body text
+
+**Header Section:**
+- Title: 4xl font-bold, purple-800, center-aligned
+- Subtitle: xl font-semibold, gray-800
+- Event details: gray-600, center-aligned
+- Margin bottom: mb-8 (32px)
+
+**Introduction Banner:**
+- Background: Gradient purple-100 to blue-100
+- Container: Rounded-lg, padding 6 (24px), center-aligned
+- Title: xl font-semibold, purple-800
+- Description: gray-700 text
+- Margin bottom: mb-8 (32px)
+
+**Tab Navigation:**
+- Layout: Flex wrap, justify-center, gap-2 (8px)
+- Active tab: purple-600 background, white text
+- Inactive tabs: gray-200 background, gray-700 text
+- Hover: gray-300 background for inactive tabs
+- Padding: px-4 py-2 (16px horizontal, 8px vertical)
+- Border radius: rounded-lg
+- Font: medium weight
+- Icons: Emoji prefixes for visual distinction
+- Transition: Smooth color transitions
+
+**Tab Icons & Colors:**
+- 🎵 Song Positions: Purple theme
+- 🔗 Song Pairs: Blue theme  
+- ⏰ Timing Patterns: Green theme
+- 📊 Advanced Analytics: Orange theme
+
+**Statistical Tables:**
+- Container: White background, shadow-lg, rounded-lg
+- Padding: p-6 (24px all around)
+- Margin bottom: mb-6 (24px)
+- Title: xl font-semibold, mb-2 (8px)
+- Description: gray-600, text-sm, mb-4 (16px)
+
+**Table Placeholder Styling:**
+- Background: gray-50, rounded-lg
+- Padding: p-8 (32px all around)
+- Text alignment: Center
+- Icon: 📊 with gray-500 color, lg text
+- Title: gray-500, lg text, mb-2
+- Description: gray-400, sm text
+
+**Real Table Styling (when populated):**
+- Container: overflow-x-auto for responsive scrolling
+- Table: min-width full, border-collapse
+- Headers: gray-50 background, border gray-200
+- Header text: font-semibold, px-4 py-2 padding
+- Cell borders: border gray-200
+- Cell padding: px-4 py-2
+- Empty state: Centered text, gray-500 color
+
+**Information Cards:**
+- Background: Colored background (blue-50, green-50, purple-50, yellow-50)
+- Border radius: rounded-lg
+- Padding: p-6 (24px)
+- Title: lg font-semibold with matching color (blue-800, green-800, etc.)
+- Grid layout: grid-cols-1 md:grid-cols-2, gap-4
+
+**Card Content Lists:**
+- Font: semibold for sub-headers
+- Text: gray-600 for content
+- Spacing: mb-1 for list items, mb-2 for sections
+- Bullet points: Consistent styling throughout
+
+**Disclaimer Section:**
+- Background: yellow-50
+- Border radius: rounded-lg
+- Padding: p-6 (24px)
+- Title: lg font-semibold, yellow-800
+- Text: sm text, yellow-700 for main content
+- Small text: xs text, yellow-600 for footer
+
+**Data Sources Section:**
+- Background: gray-50
+- Border radius: rounded-lg
+- Padding: p-6 (24px)
+- Title: lg font-semibold, gray-800
+- List: sm text, gray-600
+- Spacing: space-y-1 for list items
+- Timestamp: xs text, gray-500
+
+**Responsive Design:**
+- Mobile: Single column layout, full-width tables with horizontal scroll
+- Tablet: Improved spacing, 2-column information grids
+- Desktop: Full multi-column layouts, optimized table widths
+- Tab navigation: Responsive wrapping with consistent spacing
+
+**Interactive Elements:**
+- Tabs: Smooth hover and active state transitions
+- Tables: Hover effects on rows (when populated)
+- Cards: Subtle elevation on hover
+- All clickable elements: Proper focus states for accessibility
+
+**Typography Scale:**
+- Page title: text-4xl (36px)
+- Section titles: text-xl (20px)
+- Card titles: text-lg (18px)
+- Table headers: font-semibold, base size
+- Body text: text-base (16px)
+- Descriptions: text-sm (14px)
+- Fine print: text-xs (12px)
+
+**Color System:**
+- Primary: Purple-800, Purple-600, Purple-100
+- Tab themes: Purple, Blue, Green, Orange
+- Information cards: Blue-50/800, Green-50/800, Purple-50/800, Yellow-50/800
+- Tables: Gray-50 headers, Gray-200 borders
+- Text hierarchy: Gray-800 > Gray-700 > Gray-600 > Gray-500 > Gray-400
+
+**Spacing Framework:**
+- Page sections: mb-8 (32px) standard, mb-12 (48px) for major breaks
+- Card spacing: mb-6 (24px) between cards
+- Internal card padding: p-6 (24px)
+- Grid gaps: gap-4 (16px) for cards, gap-2 (8px) for tabs
+- Text spacing: mb-2 to mb-4 for paragraphs and sections
+
+**Table Design Patterns:**
+- Consistent column headers across all stat tables
+- Probability percentages prominently displayed
+- Color coding for different data types
+- Responsive horizontal scrolling for mobile
+- Empty states with helpful placeholder content
+
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
+Bottom Text: Copyright 2025, Setlist Street 

@@ -1,17 +1,32 @@
-Term of Service: termsofservice.tsx
+Terms of Service Page: terms-of-service.tsx
 
-Title at top: Terms of Service
+Title at top: "Terms of Service"
 
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+Top navigation bar: Links to "How to Play", "View Results", "FAQ", "Sign In/Sign Up"
 
 Main Content
 
-Will need verbiage agreeing:
-1) SetlistStreetisnotaffiliatedwiththeGratefulDead,SetlistStreet
-2) Useracknowledgesthisisagameofskillandisnotinajurisdictionthatprobibhits games like this
-3) User acknowledges they are not affiliated with Dead and Company organization in a way That would give them an unfair advtange
-[fill in more later]
-4) User will not hold Setlist Street liable for any loss of funds, etc.
+**PLACEHOLDER LEGAL TERMS**
+[Complete terms of service to be added by legal team]
 
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+**Key Points to Include:**
+- User account responsibilities
+- Payment and refund policies
+- Prize distribution terms
+- Charity donation handling
+- Scoring and rule interpretation final authority
+- Prohibited activities and fair play requirements
+- Tax reporting responsibilities
+- Age requirements and eligibility
+
+**Image & Content Disclaimer:**
+All images, graphics, icons, and visual elements displayed in this application were created using artificial intelligence generation tools. Any resemblance to existing trademarked, copyrighted, or proprietary visual content is purely coincidental and unintentional. This application is an independent fan-created project with no official affiliation to the Grateful Dead, Dead & Company, their management, record labels, or any associated commercial entities.
+
+**Intellectual Property:**
+- Game concepts and scoring algorithms are original creations
+- Song titles and setlist data are factual information in the public domain
+- User-generated predictions and game entries remain user property
+- Platform software and unique features are proprietary to Setlist Street
+
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
 Bottom Text: Copyright 2025, Setlist Street

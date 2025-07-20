@@ -1,8 +1,8 @@
-Guess the Bust Out Game Page: guess-bust-out.tsx
+Guess the Post Drums/Space Song Game Page: guessthepostdrumssong.tsx
 
-Title at top: "Guess the Bust Out"
+Title at top: "Guess the Post Drums/Space Song"
 
-Top navigation bar: Links to "How to Play", "View Results", "FAQ", "Sign In/Sign Up"
+Top navigation bar: Links to "How to Play", "View Results", "Sign In/Sign Up"
 
 **COUNTDOWN TIMER:**
 Live countdown to 7:00 PM PT deadline for next show
@@ -22,22 +22,12 @@ Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 
 Main Content 2
 
 Three horizontally distributed elements:
+Box 1: Song Guess
+(To right of box 1): iPod style scroll wheel over all songs from Supabase database (fills in the box to the left that you have option to type in) - populates list and autocompletes from database
 
-Element 1: Song Picker (Left)
-iPod-style scroll wheel interface
-Users scroll through songs from Supabase database
-Select the song they predict will be a rare "bust out"
-
-Element 2: Selection Display (Center)
-Shows currently selected bust out song
-Last played date information
-Rarity indicator
-
-Element 3: Helper Information (Right)
-[PLACEHOLDER - Bust out-specific hints to be added later]
-Definition of "bust out" (songs not played recently)
-Historical bust out patterns
-Song rarity statistics
+To right of scroll wheel: 
+Lists display fun facts as hints:
+[PLACEHOLDER - Post drums/space-specific hints to be added later]
 
 Section Header Center: Four Ways to Play
 Four horizontally distributed buttons:
@@ -52,7 +42,7 @@ Button 4: Play for Prize
 - iPod scroll wheel: shared component across all games
 - Live results displayed during shows
 - Users can play same game on all 3 shows individually
-- Bust out = song not played in last 100 shows
+- Scoring based on exact song match for song after drums/space segment
 
-Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
-Bottom Text: Copyright 2025, Setlist Street
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy"
+Bottom Text: Copyright 2025, Setlist Street 

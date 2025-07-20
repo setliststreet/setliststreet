@@ -1,0 +1,82 @@
+Guess Next Song Game Page: guess-next-song.tsx
+
+Title at top: "Guess the Next Song (Live)"
+
+Top navigation bar: Links to "How to Play", "View Results", "FAQ", "Sign In/Sign Up"
+
+**LIVE GAME STATUS:**
+Live indicator: "🔴 LIVE" or "⏰ Waiting for Show Start"
+Current show: Friday 8/1, Saturday 8/2, or Sunday 8/3
+
+**SPONSOR SECTION:**
+[Sponsored by: PLACEHOLDER SPONSOR NAME]
+[SPONSOR LOGO PLACEHOLDER]
+
+Main Content 1
+
+Element 1
+Show selector (only active/current show available during live play):
+Text: Current show:
+Show indicator: [Live Show: Friday, August 1] or [Live Show: Saturday, August 2] or [Live Show: Sunday, August 3]
+
+Main Content 2
+
+**REAL-TIME SETLIST DISPLAY:**
+Left side: Live setlist as it happens
+- Set 1: [Songs as they're played]
+- Currently Playing: [Current Song Name] ⏱️
+- Set Break indicator (when applicable)
+- Set 2: [Songs as they're played]
+- Encore: [Songs as they're played]
+
+**NEXT SONG PREDICTION:**
+Center area: 
+- "What's the next song?" prompt
+- iPod-style scroll wheel for song selection
+- Submit button for prediction
+- Time remaining indicator for current song (estimated)
+
+**LIVE COMMUNITY PREDICTIONS:**
+Right side: Real-time bar chart
+- Horizontal bars showing each song prediction
+- Percentage of users predicting each song
+- Updates live as new predictions come in
+- Top 10 most predicted songs displayed
+- User count for each prediction
+
+**SCORING SYSTEM:**
+- Points awarded for correctly predicting the immediate next song
+- Bonus points for predicting multiple songs in sequence
+- Predictions must be submitted before current song ends
+- Late submissions after song announcement = 0 points
+
+**GAME MECHANICS:**
+- Users can predict throughout the entire show
+- New prediction round starts with each song
+- Real-time leaderboard updates
+- Live chat/community features (optional)
+- Push notifications for prediction opportunities
+
+**TECHNICAL SPECS:**
+- WebSocket connections for real-time updates
+- Live setlist feed from admin dashboard or setlist.fm API
+- Real-time bar chart updates using Chart.js or similar
+- Mobile-optimized for on-the-go predictions
+- Automatic song timing estimates based on historical data
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+**UNIQUE FEATURES:**
+- Only available during live shows
+- Community aspect with live prediction sharing
+- Multiple scoring opportunities per show
+- Real-time social interaction
+- Perfect for fans watching streams or at the show
+
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
+Bottom Text: Copyright 2025, Setlist Street 

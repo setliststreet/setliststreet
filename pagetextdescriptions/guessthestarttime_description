@@ -1,6 +1,6 @@
-Guess the Bust Out Game Page: guess-bust-out.tsx
+Guess Start Time Game Page: guess-start-time.tsx
 
-Title at top: "Guess the Bust Out"
+Title at top: "Guess the Start Time"
 
 Top navigation bar: Links to "How to Play", "View Results", "FAQ", "Sign In/Sign Up"
 
@@ -23,21 +23,22 @@ Main Content 2
 
 Three horizontally distributed elements:
 
-Element 1: Song Picker (Left)
-iPod-style scroll wheel interface
-Users scroll through songs from Supabase database
-Select the song they predict will be a rare "bust out"
+Element 1: Time Picker (Left)
+Clock-style time selection interface
+Hour and minute picker (Pacific Time)
+AM/PM selection if applicable
+Predicted show start time input
 
 Element 2: Selection Display (Center)
-Shows currently selected bust out song
-Last played date information
-Rarity indicator
+Shows currently selected start time
+Time zone confirmation (PT)
+Submission preview
 
 Element 3: Helper Information (Right)
-[PLACEHOLDER - Bust out-specific hints to be added later]
-Definition of "bust out" (songs not played recently)
-Historical bust out patterns
-Song rarity statistics
+[PLACEHOLDER - Start time-specific hints to be added later]
+Historical show start time patterns
+Venue-specific timing information
+Typical Dead & Company start times
 
 Section Header Center: Four Ways to Play
 Four horizontally distributed buttons:
@@ -48,11 +49,10 @@ Button 4: Play for Prize
 
 **TECHNICAL SPECS:**
 - Submission deadline: 7:00 PM PT before each show
-- Songs fetched from Supabase database 
-- iPod scroll wheel: shared component across all games
+- Time input with validation (reasonable concert start times)
 - Live results displayed during shows
 - Users can play same game on all 3 shows individually
-- Bust out = song not played in last 100 shows
+- Scoring based on accuracy to actual start time
 
 Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
-Bottom Text: Copyright 2025, Setlist Street
+Bottom Text: Copyright 2025, Setlist Street 

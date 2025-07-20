@@ -1,0 +1,48 @@
+Guess the End Time / Show Length Game Page: guesstheendtime.tsx
+
+Title at top: "Guess the End Time / Show Length"
+
+Top navigation bar: Links to "How to Play", "View Results", "Sign In/Sign Up"
+
+**COUNTDOWN TIMER:**
+Live countdown to 7:00 PM PT deadline for next show
+Shows: Friday 8/1, Saturday 8/2, Sunday 8/3
+
+**SPONSOR SECTION:**
+[Sponsored by: PLACEHOLDER SPONSOR NAME]
+[SPONSOR LOGO PLACEHOLDER]
+
+Main Content 1
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content 2
+
+Three horizontally distributed elements:
+Box 1: Time Input (HH:MM PM format for end time) OR Duration Input (HH:MM format for show length)
+Toggle between "End Time" and "Show Length" prediction modes
+Time/duration picker interface
+
+To right of time picker: 
+Lists display fun facts as hints:
+[PLACEHOLDER - Last 10 show lengths/end times to be added later]
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+**TECHNICAL SPECS:**
+- Submission deadline: 7:00 PM PT before each show
+- Dual input mode: end time OR show length prediction
+- Live results displayed during shows
+- Users can play same game on all 3 shows individually
+- Scoring based on accuracy to actual end time/duration
+
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy"
+Bottom Text: Copyright 2025, Setlist Street 

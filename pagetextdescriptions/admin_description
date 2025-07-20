@@ -1,0 +1,80 @@
+Admin Portal: admin.tsx
+
+**ADMIN INTERFACE FOR DEAD & COMPANY SETLIST STREET**
+
+**PURPOSE:**
+Administrative interface for submitting actual setlists and scoring player predictions for Dead & Company shows at GD60 (Grateful Dead 60th Anniversary concerts).
+
+**ACCESS CONTROL:**
+- Admin-only access required
+- Secure authentication for setlist submission
+- Real-time scoring capabilities
+
+**MAIN FEATURES:**
+
+**1. GAME SELECTION:**
+- Grid display of all active games
+- Shows game type and date
+- Displays count of existing predictions to score
+- Visual selection with highlighted active game
+
+**2. SHOW SELECTION:**
+- Dead & Company specific show selector
+- Shows: Friday 8/1, Saturday 8/2, Sunday 8/3, 2025
+- Golden Gate Park, San Francisco
+- No band selection needed (Dead & Company only)
+
+**3. LIVE SHOW STATUS:**
+- Real-time show tracking
+- Current song being played
+- Set status (Set 1/2, song position)
+- Active prediction count
+- Live scoring status updates
+
+**4. SETLIST SUBMISSION:**
+- Large textarea for actual setlist entry
+- One song per line format
+- Real-time preview with song count
+- Example format provided
+- Validates before submission
+
+**5. SCORING SYSTEM:**
+- Processes all player predictions against actual setlist
+- Updates leaderboards in real-time
+- Handles multiple game types simultaneously
+- Provides confirmation of scoring completion
+
+**INTERFACE DESIGN:**
+- Gradient background with animated elements
+- Glass-morphism cards with backdrop blur
+- White text on dark gradient background
+- Motion animations for smooth transitions
+- Responsive grid layouts
+
+**WORKFLOW:**
+1. Admin selects active game from grid
+2. Chooses specific show date
+3. Monitors live show status
+4. Enters actual setlist as songs are played
+5. Submits for automatic scoring
+6. System updates all player results
+
+**TECHNICAL SPECS:**
+- Supabase integration for data management
+- Real-time updates via WebSocket connections
+- Framer Motion animations
+- Responsive design for mobile admin access
+- Error handling and validation
+
+**SECURITY:**
+- Admin authentication required
+- Secure setlist submission endpoints
+- Audit trail for all scoring actions
+- Protected against unauthorized access
+
+**REMOVED FEATURES:**
+- Band selection (no longer needed - Dead & Company only)
+- Multi-band configuration options
+- Generic band templates
+
+This streamlined admin interface focuses specifically on Dead & Company show management for the GD60 anniversary concerts, eliminating unnecessary band selection complexity. 

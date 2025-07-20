@@ -1,8 +1,16 @@
-Guess the Encore Game Page: guesstheencore.tsx
+Guess the Encore Game Page: guess-encore.tsx
 
 Title at top: "Guess the Encore"
 
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+Top navigation bar: Links to "How to Play", "View Results", "FAQ", "Sign In/Sign Up"
+
+**COUNTDOWN TIMER:**
+Live countdown to 7:00 PM PT deadline for next show
+Shows: Friday 8/1, Saturday 8/2, Sunday 8/3
+
+**SPONSOR SECTION:**
+[Sponsored by: PLACEHOLDER SPONSOR NAME]
+[SPONSOR LOGO PLACEHOLDER]
 
 Main Content 1
 
@@ -11,16 +19,24 @@ Selector for each of the three shows:
 Text: Choose your show:
 Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
 
-
 Main Content 2
 
 Three horizontally distributed elements:
-Box 1: Song Guess
-(To right of box 1): Ipod style scroll wheel over all the existing songs (fills in the box to the left that you have option to type in) - populates list and autocompletes from our supabase database
 
-To right of scroll wheel: 
-Lists display fun facts as hints:
-Top 10 most common encores ... Last 10 encores ...
+Element 1: Song Picker (Left)
+iPod-style scroll wheel interface
+Users scroll through songs from Supabase database
+Select the song they predict will be the final encore
+
+Element 2: Selection Display (Center)
+Shows currently selected encore song
+Option to change selection
+Preview of submission
+
+Element 3: Helper Information (Right)
+[PLACEHOLDER - Encore-specific hints to be added later]
+Common encore songs statistics
+Venue-specific encore patterns
 
 Section Header Center: Four Ways to Play
 Four horizontally distributed buttons:
@@ -29,7 +45,12 @@ Button 2: Play for Charity
 Button 3: Play for Cash
 Button 4: Play for Prize
 
+**TECHNICAL SPECS:**
+- Submission deadline: 7:00 PM PT before each show
+- Songs fetched from Supabase database 
+- iPod scroll wheel: shared component across all games
+- Live results displayed during shows
+- Users can play same game on all 3 shows individually
 
-
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy", "FAQ"
 Bottom Text: Copyright 2025, Setlist Street

@@ -1,46 +1,60 @@
-Setlist Bingo Game Page: setlistbingo.tsx
+Setlist Bingo Game Page: setlist-bingo.tsx
 
 Title at top: "Setlist Bingo"
-Subtext at top: Win by matching all four corners or getting 5 in a straight line.
 
+Top navigation bar: Links to "How to Play", "FAQ", "Sign In", "Sign Up" (properly right-aligned)
 
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+**MAJOR LAYOUT REDESIGN:**
+- Completely redesigned with left-right workflow (like Fantasy Setlist)
+- Song candidates positioned on LEFT (2/5 width)
+- Bingo board positioned on RIGHT (3/5 width)
+- Enhanced visual hierarchy and spacing
+- Streamlined user experience
 
-Main Content
+**MAIN BINGO BUILDER:**
+Grid layout system (2/5 + 3/5 width):
 
-Three horizontally distributed elements:
-[Element 1] Scrolling list of songs to select from (links to our Subabase database
-[Element 2] 5x5 Bingo Board with free space in middle. Each bingo square is to be filled in with a song, either by typing, pressing random button or dragging from menu.
+**LEFT SIDE - Song Candidates (2/5 width):**
+- Search input with instant filtering
+- Limited display (15 songs visible with scrolling)
+- "+X more songs (search to filter)" indicator
+- Popular songs section with blue hover effects
+- Clear instructions: "Available Songs → Drag to Board"
+- Board control buttons (Generate Random, Clear Board)
 
+**RIGHT SIDE - Bingo Board (3/5 width):**
+- 5x5 bingo grid as main focus
+- "Your Bingo Card → Drop Songs Here" heading
+- Enhanced visual design with better contrast
+- FREE space in center with purple styling
+- Remove buttons on filled squares
+- Progress tracking with purple-themed status box
 
+**BOARD FEATURES:**
+- Drag and drop from left candidates to right board squares
+- Click to add first search result to square
+- Visual feedback during drag operations
+- Progress indicator: "Filled X/25 squares"
+- "Need at least 20 songs to submit" guidance
 
-[Element 3]
-To right of bingo board: 
-Lists display fun facts as hints:
-Most common songs
-Least common songs
-Most common song pairs:
+**WINNING CONDITIONS:**
+- Any complete row (5 songs)
+- Any complete column (5 songs) 
+- Any complete diagonal (5 songs)
+- Four corners (4 songs)
 
-Functionality:
-Bingoboard should have option to 
-1) Generate random
-board from songs in Supabase
-database
-2) Allow user to type songs in manually (with autocomplete)
-in
-3) Allow user to modify random filling by typing in (with autocomplete)
+**STANDARDIZED PAYMENT SECTION:**
+Horizontal 4-column grid below main builder:
+- Play for Fun | Play for Charity | Play for Cash | Play for Prize
+- Auto-submission when mode selected
+- Consistent spacing and visual design
+- No redundant submit buttons
 
-[Element 4] Somewhere above bingo board. Button that allows bingo board to be randomly filled in.
+**QUICK STATS SECTION:**
+Helpful reference information:
+- Most Common: Sugar Magnolia (78%)
+- Rarest: Dark Star (8%)
+- Best Opener: Feel Like a Stranger
+- Common Pair: Scarlet → Fire
 
-
-Section Header Center: Four Ways to Play
-Four horizontally distributed buttons:
-Button 1: Play for Fun 
-Button 2: Play for Charity 
-Button 3: Play for Cash
-Button 4: Play for Prize
-
-
-
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
-Bottom Text: Copyright 2025, Setlist Street
+**CONTACT:** setliststreet@proton.me

@@ -1,0 +1,176 @@
+**VISUAL LAYOUT TEMPLATE FOR SETLIST STREET PAGES**
+
+**DESIGN PHILOSOPHY: MINIMAL WHITE BACKGROUND FOR FUNCTIONALITY TESTING**
+
+**IMPORTANT NOTE: PLACEHOLDER AESTHETIC APPROACH**
+This template uses minimal white backgrounds and no decorative elements intentionally. Beautiful backgrounds, custom iconography, and enhanced visual design will be added AFTER functionality is confirmed. Current focus is on clean, functional layouts that can be easily enhanced later.
+
+**Page Structure:**
+- Background: Pure white (bg-white) throughout entire application
+- NO gradients, complex backgrounds, decorative elements, or emojis
+- Clean, bare-bones approach for functionality validation
+- Container: max-width responsive (varies by page), centered with horizontal padding
+- Typography: Gray color scale for hierarchy and readability only
+- Consistent spacing framework across all pages
+
+**Typography Hierarchy:**
+- Page titles: text-4xl (36px), font-bold, gray-800
+- Section headers: text-3xl (30px), font-bold, gray-800  
+- Subsection headers: text-2xl (24px), font-bold, gray-700
+- Card/component titles: text-xl (20px), font-bold, gray-800
+- Body text: text-base (16px), gray-600
+- Secondary text: text-sm (14px), gray-500
+- Micro text: text-xs (12px), gray-400
+
+**Color Palette (MINIMAL FOR TESTING):**
+- Backgrounds: White primary, gray-50 for minimal accents only
+- Text: Gray-800 (primary) > Gray-700 > Gray-600 > Gray-500 > Gray-400
+- Borders: Gray-200 default, gray-300 on hover/active
+- Accents: Purple-600/700 for essential highlights and CTAs only
+- Success: Green-600 for positive actions only
+- Warning: Orange-600 for attention items only
+- Error: Red-600 for negative states only
+- NO decorative colors or visual flourishes
+
+**Container System:**
+- Page wrapper: White background, min-height screen
+- Main container: Centered, responsive max-width with px-4 padding
+- Card containers: White bg, gray-200 borders, rounded-lg shadows
+- Section spacing: mb-12 (48px) between major sections
+- Component spacing: mb-8 (32px) between subsections
+
+**Ways to Play Layout (UPDATED - HORIZONTAL CONTAINERS):**
+- Layout: Horizontal flex layout, flex-wrap for responsive behavior
+- Containers: White bg, colored borders for differentiation
+- Each container: min-width 200px, max-width 250px for consistency
+- Functionality: Each container links directly to submission button
+- NO emojis or decorative icons - text-based identification only
+- Hover states: Border color changes and subtle shadow elevation
+- Submit integration: Direct connection to submission handling
+
+**Grid Systems:**
+- Primary grids: grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5
+- Utility grids: grid-cols-1 md:grid-cols-2 (max 2 columns)
+- Card gaps: gap-6 (24px) for main content, gap-4 (16px) for dense layouts
+- Responsive breakpoints: Mobile-first, md (768px), lg (1024px), xl (1280px)
+
+**Component Cards:**
+- Background: Pure white (bg-white) ONLY
+- Borders: 2px solid gray-200 (border-2 border-gray-200)
+- Hover borders: gray-300 (hover:border-gray-300)
+- Shadows: shadow-lg default, shadow-xl on hover
+- Padding: p-6 (24px) for main cards, p-4 (16px) for compact cards
+- Border radius: rounded-lg (8px) throughout
+- NO colored backgrounds or gradient effects
+
+**Show Selector Toggle Functionality:**
+- Layout: Horizontal button group with clear visual states
+- Selected state: Purple border and background tint for clarity
+- Unselected state: Gray borders with hover effects
+- Functionality: Each selection resets game-specific state
+- Independent submissions: Each show allows separate predictions
+- State management: Clear visual feedback for current selection
+- Responsive: Wraps to multiple rows on smaller screens
+
+**Interactive Elements:**
+- Buttons: White bg, gray-200 borders, gray-800 text
+- Primary CTAs: Purple-600 bg, white text
+- Hover states: Smooth transitions, border color changes only
+- Active states: Ring focus indicators where appropriate
+- NO gradient hover effects, animations, or decorative transitions
+
+**Icon Strategy (TEMPORARY PLACEHOLDERS):**
+- Current: Simple letter placeholders (G for Games, T for Tools)
+- Background: gray-100 default, gray-200 on hover
+- Size: 16x16 (w-16 h-16) for primary icons
+- Border radius: rounded-full for circular containers
+- FUTURE: Custom iconography will replace letter placeholders
+- NO emojis or decorative Unicode characters
+
+**Form Elements:**
+- Input fields: White bg, gray-200 borders, gray-800 text
+- Focus states: Purple-600 ring indicators
+- Placeholders: gray-400 text
+- Labels: gray-700 font-medium
+- Error states: Red-600 borders and text
+
+**Badge & Label System:**
+- Category badges: Purple-600 text, xs font-medium, NO backgrounds
+- Status indicators: Colored text without background fills
+- Featured markers: Purple-700 font-bold, text-only (no star emojis)
+- Sponsor placeholders: gray-400 italic text
+
+**Navigation Elements:**
+- Header: White bg, gray-200 bottom border
+- Navigation links: gray-600 default, gray-900 hover
+- Active states: Purple-600 color for current page
+- Footer: Same white bg approach with gray-200 top border
+
+**Layout Spacing Framework:**
+- Page margins: py-8 (32px vertical) for main content
+- Section separation: mb-12 (48px) between major sections
+- Subsection separation: mb-8 (32px) between components
+- Card padding: p-6 (24px) internal padding
+- Grid gaps: gap-6 (24px) between cards
+- Text spacing: mb-4 (16px) between paragraphs
+
+**Responsive Grid Patterns:**
+```
+Mobile (default): grid-cols-1
+Tablet (md): grid-cols-2  
+Desktop (lg): grid-cols-3
+Large (xl): grid-cols-4 or grid-cols-5 for dense layouts
+```
+
+**Shadow System:**
+- Default cards: shadow-lg (medium elevation)
+- Hover/active: shadow-xl (high elevation)
+- Floating elements: shadow-2xl (maximum elevation)
+- NO colored shadows or complex shadow effects
+
+**Animation & Transitions:**
+- Hover transitions: transition-colors ONLY
+- Duration: Default 150ms timing
+- Easing: Default ease-in-out curves
+- NO complex animations, scaling effects, or micro-interactions
+
+**Strict Prohibitions (FOR NOW):**
+1. NO emojis anywhere in the codebase
+2. NO gradient backgrounds (bg-gradient-*)
+3. NO decorative icons or imagery
+4. NO complex color schemes beyond gray scale + purple accents
+5. NO animated effects beyond basic transitions
+6. NO background patterns or textures
+7. NO custom fonts or typography flourishes
+8. NO decorative borders or visual embellishments
+
+**Future Enhancements (AFTER FUNCTIONALITY CONFIRMED):**
+1. Custom iconography system to replace letter placeholders
+2. Beautiful background imagery and patterns
+3. Enhanced color palettes and brand-specific theming
+4. Custom animations and micro-interactions
+5. Advanced visual hierarchy and typography
+6. Sponsor integration with branded elements
+7. Mobile app-style visual enhancements
+8. Accessibility-compliant color contrast improvements
+
+**Current Testing Phase Priorities:**
+1. Form submission functionality
+2. Show selector toggle behavior
+3. Game state management
+4. Payment integration workflows
+5. Real-time data updates
+6. Responsive layout behavior
+7. Navigation and routing
+8. Database integration
+
+**White Background Benefits for Testing:**
+- Maximum focus on functionality over aesthetics
+- Easy identification of layout and spacing issues
+- High readability for debugging and testing
+- Simple baseline for future visual enhancements
+- Minimal distractions during user testing
+- Fast loading and rendering for performance testing
+- Clear visual hierarchy for usability validation
+
+This minimal approach ensures that all functionality is thoroughly tested and validated before adding visual complexity that could mask underlying issues or create maintenance difficulties. 

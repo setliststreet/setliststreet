@@ -1,34 +1,128 @@
-Guess the Opener Game Page: guesstheopener.tsx
+Guess the Opener: guess-opener.tsx
 
-Title at top: "Guess the Opener"
+Users predict which song will open the first set for each Dead & Company show.
 
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+**LIVE POOL SIZE DISPLAY (NEW FEATURE):**
+Container at top of page showing real-time player statistics:
+- Total Players: Live count updating every 5 seconds
+- Fun Players: Count of free participants 
+- Cash Players: Count + live pool size (e.g., "$2,347")
+- Charity Players: Count + pool size + unique charities (e.g., "45 players • $823 • 7 charities")
+- Prize Players: Count + link to "View Available Prizes →"
 
-Main Content 1
+**SHOW SELECTOR:**
+Toggle buttons for Show 1 (Friday 8/1), Show 2 (Saturday 8/2), Show 3 (Sunday 8/3)
+- Independent submissions per show
+- Selected show highlighted with purple border/background
+- Resets song selection when switching shows
 
-Element 1
-Selector for each of the three shows: 
-Text: Choose your show:
-Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+**COUNTDOWN TIMER:**
+Real-time countdown to 7:00 PM PT deadline before each show
 
-Main content 2
+**SPONSOR INTEGRATION:**
+Placeholder for sponsor logo and name
 
-Three horizontally distributed elements:
-Box 1: Song Guess
-(To right of box 1): Ipod style scroll wheel over all the existing songs (fills in the box to the left that you have option to type in) - populates list from our supabase database
+**OPENER STATISTICS:**
+Two-column display:
+- Top Openers (All Time): Jack Straw (18.9%), Casey Jones (15.2%), etc.
+- Recent Openers: Chronological list with dates
 
-To right of scroll wheel: 
-Lists display fun facts as hints:
-Top 10 most common openers ... Last 10 openers ...
+**SONG SELECTION:**
+Grid of song options with:
+- Song name
+- Probability percentage and likelihood label (Very Likely/Likely/Possible/Unlikely)
+- Color-coded probabilities: Green (15%+), Yellow (10-14%), Orange (5-9%), Red (<5%)
+- Selected song highlighted with purple border/background
 
-Section Header Center: Four Ways to Play
-Four horizontally distributed buttons:
-Button 1: Play for Fun 
-Button 2: Play for Charity 
-Button 3: Play for Cash
-Button 4: Play for Prize
+**DATA INSIGHT:**
+When song selected, shows contextual tip about probability patterns
 
+**WAYS TO PLAY WITH PAYMENT OPTIONS (UPDATED):**
+Four horizontal containers:
+1. **Play for Fun** - Immediate submission, no payment
+2. **Play for Charity** - Shows payment selector:
+   - Preset amounts: $1, $5, $10 buttons
+   - Custom amount input field
+   - "Donate $X & Submit" button
+3. **Play for Cash** - Shows payment selector:
+   - Preset amounts: $1, $5, $10 buttons  
+   - Custom amount input field
+   - "Pay $X & Submit" button
+4. **Play for Prize** - Immediate submission, links to prize info
 
+**PRIZE INFORMATION MODAL:**
+Triggered from pool display "View Available Prizes" link:
+- Modal overlay with prize details
+- Each prize shows: Name, Sponsor, Value
+- Example prizes: Vintage poster ($75), Tour t-shirt ($50), VIP pass ($200), Signed setlist ($150)
+- Explanation of prize distribution method
 
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
-Bottom Text: Copyright 2025, Setlist Street
+**PAYMENT FLOW:**
+1. User selects song prediction
+2. Clicks charity or cash mode
+3. Payment selector appears with $1/$5/$10 options + custom input
+4. Submit button shows selected amount: "Pay $5 & Submit"
+5. Processes payment and submits prediction
+6. Success confirmation with amount details
+
+**SUBMISSION HANDLING:**
+Logs prediction with:
+- Show number
+- Selected song
+- Play mode (fun/charity/cash/prize)
+- Payment amount (if applicable)
+- Game identifier
+
+**REAL-TIME FEATURES:**
+- Pool sizes update every 5 seconds
+- Player counts increment organically
+- Cash and charity pools grow with new submissions
+- Unique charity count occasionally increases
+- Live timestamp shown for last update
+
+**VISUAL LAYOUT SPECIFICATIONS:**
+
+**Pool Size Display:**
+- White container with gray borders, rounded corners
+- Grid layout: 4 columns on desktop, responsive on mobile
+- Color-coded containers: Gray (total), Blue (fun), Green (cash), Purple (charity), Yellow (prizes)
+- Live indicator with green "Live" badge
+- Update timestamp at bottom
+
+**Payment Selector:**
+- Appears in gray-50 container below Ways to Play
+- Centered layout with preset amount buttons
+- Custom input with dollar sign prefix
+- Submit button changes based on selected amount
+- Cancel option to return to mode selection
+
+**Prize Modal:**
+- Full-screen overlay with semi-transparent background
+- Centered white container with scroll capability
+- Prize cards with sponsor, name, and value
+- Close button (×) in top-right corner
+- Explanatory text about prize distribution
+
+**Responsive Design:**
+- Pool display: 4 columns → 2 columns → 1 column on smaller screens
+- Song grid: 3 columns → 2 columns → 1 column
+- Payment options: Horizontal → stacked on mobile
+- Prize modal: Full-width on mobile with proper margins
+
+**Technical Implementation:**
+- Real-time updates via mock intervals (will use WebSocket in production)
+- State management for show selection, song choice, and payment flow
+- Modal state handling with backdrop click/escape key closing
+- Form validation for custom payment amounts
+- Integration with existing song probability system
+
+**User Flow:**
+1. Page loads with default Show 1 selected
+2. Pool size display shows current participant numbers
+3. User can switch shows (resets selections)
+4. User selects opener prediction from grid
+5. Data insight appears for selected song
+6. Ways to Play section becomes available
+7. For payment modes, amount selector appears
+8. User completes submission with confirmation
+9. Pool numbers update to reflect new participant

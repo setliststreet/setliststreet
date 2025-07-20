@@ -1,9 +1,13 @@
 Sign Up Form Page: signupform.tsx
 
-Title at top: Sign Up /Register
-Subtext: Sign up in order to win prizes.
+Title at top: "Sign Up / Register"
+Subtext: "Sign up in order to win prizes."
 
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+Top navigation bar: Links to "How to Play", "View Results", "Sign In/Sign Up"
+
+**SHOW INFORMATION:**
+Shows: Friday 8/1, Saturday 8/2, Sunday 8/3
+Submission deadline: 7:00 PM PT before each show
 
 Main Content
 
@@ -12,14 +16,19 @@ Leaderboard Display Name: Allow type in or randomly generated. (Public facing na
 Full Name
 Email: 
 Phone
-Payment Method (if playing for prize, cash or charity): Enable stripe payment buttons or crypto
+Payment Method (if playing for prize, cash or charity): Enable Stripe payment buttons or crypto
 
-Preferred Charity (Optional): Have dropdown of charities or allow type in)
+Preferred Charity (Optional): Have dropdown of charities or allow type in
 
 Checkbox for reading terms of service
 Checkbox agreeing to be contacted regarding winnings
 
+**TECHNICAL SPECS:**
+- Account required for Cash, Prize, and Charity play types
+- Fun play type allows anonymous participation
+- Payment integration: Stripe and crypto options
+- User can play multiple games on multiple shows
+- Account saves game history and results
 
-
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy"
 Bottom Text: Copyright 2025, Setlist Street

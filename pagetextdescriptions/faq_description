@@ -1,0 +1,45 @@
+FAQ Page: faq.tsx
+
+Title at top: "Frequently Asked Questions"
+
+Top navigation bar: Links to "How to Play", "FAQ", "Sign In", "Sign Up" (properly right-aligned)
+
+**LAYOUT IMPROVEMENTS:**
+- Better margins and spacing throughout
+- No edge-to-edge containers
+- Enhanced visual hierarchy
+
+**CONTACT INFORMATION UPDATES:**
+All email addresses changed from @setliststreet.com to setliststreet@proton.me:
+
+**Game Ideas & Suggestions:**
+Q: Can I suggest new game ideas?
+A: We love community input! Send your game ideas to setliststreet@proton.me. Include a brief description of how the game would work and what makes it fun or challenging.
+
+**Sponsorship Inquiries:**
+Q: How can my company sponsor Setlist Street?
+A: We welcome sponsors who want to support the Grateful Dead community! Contact setliststreet@proton.me for partnership opportunities. We offer various sponsorship tiers and custom packages.
+
+**Bug Reports & Technical Support:**
+Q: I found a bug. How do I report it?
+A: Please report bugs to setliststreet@proton.me with details about what happened, what browser you're using, and steps to reproduce the issue. We respond to bug reports within 24 hours.
+
+**General Contact:**
+Email us at setliststreet@proton.me
+
+**STANDARDIZED LAYOUT:**
+- Consistent spacing between FAQ sections
+- Better responsive design for mobile/desktop
+- Improved visual hierarchy
+
+**FOOTER IMPROVEMENTS:**
+Horizontal layout: Terms of Service | About this App | Privacy Policy
+© 2025 Setlist Street. All rights reserved.
+
+**KEY FAQ TOPICS:**
+- Account creation and gameplay
+- Scoring systems and deadlines
+- Payment methods and prize distribution
+- Technical requirements and support
+- Community guidelines and suggestions
+- Future tour games and features 

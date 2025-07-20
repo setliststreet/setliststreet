@@ -1,0 +1,394 @@
+About the App abouttheapp.tsx
+
+Title at top: About this App
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+This app was created for fun by a Dead and Company fan and Engineering PhD who has attended 25+ shows and was born out of a nerdy fascination with guessing D&C setlists and desire to analyze which songs are played together most often.
+This is the first debut. It was hacked together in 3 days before the G60 concerts.
+If you like this app and want to see it for future D&C shows or other bands feel free to like our social media page and leave a comment!
+For game ideas, comments or future collaboration ideas feel free to email setliststreet@proton.me.
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Guess the Bust Out Game Page: guessthebustout.tsx
+
+Title at top: "Guess the Bust Out"
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+
+Main Content 2
+
+Three horizontally distributed elements:
+Box 1: Song Guess
+(To right of box 1): Ipod style scroll wheel over all the songs they've never played songs (fills in the box to the left that you have option to type in) - links to supabase database
+
+To right of scroll wheel: 
+Lists display fun facts as hints:
+Songs never played by Dead and Company
+Last 10 Bust Outs
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+[Buttons 2-4 link to payment pages]
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Guess the Encore Game Page: guesstheencore.tsx
+
+Title at top: "Guess the Encore"
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content 1
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+
+Main Content 2
+
+Three horizontally distributed elements:
+Box 1: Song Guess
+(To right of box 1): Ipod style scroll wheel over all the existing songs (fills in the box to the left that you have option to type in) - populates list and autocompletes from our supabase database
+
+To right of scroll wheel: 
+Lists display fun facts as hints:
+Top 10 most common encores ... Last 10 encores ...
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Guess the Opener Game Page: guesstheopener.tsx
+
+Title at top: "Guess the Opener"
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content 1
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main content 2
+
+Three horizontally distributed elements:
+Box 1: Song Guess
+(To right of box 1): Ipod style scroll wheel over all the existing songs (fills in the box to the left that you have option to type in) - populates list from our supabase database
+
+To right of scroll wheel: 
+Lists display fun facts as hints:
+Top 10 most common openers ... Last 10 openers ...
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Guess the Opener/Encore/Bust Out Results Page
+
+ (this same architecture can be used for Guess the Opener, Guess the Encore, Guess the Bust Out games) 
+
+Title: View Setlist Bingo Results
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content
+
+Element 1:
+[Wheel of fortune wheel] that lands on the correct song. (Updated either through setlist.fm api or manually if they don't give permission
+
+Element 2: to the right of element 1; real time scrolling display of top usernames and results
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Homescreen: home.tsx
+
+Title at top: Setlist Street
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Page: Rectangular Containers for each game that link to the respective game page
+
+Game 1: Guess the Opener
+Game 2: Guess the Encore
+Game 3: Guess the Bust Out
+Game 4: Setlist Bingo:
+Game 5: Setlist Builder
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Main Results Page:
+
+Title: View Game Results
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content
+[A Container for each of the 5 games]
+Container 1: [Guess the Opener, Leaderboard]
+Container 2: [Guess the Encore, Leaderboard]
+Container 3: [Guess the Bust Out, Leaderboard]
+Container 5: [Setlist Bingo, Leaderboard]
+Container 2: [Setlist Builder, Leaderboard]
+
+
+In each container: display a dynamic list of the top 5 users for each game along with their play type (cash, prize, charity)
+
+Each container links to the game specific results pages.
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Setlist Bingo Game Page: setlistbingo.tsx
+
+Title at top: "Setlist Bingo"
+Subtext at top: Win by matching all four corners or getting 5 in a straight line.
+
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Three horizontally distributed elements:
+[Element 1] Scrolling list of songs to select from (links to our Subabase database
+[Element 2] 5x5 Bingo Board with free space in middle. Each bingo square is to be filled in with a song, either by typing, pressing random button or dragging from menu.
+
+
+
+[Element 3]
+To right of bingo board: 
+Lists display fun facts as hints:
+Most common songs
+Least common songs
+Most common song pairs:
+
+Functionality:
+Bingoboard should have option to 
+1) Generate random
+board from songs in Supabase
+database
+2) Allow user to type songs in manually (with autocomplete)
+in
+3) Allow user to modify random filling by typing in (with autocomplete)
+
+[Element 4] Somewhere above bingo board. Button that allows bingo board to be randomly filled in.
+
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Setlist Bingo Results Page:
+
+Title: View Setlist Bingo Results
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content
+
+Element 1: Bingo Grid matching format from setlistbingo.tsx: songs get filled in dynamically through setlist.fm api or manually (if they don't give us permission
+
+Element 2: to the right of element 1; real time scrolling display of top usernames and results
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Setlist Builder Game Page: setlistbuilder.tsx
+
+Title at top: "Build Your Own Setlist"
+Subtext: Winner matches setlist the closest!
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Three horizontally distributed elements:
+[Element 1] Scrolling list of songs to select from (links to our Subabase database - about 200 songs)
+[Element 2] Drag and drop list builder with the following structure:
+
+Set 1:
+Allows user to fill n a variable number of slots:
+
+Set 2:
+Allows user to fill n a variable number of slots before Drums/Space
+Drums/Space
+[Variable number of slots after Drums/Space]
+
+Encore:
+[Variable number of slots for encore 1, encore 2, etc]
+
+
+
+[Element 3]
+To right of bingo board: 
+Lists display fun facts as hints:
+Most common songs
+Least common songs
+Most common song pairs:
+
+Functionality:
+Setlist builder should have option to 
+1) Generate random
+Setlist from songs in Supabase
+database
+2) Allow user to type songs in manually (with autocomplete)
+in
+3) Allow user to modify random filling by typing in (with autocomplete)
+
+[Element 4] Somewhere above setlist builder. Button to randomly generate setlist.
+
+
+Section Header Center: Four Ways to Play
+Four horizontally distributed buttons:
+Button 1: Play for Fun 
+Button 2: Play for Charity 
+Button 3: Play for Cash
+Button 4: Play for Prize
+
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Setlist Builder Results Page:
+
+
+Title: View Guess the Setlist Results
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Element 1
+Selector for each of the three shows: 
+Text: Choose your show:
+Toggle Buttons: [Show 1: Friday, August 1], [Show 2: Saturday, August 2], [Show 3: Sunday, August 3]
+
+Main Content
+
+Element 1:
+Contains our Set 1, Set 2, Encore template
+
+Songs added in real time through setlist.fm API (if they let us), or manually
+
+Set 1:
+
+
+Set 2:
+Drums/Space
+[Variable number of slots after Drums/Space]
+
+Encore:
+[Variable number of slots for encore 1, encore 2, etc]
+
+
+
+
+
+
+Element 2: to the right of element 1; real time scrolling display of top usernames and results
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Sign Up Form Page: signupform.tsx
+
+Title at top: Sign Up /Register
+Subtext: Sign up in order to win prizes.
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Form fields to fill in:
+Leaderboard Display Name: Allow type in or randomly generated. (Public facing name)
+Full Name
+Email: 
+Phone
+Payment Method (if playing for prize, cash or charity): Enable stripe payment buttons or crypto
+
+Preferred Charity (Optional): Have dropdown of charities or allow type in)
+
+Checkbox for reading terms of service
+Checkbox agreeing to be contacted regarding winnings
+
+
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street
+Term of Service: termsofservice.tsx
+
+Title at top: Terms of Service
+
+Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+
+Main Content
+
+Will need verbiage agreeing:
+1) SetlistStreetisnotaffiliatedwiththeGratefulDead,SetlistStreet
+2) Useracknowledgesthisisagameofskillandisnotinajurisdictionthatprobibhits games like this
+3) User acknowledges they are not affiliated with Dead and Company organization in a way That would give them an unfair advtange
+[fill in more later]
+4) User will not hold Setlist Street liable for any loss of funds, etc.
+
+Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
+Bottom Text: Copyright 2025, Setlist Street

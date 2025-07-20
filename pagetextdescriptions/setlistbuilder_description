@@ -1,56 +1,64 @@
-Setlist Builder Game Page: setlistbuilder.tsx
+Fantasy Setlist Game Page: setlist-builder.tsx (RENAMED from "Setlist Builder" to "Fantasy Setlist")
 
-Title at top: "Build Your Own Setlist"
-Subtext: Winner matches setlist the closest!
+Title at top: "Fantasy Setlist"
 
-Top navigation bar: Links to “How to Play”, “View Results”, “Sign In/Sign Up”
+Top navigation bar: Links to "How to Play", "FAQ", "Sign In", "Sign Up" (properly right-aligned with better spacing)
 
-Main Content
+**RECENT MAJOR LAYOUT IMPROVEMENTS:**
+- Redesigned with intuitive left-right workflow
+- Song candidates positioned on LEFT (2/5 width)
+- Setlist builder positioned on RIGHT (3/5 width)
+- Enhanced margins and spacing throughout
+- No edge-to-edge containers - proper padding system
+- Hints moved to sidebar for space efficiency
+- Auto-submission when play mode selected
 
-Three horizontally distributed elements:
-[Element 1] Scrolling list of songs to select from (links to our Subabase database - about 200 songs)
-[Element 2] Drag and drop list builder with the following structure:
+**COUNTDOWN TIMER:**
+Live countdown to 7:00 PM PT deadline for next show
+Shows: Friday 8/1, Saturday 8/2, Sunday 8/3
 
-Set 1:
-Allows user to fill n a variable number of slots:
+**MAIN BUILDER LAYOUT:**
+Two-column grid system (2/5 + 3/5 width):
 
-Set 2:
-Allows user to fill n a variable number of slots before Drums/Space
-Drums/Space
-[Variable number of slots after Drums/Space]
+**LEFT SIDE - Song Candidates (2/5 width):**
+- Limited song display (20 visible with scrolling)
+- Search functionality with instant filtering
+- "+X more songs (search to filter)" indicator
+- Blue hover effects for drag interactions
+- Clear instructions: "Available Songs"
 
-Encore:
-[Variable number of slots for encore 1, encore 2, etc]
+**RIGHT SIDE - Setlist Builder (3/5 width):**
+Grid layout for different sections:
+- Set 1: Drag and drop song slots
+- Set 2 (Before Drums/Space): Song slots
+- Drums/Space notice (spans full width with emojis 🥁🚀)
+- Set 2 (After Drums/Space): Song slots  
+- Encore: Final song slots
 
+Each section uses drag-and-drop from left candidates to right builder
+Purple numbering system for setlist order
+Enhanced visual feedback during drag operations
 
+**HINTS SIDEBAR:**
+Sticky positioned sidebar with:
+- Quick Stats (opener probabilities, common closers, popular pairings)
+- Pro Tips (strategy advice)
+- Live Preview (current setlist progress)
 
-[Element 3]
-To right of bingo board: 
-Lists display fun facts as hints:
-Most common songs
-Least common songs
-Most common song pairs:
+**STANDARDIZED PAYMENT SECTION:**
+Horizontal 4-column grid layout:
+- Play for Fun | Play for Charity | Play for Cash | Play for Prize
+- Auto-submission when mode selected (no separate submit button)
+- Consistent spacing and responsive design
+- Amount selection for charity/cash modes
 
-Functionality:
-Setlist builder should have option to 
-1) Generate random
-Setlist from songs in Supabase
-database
-2) Allow user to type songs in manually (with autocomplete)
-in
-3) Allow user to modify random filling by typing in (with autocomplete)
+**COMPLEX SCORING SYSTEM:**
+- Exact song in exact position = 20 points
+- Correct song in wrong position = 10 points
+- Bonus points for rare songs and perfect sequences
+- Song pairs and sequences count as additional scoring opportunities
 
-[Element 4] Somewhere above setlist builder. Button to randomly generate setlist.
+**CONTACT:** All email references updated to setliststreet@proton.me
 
-
-Section Header Center: Four Ways to Play
-Four horizontally distributed buttons:
-Button 1: Play for Fun 
-Button 2: Play for Charity 
-Button 3: Play for Cash
-Button 4: Play for Prize
-
-
-
-Bottom Navigtation Bar: Links to “Terms of Service”, “About this App”, “Privacy Policy
-Bottom Text: Copyright 2025, Setlist Street
+Bottom Navigation Bar: Links to "Terms of Service", "About this App", "Privacy Policy" (horizontal with even spacing)
+Bottom Text: © 2025 Setlist Street. All rights reserved.
