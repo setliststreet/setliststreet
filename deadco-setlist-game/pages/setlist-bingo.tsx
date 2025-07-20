@@ -14,45 +14,6 @@ const allSongs = [
   'U.S. Blues', 'The Weight', 'Knockin\' on Heaven\'s Door', 'Johnny B. Goode', 'Samson and Delilah'
 ];
 
-const mostCommonSongs = [
-  '1. Sugar Magnolia (78% of shows)',
-  '2. Eyes of the World (72% of shows)', 
-  '3. Fire on the Mountain (68% of shows)',
-  '4. Truckin\' (65% of shows)',
-  '5. Uncle John\'s Band (61% of shows)',
-  '6. Touch of Grey (58% of shows)',
-  '7. Scarlet Begonias (55% of shows)',
-  '8. Deal (52% of shows)',
-  '9. Casey Jones (48% of shows)',
-  '10. Friend of the Devil (45% of shows)'
-];
-
-const leastCommonSongs = [
-  '1. Dark Star (8% of shows)',
-  '2. St. Stephen (12% of shows)',
-  '3. The Eleven (15% of shows)',
-  '4. Terrapin Station (18% of shows)',
-  '5. Morning Dew (22% of shows)',
-  '6. Wharf Rat (25% of shows)',
-  '7. Black Peter (28% of shows)',
-  '8. Stella Blue (31% of shows)',
-  '9. Brokedown Palace (34% of shows)',
-  '10. Playing in the Band (37% of shows)'
-];
-
-const commonSongPairs = [
-  '1. Scarlet Begonias → Fire on the Mountain (89%)',
-  '2. Help on the Way → Slipknot! → Franklin\'s Tower (82%)',
-  '3. China Cat Sunflower → I Know You Rider (78%)',
-  '4. Playing in the Band → Drums → Space (71%)',
-  '5. Lost Sailor → Saint of Circumstance (68%)',
-  '6. Estimated Prophet → Eyes of the World (45%)',
-  '7. Deal → Passenger (42%)',
-  '8. Tennessee Jed → Looks Like Rain (38%)',
-  '9. Casey Jones → One More Saturday Night (35%)',
-  '10. Ripple → Brokedown Palace (32%)'
-];
-
 type BingoBoard = (string | null)[][];
 
 export default function SetlistBingo() {
@@ -66,12 +27,14 @@ export default function SetlistBingo() {
   const [selectedPlayMode, setSelectedPlayMode] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [draggedSong, setDraggedSong] = useState<string | null>(null);
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
     if (value.length > 0) {
       const filtered = allSongs.filter(song => 
-        song.toLowerCase().includes(value.toLowerCase())
+        song.toLowerCase().includes(value.toLowerCase()) &&
+        !bingoBoard.flat().includes(song)
       ).slice(0, 10);
       setSuggestions(filtered);
     } else {
@@ -84,6 +47,16 @@ export default function SetlistBingo() {
     
     const newBoard = [...bingoBoard];
     newBoard[row][col] = value;
+    setBingoBoard(newBoard);
+    setSearchTerm('');
+    setSuggestions([]);
+  };
+
+  const clearSquare = (row: number, col: number) => {
+    if (row === 2 && col === 2) return; // Can't change FREE space
+    
+    const newBoard = [...bingoBoard];
+    newBoard[row][col] = '';
     setBingoBoard(newBoard);
   };
 
@@ -102,7 +75,6 @@ export default function SetlistBingo() {
         }
       }
     }
-    
     setBingoBoard(newBoard);
   };
 
@@ -112,202 +84,251 @@ export default function SetlistBingo() {
     setBingoBoard(newBoard);
   };
 
-  const handlePlayModeSelect = (mode: string) => {
-    setSelectedPlayMode(mode);
+  const handleDragStart = (e: React.DragEvent, song: string) => {
+    setDraggedSong(song);
+    e.dataTransfer.effectAllowed = 'copy';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleDrop = (e: React.DragEvent, row: number, col: number) => {
+    e.preventDefault();
+    if (draggedSong && row !== 2 || col !== 2) {
+      updateBingoSquare(row, col, draggedSong);
+    }
+    setDraggedSong(null);
+  };
+
+  const handleSubmit = () => {
+    const filledSquares = bingoBoard.flat().filter(cell => cell && cell !== '').length;
+    
+    if (filledSquares < 20) { // 24 total minus 4 empty minimum
+      alert('Please fill in more squares! You need at least 20 songs on your bingo card.');
+      return;
+    }
+
+    if (!selectedPlayMode) {
+      alert('Please select a play mode!');
+      return;
+    }
+
+    console.log('Bingo card submitted:', bingoBoard);
+    alert('Bingo card submitted successfully!');
   };
 
   return (
     <MainLayout>
-      <div>
-        <h1>Setlist Bingo</h1>
-        <p>Win by matching all four corners or getting 5 in a straight line.</p>
-        
-        <section>
-          <h2>Main Content</h2>
-          
-          {/* Random Fill Button */}
-          <div>
-            <button onClick={generateRandomBoard}>
-              Randomly Fill Bingo Board
-            </button>
-            <button onClick={clearBoard}>
-              Clear Board
-            </button>
+      <div className="bg-white min-h-screen">
+        <div className="container mx-auto px-6 py-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+              Setlist Bingo
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Create your 5x5 bingo card and win with lines, columns, diagonals, or four corners!
+            </p>
           </div>
 
-          <div>
-            {/* Element 1: Scrolling Song List */}
-            <div>
-              <h3>Song Database</h3>
-              
+          {/* Game Instructions */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">How to Play</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
               <div>
+                <h3 className="font-semibold text-gray-800 mb-2">Winning Combinations:</h3>
+                <ul className="space-y-1">
+                  <li>• Any complete row (5 songs)</li>
+                  <li>• Any complete column (5 songs)</li>
+                  <li>• Any complete diagonal (5 songs)</li>
+                  <li>• Four corners (4 songs)</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">Strategy Tips:</h3>
+                <ul className="space-y-1">
+                  <li>• Mix common and rare songs</li>
+                  <li>• Consider song relationships</li>
+                  <li>• Use the center FREE space wisely</li>
+                  <li>• Multiple winners possible!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Song Selection */}
+            <div>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Add Songs</h2>
+              
+              {/* Search Input */}
+              <div className="mb-4">
                 <input
                   type="text"
-                  placeholder="Search songs..."
+                  placeholder="Search for songs..."
                   value={searchTerm}
                   onChange={(e) => handleSearchChange(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
-                
-                {suggestions.length > 0 && (
-                  <div>
-                    <h4>Suggestions:</h4>
-                    <ul>
-                      {suggestions.map((song) => (
-                        <li key={song}>
-                          <button onClick={() => setSearchTerm(song)}>
-                            {song}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+              </div>
+
+              {/* Suggestions */}
+              {suggestions.length > 0 && (
+                <div className="mb-4">
+                  <h3 className="font-semibold text-gray-800 mb-2">Search Results:</h3>
+                  <div className="space-y-2 max-h-48 overflow-y-auto">
+                    {suggestions.map((song, index) => (
+                      <div
+                        key={index}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, song)}
+                        className="p-2 bg-gray-50 border border-gray-200 rounded cursor-move hover:bg-gray-100 text-sm transition-colors"
+                      >
+                        {song}
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
+
+              {/* Popular Songs */}
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">Popular Songs (Drag to Board):</h3>
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {allSongs.filter(song => !bingoBoard.flat().includes(song)).slice(0, 20).map((song, index) => (
+                    <div
+                      key={index}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, song)}
+                      className="p-2 bg-gray-50 border border-gray-200 rounded cursor-move hover:bg-gray-100 text-sm transition-colors"
+                    >
+                      {song}
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div>
-                <h4>All Songs</h4>
-                <select size="10">
-                  {allSongs.map((song) => (
-                    <option key={song} value={song}>{song}</option>
-                  ))}
-                </select>
+              {/* Board Controls */}
+              <div className="mt-6 space-y-2">
+                <button
+                  onClick={generateRandomBoard}
+                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Generate Random Board
+                </button>
+                <button
+                  onClick={clearBoard}
+                  className="w-full bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  Clear Board
+                </button>
               </div>
             </div>
 
-            {/* Element 2: 5x5 Bingo Board */}
+            {/* Bingo Board */}
             <div>
-              <h3>5x5 Bingo Board</h3>
-              
-              <table>
-                <thead>
-                  <tr>
-                    <th>B</th>
-                    <th>I</th>
-                    <th>N</th>
-                    <th>G</th>
-                    <th>O</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bingoBoard.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
-                      {row.map((cell, colIndex) => (
-                        <td key={`${rowIndex}-${colIndex}`}>
-                          {rowIndex === 2 && colIndex === 2 ? (
-                            <div>FREE</div>
-                          ) : (
-                            <input
-                              type="text"
-                              value={cell || ''}
-                              onChange={(e) => updateBingoSquare(rowIndex, colIndex, e.target.value)}
-                              placeholder={`${rowIndex + 1}-${colIndex + 1}`}
-                            />
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              
-              <div>
-                <h4>How to Win:</h4>
-                <ul>
-                  <li>All four corners</li>
-                  <li>5 in a straight line (horizontal, vertical, or diagonal)</li>
-                  <li>Full board (blackout)</li>
-                </ul>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Your Bingo Card</h2>
+              <div className="bg-white border-2 border-gray-300 rounded-lg p-4">
+                <div className="grid grid-cols-5 gap-1 aspect-square">
+                  {bingoBoard.map((row, rowIndex) =>
+                    row.map((cell, colIndex) => (
+                      <div
+                        key={`${rowIndex}-${colIndex}`}
+                        onDragOver={handleDragOver}
+                        onDrop={(e) => handleDrop(e, rowIndex, colIndex)}
+                        className={`
+                          border border-gray-300 rounded text-center flex items-center justify-center text-xs font-medium
+                          min-h-16 cursor-pointer transition-colors relative
+                          ${rowIndex === 2 && colIndex === 2 
+                            ? 'bg-purple-100 text-purple-800' 
+                            : cell 
+                              ? 'bg-blue-50 text-blue-800 hover:bg-blue-100' 
+                              : 'bg-gray-50 hover:bg-gray-100'
+                          }
+                        `}
+                        onClick={() => {
+                          if (suggestions.length > 0 && suggestions[0] && rowIndex !== 2 || colIndex !== 2) {
+                            updateBingoSquare(rowIndex, colIndex, suggestions[0]);
+                          }
+                        }}
+                      >
+                        {cell === 'FREE' ? (
+                          <span className="font-bold">FREE</span>
+                        ) : cell ? (
+                          <>
+                            <span className="truncate px-1">{cell}</span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                clearSquare(rowIndex, colIndex);
+                              }}
+                              className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center hover:bg-red-600 opacity-0 hover:opacity-100 transition-opacity"
+                            >
+                              ×
+                            </button>
+                          </>
+                        ) : (
+                          <span className="text-gray-400">Empty</span>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Board Stats */}
+              <div className="mt-4 text-sm text-gray-600 text-center">
+                Filled: {bingoBoard.flat().filter(cell => cell && cell !== '').length}/25 squares
               </div>
             </div>
 
-            {/* Element 3: Fun Facts & Hints */}
+            {/* Play Mode & Submit */}
             <div>
-              <h3>Hints & Statistics</h3>
-              
-              <div>
-                <h4>Most Common Songs</h4>
-                <ul>
-                  {mostCommonSongs.map((song, index) => (
-                    <li key={index}>{song}</li>
-                  ))}
-                </ul>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Choose Play Mode</h2>
+              <div className="space-y-3">
+                {[
+                  { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
+                  { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
+                  { id: 'cash', title: 'Play for Cash', desc: 'Entry fee builds prize pool' },
+                  { id: 'prize', title: 'Play for Prize', desc: 'Compete for sponsored rewards' }
+                ].map((mode) => (
+                  <button
+                    key={mode.id}
+                    onClick={() => setSelectedPlayMode(mode.id)}
+                    className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
+                      selectedPlayMode === mode.id
+                        ? 'border-purple-500 bg-purple-50'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <h3 className="font-semibold text-gray-800 mb-1">{mode.title}</h3>
+                    <p className="text-sm text-gray-600">{mode.desc}</p>
+                  </button>
+                ))}
               </div>
 
-              <div>
-                <h4>Least Common Songs</h4>
-                <ul>
-                  {leastCommonSongs.map((song, index) => (
-                    <li key={index}>{song}</li>
-                  ))}
-                </ul>
-              </div>
+              <button
+                onClick={handleSubmit}
+                className="w-full mt-6 bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg"
+              >
+                Submit Bingo Card
+              </button>
 
-              <div>
-                <h4>Most Common Song Pairs</h4>
-                <ul>
-                  {commonSongPairs.map((pair, index) => (
-                    <li key={index}>{pair}</li>
-                  ))}
-                </ul>
+              {/* Quick Stats */}
+              <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                <h3 className="font-semibold text-gray-800 mb-2">Quick Stats</h3>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p>Most Common: Sugar Magnolia (78%)</p>
+                  <p>Rarest: Dark Star (8%)</p>
+                  <p>Best Opener: Feel Like a Stranger</p>
+                  <p>Common Pair: Scarlet → Fire</p>
+                </div>
               </div>
             </div>
           </div>
-        </section>
-
-        <section>
-          <h2>Functionality</h2>
-          <div>
-            <h3>Available Features:</h3>
-            <ul>
-              <li>✓ Generate random board from song database</li>
-              <li>✓ Manual typing with autocomplete</li>
-              <li>✓ Modify random board by typing</li>
-              <li>✓ Search and select from song list</li>
-              <li>✓ Free space in center</li>
-              <li>✓ Multiple winning conditions</li>
-            </ul>
-          </div>
-        </section>
-
-        <section>
-          <h2>Four Ways to Play</h2>
-          <div>
-            <button onClick={() => handlePlayModeSelect('fun')}>
-              Play for Fun
-            </button>
-            <button onClick={() => handlePlayModeSelect('charity')}>
-              Play for Charity
-            </button>
-            <button onClick={() => handlePlayModeSelect('cash')}>
-              Play for Cash
-            </button>
-            <button onClick={() => handlePlayModeSelect('prize')}>
-              Play for Prize
-            </button>
-          </div>
-          
-          {selectedPlayMode && (
-            <div>
-              <h3>Selected Mode: {selectedPlayMode}</h3>
-              <p>Complete your bingo board and submit!</p>
-              <button>Submit Bingo Board</button>
-            </div>
-          )}
-        </section>
-
-        <section>
-          <h2>Current Board Preview</h2>
-          <div>
-            <h3>Your Bingo Board:</h3>
-            {bingoBoard.map((row, rowIndex) => (
-              <div key={rowIndex}>
-                Row {rowIndex + 1}: {row.map((cell, colIndex) => 
-                  `[${cell || 'Empty'}]`
-                ).join(' ')}
-              </div>
-            ))}
-          </div>
-        </section>
+        </div>
       </div>
     </MainLayout>
   );

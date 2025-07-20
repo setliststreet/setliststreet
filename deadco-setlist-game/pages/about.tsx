@@ -1,338 +1,196 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Layout from '../components/Layout';
-import { SetlistStreetTheme } from '../theme/SetlistStreetTheme';
+import MainLayout from '../components/MainLayout';
 
 export default function About() {
-  const teamMembers = [
+  const features = [
     {
-      name: 'Alex "The Archivist"',
-      role: 'Founder & Lead Developer',
-      emoji: '🎸',
-      bio: 'Deadhead since \'87 with an obsession for setlist data and perfect show recordings.'
+      title: 'Real-Time Predictions',
+      description: 'Make predictions before and during shows with live scoring updates',
     },
     {
-      name: 'Maya "The Designer"',
-      role: 'UI/UX & Community Manager',
-      emoji: '🎨',
-      bio: 'Makes everything cute and ensures our community stays kind and welcoming.'
+      title: 'Statistical Insights',
+      description: 'Access historical data and probability analytics for smarter predictions',
     },
     {
-      name: 'Sam "The Stats Wizard"',
-      role: 'Data Engineer',
-      emoji: '📊',
-      bio: 'Builds the algorithms that power our predictions and scoring systems.'
+      title: 'Multiple Game Modes',
+      description: 'From simple song predictions to complex setlist building challenges',
     },
     {
-      name: 'Jordan "The Music Maven"',
-      role: 'Content & Partnerships',
-      emoji: '🎵',
-      bio: 'Works with artists and venues to bring you the most amazing games and prizes.'
+      title: 'Community Competition',
+      description: 'Compete with fellow Deadheads on live leaderboards',
+    },
+    {
+      title: 'Flexible Participation',
+      description: 'Play for fun, charity, cash prizes, or sponsored rewards',
+    },
+    {
+      title: 'Live Show Integration',
+      description: 'Real-time next song predictions during actual performances',
+    },
+    {
+      title: 'Fair Play Guaranteed',
+      description: 'Transparent scoring, secure payments, and verified results',
     }
   ];
 
-  const milestones = [
-    {
-      date: 'Summer 2024',
-      title: 'The Spark',
-      emoji: '💡',
-              description: 'Late night setlist debates at a coffee shop led to &quot;what if we made a game out of this?&quot;'
-    },
-    {
-      date: 'Fall 2024',
-      title: 'First Prototype',
-      emoji: '🛠️',
-      description: 'Built the first bingo board generator with 50 friends testing at Dead & Co shows.'
-    },
-    {
-      date: 'Winter 2024',
-      title: 'Community Growth',
-      emoji: '🌱',
-      description: 'Word spread through the community. 1,000 players joined our Discord.'
-    },
+  const timeline = [
     {
       date: 'January 2025',
-      title: 'Setlist Street Launch',
-      emoji: '🚀',
-      description: 'Full platform launch with multiple game modes and the cutest design ever!'
-    }
-  ];
-
-  const values = [
-    {
-      title: 'Community First',
-      emoji: '🤝',
-      description: 'We&apos;re fans building for fans. Every decision prioritizes community happiness over profit.'
+      title: 'Development Begins',
+      description: 'Initial concept and prototype development'
     },
     {
-      title: 'Celebration, Not Gambling',
-      emoji: '🎪',
-      description: 'This is about celebrating music knowledge and having fun, not creating gambling addictions.'
+      date: 'March 2025',
+      title: 'Beta Testing',
+      description: 'Closed beta with select community members'
     },
     {
-      title: 'Fairness & Transparency',
-      emoji: '⚖️',
-      description: 'Open algorithms, clear rules, and honest communication. No hidden fees or surprises.'
+      date: 'June 2025',
+      title: 'Pre-Launch',
+      description: 'Final testing and community preparation'
     },
     {
-      title: 'Respect for Artists',
-      emoji: '🎶',
-      description: 'We honor the music and artists that inspire us, using their work respectfully and legally.'
+      date: 'August 1-3, 2025',
+      title: 'GD60 Launch',
+      description: 'Live debut at Golden Gate Park shows'
     }
   ];
 
   return (
-    <Layout 
-      title="Setlist Street - About Us"
-      description="Learn about the team and story behind Setlist Street, the cutest setlist prediction platform."
-    >
-      <div className="min-h-screen py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 
-              className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent"
-              style={{
-                backgroundImage: SetlistStreetTheme.gradients.pastel,
-                fontFamily: SetlistStreetTheme.fonts.display,
-              }}
+    <MainLayout>
+      <div className="bg-white min-h-screen">
+        <div className="container mx-auto px-6 py-12">
+          {/* Hero Section */}
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              👤 About Setlist Street
-            </h1>
-            
-            <motion.p 
-              className="text-lg text-white/90 max-w-3xl mx-auto leading-relaxed"
-              style={{ fontFamily: SetlistStreetTheme.fonts.body }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              Born from late-night setlist debates and a love for live music, 
-              Setlist Street is <span className="font-bold text-pink-300">by fans, for fans</span> — 
-              where music knowledge meets community fun!
-            </motion.p>
-          </motion.div>
+              <h1 className="text-5xl font-bold text-gray-800 mb-6">
+                About Setlist Street
+              </h1>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                The ultimate prediction game platform for Deadheads, created by fans for fans. 
+                Combining statistical analysis with community competition for the GD60 anniversary concerts.
+              </p>
+            </motion.div>
+          </div>
 
-          {/* Origin Story */}
-          <motion.div
-            className="mb-12 p-8 rounded-2xl bg-white/10 backdrop-blur border border-white/20"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="text-center mb-6">
-              <div className="text-6xl mb-4">☕</div>
-              <h2 
-                className="text-3xl font-bold text-white mb-4"
-                style={{ fontFamily: SetlistStreetTheme.fonts.heading }}
-              >
-                Our Origin Story
-              </h2>
-            </div>
-            
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="text-white/90 leading-relaxed mb-6">
-                It all started in a tiny coffee shop near Berkeley, where a group of Deadheads 
-                couldn't stop debating what Dead & Company would open with at their next show. 
-                One person said "Bertha," another swore it would be "Jack Straw," and a third 
-                insisted on "Deal."
-              </p>
-              
-              <p className="text-white/90 leading-relaxed mb-6">
-                              Around 2 AM, fueled by way too much coffee and vintage Grateful Dead bootlegs, 
-              someone said those magic words: <span className="font-bold text-yellow-300">
-              &quot;What if we made a game out of this?&quot;</span>
-              </p>
-              
-              <p className="text-white/90 leading-relaxed">
-                              That night, with laptops scattered across sticky tables and &quot;Fire on the Mountain&quot; 
-              playing softly in the background, Setlist Street was born. We&apos;ve been building 
-              the cutest, most fun way to celebrate live music ever since!
+          {/* Mission Section */}
+          <div className="mb-16">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
+              <div className="text-6xl mb-4 text-gray-400">♪</div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Mission</h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                To enhance the live music experience by bringing Deadheads together through friendly 
+                competition, statistical insights, and community engagement. We celebrate the 
+                beautiful unpredictability of Dead & Company while finding patterns in the music we all love.
               </p>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Timeline */}
-          <motion.div
-            className="mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <h2 
-              className="text-3xl font-bold text-center text-white mb-8"
-              style={{ fontFamily: SetlistStreetTheme.fonts.heading }}
-            >
-              🗓️ Our Journey
-            </h2>
-            
-            <div className="space-y-6">
-              {milestones.map((milestone, index) => (
+          {/* Features Grid */}
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-800 text-center mb-12">Platform Features</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className="flex gap-6 p-6 rounded-xl bg-white/10 backdrop-blur border border-white/20"
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                >
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 rounded-full bg-white/10 border-2 border-white/20 flex items-center justify-center text-2xl backdrop-blur">
-                      {milestone.emoji}
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="text-yellow-300 text-sm font-medium mb-1">
-                      {milestone.date}
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {milestone.title}
-                    </h3>
-                    <p className="text-white/80 leading-relaxed">
-                      {milestone.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Team */}
-          <motion.div
-            className="mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-          >
-            <h2 
-              className="text-3xl font-bold text-center text-white mb-8"
-              style={{ fontFamily: SetlistStreetTheme.fonts.heading }}
-            >
-              👥 Meet the Team
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {teamMembers.map((member, index) => (
-                <motion.div
-                  key={index}
-                  className="p-6 rounded-xl bg-white/10 backdrop-blur border border-white/20"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.9 + index * 0.1 }}
-                  whileHover={{ scale: 1.02, y: -5 }}
-                >
-                  <div className="text-center mb-4">
-                    <div className="text-4xl mb-3">{member.emoji}</div>
-                    <h3 className="text-xl font-bold text-white mb-1">
-                      {member.name}
-                    </h3>
-                    <div className="text-yellow-300 text-sm font-medium mb-3">
-                      {member.role}
-                    </div>
-                  </div>
-                  <p className="text-white/80 text-sm leading-relaxed text-center">
-                    {member.bio}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Values */}
-          <motion.div
-            className="mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.2 }}
-          >
-            <h2 
-              className="text-3xl font-bold text-center text-white mb-8"
-              style={{ fontFamily: SetlistStreetTheme.fonts.heading }}
-            >
-              💖 Our Values
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {values.map((value, index) => (
-                <motion.div
-                  key={index}
-                  className="p-6 rounded-xl bg-white/10 backdrop-blur border border-white/20"
+                  className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.3 + index * 0.1 }}
-                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="text-3xl">{value.emoji}</div>
-                    <div>
-                      <h3 className="text-lg font-bold text-white mb-2">
-                        {value.title}
-                      </h3>
-                      <p className="text-white/80 text-sm leading-relaxed">
-                        {value.description}
-                      </p>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Timeline Section */}
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-800 text-center mb-12">Our Journey</h2>
+            <div className="max-w-4xl mx-auto">
+              {timeline.map((event, index) => (
+                <motion.div
+                  key={index}
+                  className="flex items-center mb-8 last:mb-0"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                >
+                  <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-6 flex-shrink-0">
+                    {index + 1}
+                  </div>
+                  <div className="flex-1">
+                    <div className="bg-white border border-gray-200 rounded-lg p-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                        <h3 className="text-lg font-bold text-gray-800">{event.title}</h3>
+                        <span className="text-sm text-purple-600 font-medium">{event.date}</span>
+                      </div>
+                      <p className="text-gray-600">{event.description}</p>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Mission Statement */}
-          <motion.div
-            className="p-8 rounded-2xl border border-white/20 backdrop-blur text-center"
-            style={{ background: SetlistStreetTheme.gradients.aurora }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.6 }}
-          >
-            <div className="text-6xl mb-6">🎼</div>
-            <h3 
-              className="text-3xl font-bold text-white mb-6"
-              style={{ fontFamily: SetlistStreetTheme.fonts.heading }}
-            >
-              Our Mission
-            </h3>
-            
-            <p className="text-lg text-white/90 max-w-2xl mx-auto leading-relaxed mb-6">
-              To create the most joyful, inclusive, and engaging platform for music fans 
-              to celebrate their passion for live music through games, community, and 
-              friendly competition.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-white/80 mb-8">
-              <div className="flex items-center gap-2">
-                <span className="text-yellow-300">🎯</span>
-                <span>Celebrate Music Knowledge</span>
+          {/* Technology Section */}
+          <div className="mb-16">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-8">
+              <div className="text-center mb-8">
+                <div className="text-6xl mb-6 text-gray-400">⚙</div>
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">Built with Modern Technology</h2>
+                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                  Setlist Street uses cutting-edge web technologies to deliver a fast, reliable, 
+                  and engaging experience for all users.
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-blue-300">🤝</span>
-                <span>Build Community</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-green-300">🎪</span>
-                <span>Have Fun Together</span>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <span className="text-blue-600 font-semibold">Frontend</span>
+                  <span className="ml-4">Next.js, React, TypeScript</span>
+                </div>
+                <div className="text-center">
+                  <span className="text-green-600 font-semibold">Backend</span>
+                  <span className="ml-4">Supabase, PostgreSQL</span>
+                </div>
+                <div className="text-center">
+                  <span className="text-purple-600 font-semibold">Payments</span>
+                  <span className="ml-4">Stripe, PayPal</span>
+                </div>
+                <div className="text-center">
+                  <span className="text-orange-600 font-semibold">Hosting</span>
+                  <span className="ml-4">Vercel, CDN</span>
+                </div>
               </div>
             </div>
+          </div>
 
-            <motion.div
-              className="text-white/70 text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2 }}
-            >
-              Whether you're a casual fan or a total music nerd, 
-              <br />
-              there&apos;s a place for you on Setlist Street! 🏠
-            </motion.div>
-          </motion.div>
+          {/* Community Section */}
+          <div className="text-center bg-white border border-gray-200 rounded-lg p-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">Join the Community</h2>
+            <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+              Setlist Street is more than just a prediction platform - it's a celebration of the 
+              Grateful Dead community and the magic of live music. Join thousands of Deadheads 
+              in friendly competition and shared musical passion.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/register" className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                Get Started
+              </a>
+              <a href="/rules" className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+                Learn How to Play
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </Layout>
+    </MainLayout>
   );
 } 

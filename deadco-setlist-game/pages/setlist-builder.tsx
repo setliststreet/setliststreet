@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MainLayout from '../components/MainLayout';
+import SetlistDragDropPicker from '../components/SetlistDragDropPicker';
 
 // Mock database of ~200 songs (simplified for demo)
 const allSongs = [
@@ -30,45 +31,6 @@ const allSongs = [
   'I Need a Miracle', 'From the Heart of Me', 'Stagger Lee', 'All New Minglewood Blues'
 ];
 
-const mostCommonSongs = [
-  '1. Sugar Magnolia (78% of shows)',
-  '2. Eyes of the World (72% of shows)', 
-  '3. Fire on the Mountain (68% of shows)',
-  '4. Truckin\' (65% of shows)',
-  '5. Uncle John\'s Band (61% of shows)',
-  '6. Touch of Grey (58% of shows)',
-  '7. Scarlet Begonias (55% of shows)',
-  '8. Deal (52% of shows)',
-  '9. Casey Jones (48% of shows)',
-  '10. Friend of the Devil (45% of shows)'
-];
-
-const leastCommonSongs = [
-  '1. Viola Lee Blues (0.8% of shows)',
-  '2. Cream Puff War (1.2% of shows)',
-  '3. Mason\'s Children (1.5% of shows)',
-  '4. King Solomon\'s Marbles (1.8% of shows)',
-  '5. Barbed Wire Whipping Party (2.1% of shows)',
-  '6. Golden Road (2.4% of shows)',
-  '7. High Time (2.7% of shows)',
-  '8. Cold Rain and Snow (3.0% of shows)',
-  '9. Doin\' That Rag (3.3% of shows)',
-  '10. The Grateful Dead (3.6% of shows)'
-];
-
-const commonSongPairs = [
-  '1. Scarlet Begonias → Fire on the Mountain (89%)',
-  '2. Help on the Way → Slipknot! → Franklin\'s Tower (82%)',
-  '3. China Cat Sunflower → I Know You Rider (78%)',
-  '4. Playing in the Band → Drums → Space (71%)',
-  '5. Lost Sailor → Saint of Circumstance (68%)',
-  '6. Estimated Prophet → Eyes of the World (45%)',
-  '7. Deal → Passenger (42%)',
-  '8. Tennessee Jed → Looks Like Rain (38%)',
-  '9. Casey Jones → One More Saturday Night (35%)',
-  '10. Ripple → Brokedown Palace (32%)'
-];
-
 interface SetlistStructure {
   set1: string[];
   set2Before: string[];
@@ -78,312 +40,198 @@ interface SetlistStructure {
 
 export default function SetlistBuilder() {
   const [setlist, setSetlist] = useState<SetlistStructure>({
-    set1: ['', '', ''],
-    set2Before: ['', ''],
-    set2After: ['', ''],
-    encores: [[''], ['']]
+    set1: [],
+    set2Before: [],
+    set2After: [],
+    encores: [[]]
   });
   
   const [selectedPlayMode, setSelectedPlayMode] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  const handleSearchChange = (value: string) => {
-    setSearchTerm(value);
-    if (value.length > 0) {
-      const filtered = allSongs.filter(song => 
-        song.toLowerCase().includes(value.toLowerCase())
-      ).slice(0, 10);
-      setSuggestions(filtered);
-    } else {
-      setSuggestions([]);
+  const updateSetSection = (section: keyof SetlistStructure, songs: string[]) => {
+    setSetlist(prev => ({
+      ...prev,
+      [section]: songs
+    }));
+  };
+
+  const handleSubmit = () => {
+    const totalSongs = setlist.set1.length + setlist.set2Before.length + setlist.set2After.length + 
+                      setlist.encores.reduce((sum, encore) => sum + encore.length, 0);
+    
+    if (totalSongs === 0) {
+      alert('Please add at least one song to your setlist!');
+      return;
     }
-  };
 
-  const addSlot = (section: 'set1' | 'set2Before' | 'set2After', encoreIndex?: number) => {
-    const newSetlist = { ...setlist };
-    if (section === 'set1') {
-      newSetlist.set1.push('');
-    } else if (section === 'set2Before') {
-      newSetlist.set2Before.push('');
-    } else if (section === 'set2After') {
-      newSetlist.set2After.push('');
-    } else if (typeof encoreIndex === 'number') {
-      newSetlist.encores[encoreIndex].push('');
+    if (!selectedPlayMode) {
+      alert('Please select a play mode!');
+      return;
     }
-    setSetlist(newSetlist);
-  };
 
-  const addEncore = () => {
-    const newSetlist = { ...setlist };
-    newSetlist.encores.push(['']);
-    setSetlist(newSetlist);
-  };
-
-  const updateSlot = (section: string, index: number, value: string, encoreIndex?: number) => {
-    const newSetlist = { ...setlist };
-    if (section === 'set1') {
-      newSetlist.set1[index] = value;
-    } else if (section === 'set2Before') {
-      newSetlist.set2Before[index] = value;
-    } else if (section === 'set2After') {
-      newSetlist.set2After[index] = value;
-    } else if (section === 'encore' && typeof encoreIndex === 'number') {
-      newSetlist.encores[encoreIndex][index] = value;
-    }
-    setSetlist(newSetlist);
-  };
-
-  const generateRandomSetlist = () => {
-    const shuffled = [...allSongs].sort(() => 0.5 - Math.random());
-    const newSetlist: SetlistStructure = {
-      set1: shuffled.slice(0, 7),
-      set2Before: shuffled.slice(7, 11),
-      set2After: shuffled.slice(11, 16),
-      encores: [shuffled.slice(16, 18), shuffled.slice(18, 20)]
-    };
-    setSetlist(newSetlist);
-  };
-
-  const handlePlayModeSelect = (mode: string) => {
-    setSelectedPlayMode(mode);
+    console.log('Setlist submitted:', setlist);
+    alert('Setlist submitted successfully!');
   };
 
   return (
     <MainLayout>
-      <div>
-        <h1>Build Your Own Setlist</h1>
-        <p>Winner matches setlist the closest!</p>
-        
-        <section>
-          <h2>Main Content</h2>
-          
-          {/* Element 4: Random Generate Button */}
-          <div>
-            <button onClick={generateRandomSetlist}>
-              Generate Random Setlist
+      <div className="bg-white min-h-screen">
+        <div className="container mx-auto px-6 py-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+              Setlist Builder
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Build your complete setlist prediction for Dead & Company. Predict the order of songs across both sets and encore.
+            </p>
+          </div>
+
+          {/* Game Instructions */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">How to Play</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">Scoring:</h3>
+                <ul className="space-y-1">
+                  <li>• Exact song in exact position = 20 points</li>
+                  <li>• Correct song in wrong position = 10 points</li>
+                  <li>• Bonus points for rare songs and perfect sequences</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">Strategy Tips:</h3>
+                <ul className="space-y-1">
+                  <li>• Set 1 typically has 7-9 songs</li>
+                  <li>• Set 2 has Drums/Space in the middle</li>
+                  <li>• Encores are usually 1-2 songs</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Set 1 */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 1</h2>
+            <SetlistDragDropPicker
+              availableSongs={allSongs}
+              maxSongs={12}
+              onSetlistChange={(songs) => updateSetSection('set1', songs)}
+            />
+          </div>
+
+          {/* Set 2 Before Drums/Space */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 2 (Before Drums/Space)</h2>
+            <SetlistDragDropPicker
+              availableSongs={allSongs}
+              maxSongs={8}
+              onSetlistChange={(songs) => updateSetSection('set2Before', songs)}
+            />
+          </div>
+
+          {/* Drums/Space Notice */}
+          <div className="mb-8">
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+              <h3 className="text-lg font-semibold text-purple-800 mb-2">Drums / Space</h3>
+              <p className="text-purple-600">Traditional drums and space segment (automatically included)</p>
+            </div>
+          </div>
+
+          {/* Set 2 After Drums/Space */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 2 (After Drums/Space)</h2>
+            <SetlistDragDropPicker
+              availableSongs={allSongs}
+              maxSongs={8}
+              onSetlistChange={(songs) => updateSetSection('set2After', songs)}
+            />
+          </div>
+
+          {/* Encore */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Encore</h2>
+            <SetlistDragDropPicker
+              availableSongs={allSongs}
+              maxSongs={3}
+              onSetlistChange={(songs) => updateSetSection('encores', [songs])}
+            />
+          </div>
+
+          {/* Play Mode Selection */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Choose Your Play Mode</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
+                { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
+                { id: 'cash', title: 'Play for Cash', desc: 'Entry fee builds prize pool' },
+                { id: 'prize', title: 'Play for Prize', desc: 'Compete for sponsored rewards' }
+              ].map((mode) => (
+                <button
+                  key={mode.id}
+                  onClick={() => setSelectedPlayMode(mode.id)}
+                  className={`p-4 rounded-lg border-2 text-left transition-all ${
+                    selectedPlayMode === mode.id
+                      ? 'border-purple-500 bg-purple-50'
+                      : 'border-gray-200 hover:border-gray-300 bg-white'
+                  }`}
+                >
+                  <h3 className="font-semibold text-gray-800 mb-1">{mode.title}</h3>
+                  <p className="text-sm text-gray-600">{mode.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div className="text-center">
+            <button
+              onClick={handleSubmit}
+              className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg"
+            >
+              Submit Setlist Prediction
             </button>
           </div>
 
-          <div>
-            {/* Element 1: Scrolling Song List */}
-            <div>
-              <h3>Song Database (~200 Songs)</h3>
-              
-              <div>
-                <input
-                  type="text"
-                  placeholder="Search songs..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearchChange(e.target.value)}
-                />
-                
-                {suggestions.length > 0 && (
-                  <div>
-                    <h4>Suggestions:</h4>
-                    <ul>
-                      {suggestions.map((song) => (
-                        <li key={song}>
-                          <button onClick={() => setSearchTerm(song)}>
-                            {song}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              <div>
-                <h4>All Songs</h4>
-                <select size="10">
-                  {allSongs.map((song) => (
-                    <option key={song} value={song}>{song}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Element 2: Drag and Drop Setlist Builder */}
-            <div>
-              <h3>Setlist Structure</h3>
-              
-              {/* Set 1 */}
-              <div>
-                <h4>Set 1</h4>
-                {setlist.set1.map((song, index) => (
-                  <div key={index}>
-                    <input
-                      type="text"
-                      placeholder={`Song ${index + 1}`}
-                      value={song}
-                      onChange={(e) => updateSlot('set1', index, e.target.value)}
-                    />
-                  </div>
-                ))}
-                <button onClick={() => addSlot('set1')}>+ Add Song to Set 1</button>
-              </div>
-
-              {/* Set 2 */}
-              <div>
-                <h4>Set 2</h4>
-                
+          {/* Current Preview */}
+          {(setlist.set1.length > 0 || setlist.set2Before.length > 0 || setlist.set2After.length > 0) && (
+            <div className="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-4">Your Setlist Preview</h3>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-sm">
                 <div>
-                  <h5>Before Drums/Space</h5>
-                  {setlist.set2Before.map((song, index) => (
-                    <div key={index}>
-                      <input
-                        type="text"
-                        placeholder={`Song ${index + 1}`}
-                        value={song}
-                        onChange={(e) => updateSlot('set2Before', index, e.target.value)}
-                      />
-                    </div>
-                  ))}
-                  <button onClick={() => addSlot('set2Before')}>+ Add Song Before Drums</button>
-                </div>
-
-                <div>
-                  <h5>Drums/Space</h5>
-                  <p>Drums</p>
-                  <p>Space</p>
-                </div>
-
-                <div>
-                  <h5>After Drums/Space</h5>
-                  {setlist.set2After.map((song, index) => (
-                    <div key={index}>
-                      <input
-                        type="text"
-                        placeholder={`Song ${index + 1}`}
-                        value={song}
-                        onChange={(e) => updateSlot('set2After', index, e.target.value)}
-                      />
-                    </div>
-                  ))}
-                  <button onClick={() => addSlot('set2After')}>+ Add Song After Space</button>
-                </div>
-              </div>
-
-              {/* Encores */}
-              <div>
-                <h4>Encores</h4>
-                {setlist.encores.map((encore, encoreIndex) => (
-                  <div key={encoreIndex}>
-                    <h5>Encore {encoreIndex + 1}</h5>
-                    {encore.map((song, songIndex) => (
-                      <div key={songIndex}>
-                        <input
-                          type="text"
-                          placeholder={`Encore ${encoreIndex + 1} Song ${songIndex + 1}`}
-                          value={song}
-                          onChange={(e) => updateSlot('encore', songIndex, e.target.value, encoreIndex)}
-                        />
-                      </div>
+                  <h4 className="font-semibold text-gray-800 mb-2">Set 1 ({setlist.set1.length} songs)</h4>
+                  <ul className="space-y-1">
+                    {setlist.set1.map((song, index) => (
+                      <li key={index} className="text-gray-600">{index + 1}. {song}</li>
                     ))}
-                    <button onClick={() => addSlot('set1', encoreIndex)}>
-                      + Add Song to Encore {encoreIndex + 1}
-                    </button>
-                  </div>
-                ))}
-                <button onClick={addEncore}>+ Add Another Encore</button>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-800 mb-2">Set 2 ({setlist.set2Before.length + setlist.set2After.length + 2} songs)</h4>
+                  <ul className="space-y-1">
+                    {setlist.set2Before.map((song, index) => (
+                      <li key={index} className="text-gray-600">{index + 1}. {song}</li>
+                    ))}
+                    <li className="text-purple-600 font-medium">Drums</li>
+                    <li className="text-purple-600 font-medium">Space</li>
+                    {setlist.set2After.map((song, index) => (
+                      <li key={index} className="text-gray-600">{setlist.set2Before.length + index + 3}. {song}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-800 mb-2">Encore ({setlist.encores[0]?.length || 0} songs)</h4>
+                  <ul className="space-y-1">
+                    {setlist.encores[0]?.map((song, index) => (
+                      <li key={index} className="text-gray-600">{index + 1}. {song}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-
-            {/* Element 3: Fun Facts & Hints */}
-            <div>
-              <h3>Hints & Statistics</h3>
-              
-              <div>
-                <h4>Most Common Songs</h4>
-                <ul>
-                  {mostCommonSongs.map((song, index) => (
-                    <li key={index}>{song}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h4>Least Common Songs</h4>
-                <ul>
-                  {leastCommonSongs.map((song, index) => (
-                    <li key={index}>{song}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h4>Most Common Song Pairs</h4>
-                <ul>
-                  {commonSongPairs.map((pair, index) => (
-                    <li key={index}>{pair}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2>Four Ways to Play</h2>
-          <div>
-            <button onClick={() => handlePlayModeSelect('fun')}>
-              Play for Fun
-            </button>
-            <button onClick={() => handlePlayModeSelect('charity')}>
-              Play for Charity
-            </button>
-            <button onClick={() => handlePlayModeSelect('cash')}>
-              Play for Cash
-            </button>
-            <button onClick={() => handlePlayModeSelect('prize')}>
-              Play for Prize
-            </button>
-          </div>
-          
-          {selectedPlayMode && (
-            <div>
-              <h3>Selected Mode: {selectedPlayMode}</h3>
-              <p>Complete your setlist and submit!</p>
-              <button>Submit Setlist</button>
             </div>
           )}
-        </section>
-
-        <section>
-          <h2>Functionality Demo</h2>
-          <div>
-            <h3>Available Features:</h3>
-            <ul>
-              <li>✓ Generate random setlist from song database</li>
-              <li>✓ Manual typing with autocomplete</li>
-              <li>✓ Modify random setlist by typing</li>
-              <li>✓ Variable number of slots per section</li>
-              <li>✓ Add/remove songs dynamically</li>
-              <li>✓ Multiple encore support</li>
-            </ul>
-          </div>
-        </section>
-
-        <section>
-          <h2>Current Setlist Preview</h2>
-          <div>
-            <h3>Set 1:</h3>
-            <p>{setlist.set1.filter(s => s).join(' → ') || 'Empty'}</p>
-            
-            <h3>Set 2:</h3>
-            <p>Before: {setlist.set2Before.filter(s => s).join(' → ') || 'Empty'}</p>
-            <p>Drums → Space</p>
-            <p>After: {setlist.set2After.filter(s => s).join(' → ') || 'Empty'}</p>
-            
-            <h3>Encores:</h3>
-            {setlist.encores.map((encore, index) => (
-              <p key={index}>
-                Encore {index + 1}: {encore.filter(s => s).join(' → ') || 'Empty'}
-              </p>
-            ))}
-          </div>
-        </section>
+        </div>
       </div>
     </MainLayout>
   );

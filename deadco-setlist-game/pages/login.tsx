@@ -1,147 +1,158 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import Layout from '../components/Layout';
-import { SetlistStreetTheme } from '../theme/SetlistStreetTheme';
+import Link from 'next/link';
+import MainLayout from '../components/MainLayout';
 
 export default function Login() {
-  const [form, setForm] = useState({
-    email: '',
-    password: ''
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Future: Implement actual login
-    console.log('Login:', form);
-    setTimeout(() => setLoading(false), 2000);
+    
+    // Simulate login process
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    console.log('Login attempt:', { email });
+    alert('Login feature coming soon!');
+    setLoading(false);
   };
 
   return (
-    <Layout 
-      title="Setlist Street - Login"
-      description="Welcome back! Sign in to your Setlist Street account."
-      showFooter={false}
-    >
-      <div className="min-h-screen flex items-center justify-center py-8 px-4">
-        <motion.div
-          className="w-full max-w-md"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="p-8 rounded-2xl bg-white/10 backdrop-blur border border-white/20">
+    <MainLayout>
+      <div className="bg-white min-h-screen">
+        <div className="container mx-auto px-6 py-12">
+          <div className="max-w-md mx-auto">
             {/* Header */}
-            <div className="text-center mb-8">
-              <div className="text-5xl mb-4">🔐</div>
-              <h1 
-                className="text-3xl font-bold mb-2 bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: SetlistStreetTheme.gradients.galaxy,
-                  fontFamily: SetlistStreetTheme.fonts.display,
-                }}
-              >
-                Welcome Back!
-              </h1>
-              <p className="text-white/80">
-                Sign in to your account and start predicting!
-              </p>
-            </div>
+            <motion.div
+              className="text-center mb-8"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="text-5xl mb-4 text-gray-400">🔑</div>
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h1>
+              <p className="text-gray-600">Sign in to your Setlist Street account</p>
+            </motion.div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-white/90 text-sm font-medium mb-2">
-                  Email
-                </label>
-                <input 
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="your@email.com"
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 backdrop-blur focus:border-white/50 focus:bg-white/15 transition-all"
-                />
-              </div>
+            {/* Login Form */}
+            <motion.div
+              className="bg-white border border-gray-200 rounded-lg p-8 shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    placeholder="your@email.com"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-white/90 text-sm font-medium mb-2">
-                  Password
-                </label>
-                <input 
-                  type="password"
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 backdrop-blur focus:border-white/50 focus:bg-white/15 transition-all"
-                />
-              </div>
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    placeholder="Enter your password"
+                  />
+                </div>
 
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center text-white/80">
-                  <input type="checkbox" className="mr-2" />
-                  Remember me
-                </label>
-                <a href="#" className="text-yellow-300 hover:text-yellow-200">
-                  Forgot password?
-                </a>
-              </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <input
+                      id="remember-me"
+                      name="remember-me"
+                      type="checkbox"
+                      className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                      Remember me
+                    </label>
+                  </div>
 
-              <motion.button 
-                type="submit"
-                disabled={loading}
-                className="w-full py-4 mt-6 rounded-xl font-bold text-lg shadow-2xl border-2 border-white/20 backdrop-blur disabled:opacity-50 transition-all"
-                style={{
-                  background: SetlistStreetTheme.components.button.secondary.background,
-                  color: SetlistStreetTheme.components.button.secondary.color,
-                }}
-                whileHover={!loading ? { 
-                  scale: 1.02,
-                  boxShadow: SetlistStreetTheme.components.button.secondary.hoverShadow
-                } : {}}
-                whileTap={!loading ? { scale: 0.98 } : {}}
-              >
-                {loading ? 'Signing In...' : '🎵 Sign In'}
-              </motion.button>
-            </form>
+                  <div className="text-sm">
+                    <a href="#" className="font-medium text-purple-600 hover:text-purple-500">
+                      Forgot your password?
+                    </a>
+                  </div>
+                </div>
 
-            {/* Register Link */}
-            <div className="text-center mt-6">
-              <p className="text-white/80 text-sm">
-                New to Setlist Street?{' '}
-                <a href="/register" className="text-yellow-300 hover:text-yellow-200 font-medium">
-                  Create an account
-                </a>
-              </p>
-            </div>
-
-            {/* Social Login */}
-            <div className="mt-8">
-              <div className="text-center text-white/60 text-xs mb-4">
-                Or continue with
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <button className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-white/10 border border-white/20 text-white/80 hover:text-white hover:bg-white/15 transition-all text-sm">
-                  <span>🎸</span>
-                  <span>Spotify</span>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {loading ? 'Signing In...' : 'Sign In'}
                 </button>
-                <button className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-white/10 border border-white/20 text-white/80 hover:text-white hover:bg-white/15 transition-all text-sm">
-                  <span>🎵</span>
-                  <span>Apple</span>
-                </button>
+              </form>
+
+              {/* Social Login Options */}
+              <div className="mt-6">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span>Google</span>
+                  </button>
+                  <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span>Facebook</span>
+                  </button>
+                </div>
               </div>
-            </div>
+
+              {/* Sign Up Link */}
+              <div className="mt-6 text-center">
+                <p className="text-sm text-gray-600">
+                  Don't have an account?{' '}
+                  <Link href="/register" className="font-medium text-purple-600 hover:text-purple-500">
+                    Sign up
+                  </Link>
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Features */}
+            <motion.div
+              className="mt-8 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <p className="text-sm text-gray-600 mb-4">Join thousands of Deadheads predicting setlists!</p>
+              <div className="flex justify-center space-x-6 text-xs text-gray-500">
+                <span>Free to Play</span>
+                <span>15 Game Modes</span>
+                <span>Live Results</span>
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
-    </Layout>
+    </MainLayout>
   );
 } 

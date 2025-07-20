@@ -1,461 +1,223 @@
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { DndContext, closestCenter, DragEndEvent, DragOverlay, useDraggable, useDroppable, DragStartEvent } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { getSongProbability, getProbabilityColor, getAllSongs } from '../utils/songProbabilities';
-import SongPicker from './SongPicker';
+import React, { useState, useRef, useCallback } from 'react';
 
 interface SetlistDragDropPickerProps {
   onSetlistChange?: (setlist: string[]) => void;
+  availableSongs?: string[];
   maxSongs?: number;
-  showProbabilities?: boolean;
 }
 
-interface SortableSongProps {
-  song: string;
-  index: number;
-  showProbabilities: boolean;
-  onRemove: (song: string) => void;
-}
-
-function SortableSong({ song, index, showProbabilities, onRemove }: SortableSongProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: song });
-
-  const songData = getSongProbability(song);
-  const colorScheme = songData ? getProbabilityColor(songData.category) : null;
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <motion.div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className={`relative p-4 rounded-xl border-2 cursor-grab select-none transition-all group overflow-hidden ${
-        isDragging ? 'opacity-50 z-50' : ''
-      } ${colorScheme ? `${colorScheme.bg} ${colorScheme.border}` : 'bg-white/10 border-white/20'}`}
-      whileHover={{ scale: 1.02, y: -2 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      {/* Probability Glow */}
-      {showProbabilities && colorScheme && (
-        <div className={`absolute inset-0 rounded-xl opacity-20 ${colorScheme.glow}`} />
-      )}
-      
-      <div className="relative z-10 flex items-center justify-between">
-        <div className="flex items-center gap-4 flex-1">
-          {/* Position Number */}
-          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-white text-sm">
-            {index + 1}
-          </div>
-          
-          {/* Song Info */}
-          <div className="flex-1">
-            <div className={`font-bold text-lg mb-1 ${colorScheme?.text || 'text-white'}`}>
-              {song}
-            </div>
-            
-            {showProbabilities && songData && (
-              <div className="flex items-center gap-3">
-                <div className={`text-sm font-medium ${colorScheme?.text || 'text-white/80'}`}>
-                  {songData.probability}% chance
-                </div>
-                <div className={`text-xs px-2 py-1 rounded border ${
-                  colorScheme ? `${colorScheme.bg} ${colorScheme.border}` : 'bg-white/10 border-white/20'
-                }`}>
-                  <span className={`${colorScheme?.text || 'text-white/60'}`}>
-                    {colorScheme?.description || 'Unknown'}
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Remove Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemove(song);
-          }}
-          className="w-8 h-8 rounded-full bg-red-500/20 border border-red-400 text-red-200 hover:bg-red-500/30 transition-all opacity-0 group-hover:opacity-100"
-        >
-          ✕
-        </button>
-      </div>
-
-      {/* Drag Handle */}
-      <div className="absolute left-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="text-white/50">⋮⋮</div>
-    </div>
-    </motion.div>
-  );
-}
-
-interface DroppableSongPoolProps {
-  children: React.ReactNode;
-}
-
-function DroppableSongPool({ children }: DroppableSongPoolProps) {
-  const { setNodeRef, isOver } = useDroppable({
-    id: 'song-pool',
-  });
-
-  return (
-    <div
-      ref={setNodeRef}
-      className={`min-h-[200px] p-4 rounded-2xl border-2 border-dashed transition-all ${
-        isOver 
-          ? 'border-red-400 bg-red-400/20' 
-          : 'border-white/30 bg-white/5'
-      }`}
-    >
-      {children}
-    </div>
-  );
-}
-
-interface DraggableSongProps {
-  song: string;
-  showProbabilities: boolean;
-}
-
-function DraggableSong({ song, showProbabilities }: DraggableSongProps) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: `pool-${song}`,
-  });
-
-  const songData = getSongProbability(song);
-  const colorScheme = songData ? getProbabilityColor(songData.category) : null;
-
-  return (
-    <motion.div
-      ref={setNodeRef}
-      {...listeners}
-      {...attributes}
-      className={`relative p-3 rounded-lg border-2 cursor-grab select-none transition-all overflow-hidden ${
-        isDragging ? 'opacity-50' : ''
-      } ${colorScheme ? `${colorScheme.bg} ${colorScheme.border}` : 'bg-white/10 border-white/20'}`}
-      style={{
-        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-      }}
-      whileHover={{ scale: 1.05, y: -2 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      {/* Probability Glow */}
-      {showProbabilities && colorScheme && (
-        <div className={`absolute inset-0 rounded-lg opacity-20 ${colorScheme.glow}`} />
-      )}
-      
-      <div className="relative z-10">
-        <div className={`font-bold text-sm mb-1 ${colorScheme?.text || 'text-white'}`}>
-          {song}
-        </div>
-        
-        {showProbabilities && songData && (
-          <div className="flex items-center justify-between">
-            <div className={`text-xs font-medium ${colorScheme?.text || 'text-white/80'}`}>
-              {songData.probability}%
-            </div>
-            <div className={`text-xs px-1 py-0.5 rounded ${
-              colorScheme ? colorScheme.text : 'text-white/60'
-            }`}>
-              {colorScheme?.description || 'Unknown'}
-            </div>
-          </div>
-        )}
-      </div>
-    </motion.div>
-  );
+interface DragItem {
+  type: 'song';
+  songName: string;
+  index?: number;
 }
 
 export default function SetlistDragDropPicker({ 
   onSetlistChange, 
-  maxSongs = 20,
-  showProbabilities = true 
+  availableSongs = [], 
+  maxSongs = 20 
 }: SetlistDragDropPickerProps) {
   const [setlist, setSetlist] = useState<string[]>([]);
-  const [songPickerOpen, setSongPickerOpen] = useState(false);
-  const [draggedSong, setDraggedSong] = useState<string | null>(null);
-  const [probabilityMode, setProbabilityMode] = useState(showProbabilities);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [draggedItem, setDraggedItem] = useState<DragItem | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
-  // Get strategic song suggestions
-  const popularSongs = getAllSongs()
-    .filter(song => song.probability >= 60)
-    .slice(0, 8)
-    .map(song => song.name);
+  const filteredSongs = availableSongs.filter(song => 
+    song.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    !setlist.includes(song)
+  );
 
-  const rareGems = getAllSongs()
-    .filter(song => song.probability <= 15)
-    .slice(0, 6)
-    .map(song => song.name);
-
-  const handleDragStart = (event: DragStartEvent) => {
-    setDraggedSong(event.active.id as string);
-  };
-
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    setDraggedSong(null);
-    const { active, over } = event;
-    
-    if (!over) return;
-
-    const activeId = active.id as string;
-    const overId = over.id as string;
-
-    // Handle dropping from song pool to setlist
-    if (activeId.startsWith('pool-') && overId === 'setlist') {
-      const songName = activeId.replace('pool-', '');
-      if (!setlist.includes(songName) && setlist.length < maxSongs) {
-        const newSetlist = [...setlist, songName];
-        setSetlist(newSetlist);
-        onSetlistChange?.(newSetlist);
-      }
-      return;
-    }
-
-    // Handle removing from setlist (drop to song pool)
-    if (setlist.includes(activeId) && overId === 'song-pool') {
-      const newSetlist = setlist.filter(song => song !== activeId);
-      setSetlist(newSetlist);
-      onSetlistChange?.(newSetlist);
-      return;
-    }
-
-    // Handle reordering within setlist
-    if (setlist.includes(activeId) && setlist.includes(overId)) {
-      const oldIndex = setlist.indexOf(activeId);
-      const newIndex = setlist.indexOf(overId);
-      const newSetlist = arrayMove(setlist, oldIndex, newIndex);
-      setSetlist(newSetlist);
-      onSetlistChange?.(newSetlist);
-    }
-  }, [setlist, maxSongs, onSetlistChange]);
-
-  const handleSongSelect = (song: string) => {
-    if (!setlist.includes(song) && setlist.length < maxSongs) {
-      const newSetlist = [...setlist, song];
-      setSetlist(newSetlist);
-      onSetlistChange?.(newSetlist);
-    }
-    setSongPickerOpen(false);
-  };
-
-  const removeSong = (songToRemove: string) => {
-    const newSetlist = setlist.filter(song => song !== songToRemove);
+  const updateSetlist = useCallback((newSetlist: string[]) => {
     setSetlist(newSetlist);
     onSetlistChange?.(newSetlist);
+  }, [onSetlistChange]);
+
+  const handleDragStart = (e: React.DragEvent, songName: string, index?: number) => {
+    const dragData: DragItem = { type: 'song', songName, index };
+    setDraggedItem(dragData);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', JSON.stringify(dragData));
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverIndex(index);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    setDragOverIndex(null);
+
+    if (!draggedItem) return;
+
+    const newSetlist = [...setlist];
+
+    if (draggedItem.index !== undefined) {
+      // Reordering within setlist
+      const [removed] = newSetlist.splice(draggedItem.index, 1);
+      newSetlist.splice(dropIndex, 0, removed);
+    } else {
+      // Adding from available songs
+      newSetlist.splice(dropIndex, 0, draggedItem.songName);
+    }
+
+    updateSetlist(newSetlist.slice(0, maxSongs));
+    setDraggedItem(null);
+  };
+
+  const handleDropOnList = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOverIndex(null);
+
+    if (!draggedItem || draggedItem.index !== undefined) return;
+
+    if (setlist.length < maxSongs) {
+      updateSetlist([...setlist, draggedItem.songName]);
+    }
+    setDraggedItem(null);
+  };
+
+  const addSongByClick = (songName: string) => {
+    if (setlist.length < maxSongs && !setlist.includes(songName)) {
+      updateSetlist([...setlist, songName]);
+    }
+  };
+
+  const removeSong = (index: number) => {
+    const newSetlist = [...setlist];
+    newSetlist.splice(index, 1);
+    updateSetlist(newSetlist);
   };
 
   const clearSetlist = () => {
-    setSetlist([]);
-    onSetlistChange?.([]);
+    updateSetlist([]);
   };
-
-  // Calculate strategic score
-  const calculateStrategicScore = () => {
-    if (setlist.length === 0) return 0;
-    
-    const totalProbability = setlist.reduce((sum, song) => {
-      const songData = getSongProbability(song);
-      return sum + (songData?.probability || 0);
-    }, 0);
-    
-    return Math.round(totalProbability / setlist.length);
-  };
-
-  const strategicScore = calculateStrategicScore();
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-white">🎪 Build Your Setlist Prediction</h3>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg border border-white/20">
-            <span className="text-white/80 text-sm">Strategic Score:</span>
-            <span className={`font-bold text-lg ${
-              strategicScore >= 70 ? 'text-green-400' :
-              strategicScore >= 50 ? 'text-yellow-400' :
-              strategicScore >= 30 ? 'text-orange-400' : 'text-red-400'
-            }`}>
-              {strategicScore}%
-            </span>
-          </div>
+    <div className="bg-white p-6 rounded-lg border border-gray-200">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-semibold text-gray-900">
+          Build Your Setlist ({setlist.length}/{maxSongs})
+        </h3>
+        {setlist.length > 0 && (
           <button
-            onClick={() => setProbabilityMode(!probabilityMode)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              probabilityMode 
-                ? 'bg-green-500/20 text-green-200 border border-green-400' 
-                : 'bg-white/10 text-white/70 border border-white/20'
-            }`}
+            onClick={clearSetlist}
+            className="text-sm text-red-600 hover:text-red-800 font-medium"
           >
-            {probabilityMode ? '📊 Probabilities ON' : '📊 Probabilities OFF'}
+            Clear All
           </button>
-        </div>
+        )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Setlist Builder */}
-        <div className="lg:col-span-2">
-          <DndContext
-            collisionDetection={closestCenter}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-          >
-            <div className="bg-white/10 rounded-2xl border border-white/20 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="text-lg font-bold text-white">🎵 Your Setlist Prediction</h4>
-                <div className="flex items-center gap-3">
-                  <span className="text-white/80 text-sm">
-                    {setlist.length}/{maxSongs} songs
-                  </span>
-                  {setlist.length > 0 && (
-                    <button
-                      onClick={clearSetlist}
-                      className="px-3 py-1 bg-red-500/20 border border-red-400 text-red-200 rounded text-sm hover:bg-red-500/30 transition-all"
-                    >
-                      Clear All
-                    </button>
-                  )}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Available Songs */}
+        <div>
+          <h4 className="font-medium text-gray-800 mb-3">Available Songs</h4>
+          <input
+            type="text"
+            placeholder="Search songs..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded mb-3 text-sm"
+          />
+          <div className="max-h-64 overflow-y-auto border border-gray-200 rounded p-2">
+            {filteredSongs.length === 0 ? (
+              <p className="text-gray-500 text-sm text-center py-4">
+                {searchTerm ? 'No songs found' : 'No available songs'}
+              </p>
+            ) : (
+              filteredSongs.slice(0, 50).map((song, index) => (
+                <div
+                  key={`${song}-${index}`}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, song)}
+                  onClick={() => addSongByClick(song)}
+                  className="p-2 mb-1 bg-gray-50 border border-gray-200 rounded cursor-move hover:bg-gray-100 text-sm transition-colors"
+                >
+                  {song}
                 </div>
-              </div>
-
-              <SortableContext items={setlist} strategy={verticalListSortingStrategy}>
-                <div id="setlist" className="space-y-3 min-h-[400px]">
-                  {setlist.length === 0 ? (
-                    <div className="flex items-center justify-center h-64 border-2 border-dashed border-white/30 rounded-xl">
-                      <div className="text-center text-white/60">
-                        <div className="text-4xl mb-4">🎼</div>
-                        <div className="text-lg font-medium mb-2">Start Building Your Setlist</div>
-                        <div className="text-sm">Drag songs here or click "Add Song" below</div>
-                      </div>
-                    </div>
-                  ) : (
-                    setlist.map((song, index) => (
-                      <SortableSong
-                        key={song}
-                        song={song}
-                        index={index}
-                        showProbabilities={probabilityMode}
-                        onRemove={removeSong}
-                      />
-                    ))
-                  )}
-                </div>
-              </SortableContext>
-
-              <button
-                onClick={() => setSongPickerOpen(true)}
-                disabled={setlist.length >= maxSongs}
-                className="w-full mt-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg font-bold text-white hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {setlist.length >= maxSongs ? '🎵 Setlist Complete' : '🎵 Add Song'}
-              </button>
-            </div>
-
-            <DragOverlay>
-              {draggedSong ? (
-                <div className="p-4 bg-white/20 backdrop-blur rounded-xl border border-white/40 text-white font-bold">
-                  {draggedSong.replace('pool-', '')}
-                </div>
-              ) : null}
-            </DragOverlay>
-          </DndContext>
-        </div>
-
-        {/* Song Pool */}
-        <div className="lg:col-span-1 space-y-6">
-          {/* Strategic Suggestions */}
-          <div className="bg-white/10 rounded-2xl border border-white/20 p-6">
-            <h4 className="text-lg font-bold text-white mb-4">🎯 Safe Picks</h4>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {popularSongs.map((song) => (
-                <DraggableSong 
-                  key={song} 
-                  song={song} 
-                  showProbabilities={probabilityMode}
-                />
-              ))}
-            </div>
-                  </div>
-
-          {/* Rare Gems */}
-          <div className="bg-white/10 rounded-2xl border border-white/20 p-6">
-            <h4 className="text-lg font-bold text-white mb-4">💎 Rare Gems</h4>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {rareGems.map((song) => (
-                <DraggableSong 
-                  key={song} 
-                  song={song} 
-                  showProbabilities={probabilityMode}
-                />
-              ))}
-            </div>
-                  </div>
-
-          {/* Remove Zone */}
-          <DroppableSongPool>
-            <div className="text-center text-white/60">
-              <div className="text-3xl mb-2">🗑️</div>
-              <div className="text-sm font-medium">Drop songs here to remove</div>
-            </div>
-          </DroppableSongPool>
-        </div>
-      </div>
-
-      {/* Strategy Tips */}
-      {probabilityMode && (
-        <motion.div
-          className="mt-8 p-6 bg-white/10 rounded-2xl border border-white/20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h4 className="text-lg font-bold text-white mb-4">💡 Strategy Tips</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div className="p-3 bg-green-500/20 border border-green-400 rounded-lg">
-              <div className="font-bold text-green-200 mb-2">🎯 Conservative Strategy</div>
-              <div className="text-green-100">
-                Focus on high-probability songs (60%+) for safer predictions with steady points.
-              </div>
-            </div>
-            <div className="p-3 bg-yellow-500/20 border border-yellow-400 rounded-lg">
-              <div className="font-bold text-yellow-200 mb-2">⚖️ Balanced Strategy</div>
-              <div className="text-yellow-100">
-                Mix safe picks with medium-probability songs for good risk/reward balance.
-              </div>
-            </div>
-            <div className="p-3 bg-purple-500/20 border border-purple-400 rounded-lg">
-              <div className="font-bold text-purple-200 mb-2">🦄 High-Risk Strategy</div>
-              <div className="text-purple-100">
-                Include rare songs for massive bonus points if they hit (but lower overall odds).
-              </div>
-            </div>
+              ))
+            )}
           </div>
-        </motion.div>
-      )}
+        </div>
 
-      {/* Song Picker Modal */}
-      <SongPicker
-        isOpen={songPickerOpen}
-        onClose={() => setSongPickerOpen(false)}
-        onSongSelect={handleSongSelect}
-        selectedSongs={setlist}
-      />
+        {/* Setlist */}
+        <div>
+          <h4 className="font-medium text-gray-800 mb-3">Your Setlist</h4>
+          <div
+            className={`min-h-64 border-2 border-dashed rounded p-3 transition-colors ${
+              dragOverIndex === null && draggedItem ? 'border-blue-400 bg-blue-50' : 'border-gray-300'
+            }`}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.dataTransfer.dropEffect = 'move';
+            }}
+            onDrop={handleDropOnList}
+          >
+            {setlist.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <p className="text-sm">Drag songs here or click to add</p>
+                <p className="text-xs mt-1">Songs will be played in order</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {setlist.map((song, index) => (
+                  <div
+                    key={`${song}-${index}`}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, song, index)}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, index)}
+                    className={`flex items-center justify-between p-2 border rounded cursor-move transition-colors ${
+                      dragOverIndex === index ? 'border-blue-400 bg-blue-50' : 'border-gray-200 bg-white hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className="flex items-center flex-1">
+                      <span className="text-xs text-gray-400 mr-2 w-6">{index + 1}.</span>
+                      <span className="text-sm text-gray-800">{song}</span>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeSong(index);
+                      }}
+                      className="text-red-500 hover:text-red-700 text-xs ml-2 px-1"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+                
+                {/* Drop zone at the end */}
+                <div
+                  onDragOver={(e) => handleDragOver(e, setlist.length)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, setlist.length)}
+                  className={`h-8 border-2 border-dashed rounded transition-colors ${
+                    dragOverIndex === setlist.length ? 'border-blue-400 bg-blue-50' : 'border-transparent'
+                  }`}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {setlist.length > 0 && (
+        <div className="mt-4 p-3 bg-gray-50 rounded text-sm">
+          <h5 className="font-medium text-gray-800 mb-2">Preview:</h5>
+          <p className="text-gray-600">
+            {setlist.slice(0, 3).join(' → ')}
+            {setlist.length > 3 && ` → ... (${setlist.length - 3} more)`}
+          </p>
+        </div>
+      )}
     </div>
   );
-} 
+}
