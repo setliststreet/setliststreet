@@ -14,19 +14,26 @@ export default function MainLayout({ children, title, description }: MainLayoutP
       <Header />
       
       <main className="flex-grow">
-        {title && (
-          <div className="text-center mb-8 pt-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {title}
-            </h1>
-            {description && (
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                {description}
-              </p>
-            )}
+        {/* Global Container with Consistent Margins */}
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          {title && (
+            <div className="text-center mb-12 pt-12">
+              <h1 className="text-4xl font-bold text-gray-900 mb-6">
+                {title}
+              </h1>
+              {description && (
+                <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                  {description}
+                </p>
+              )}
+            </div>
+          )}
+          
+          {/* Content with proper spacing */}
+          <div className="pb-12">
+            {children}
           </div>
-        )}
-        {children}
+        </div>
       </main>
       
       <Footer />

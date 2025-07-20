@@ -99,35 +99,35 @@ export default function SetlistDragDropPicker({
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg border border-gray-200">
-      <div className="flex justify-between items-center mb-4">
+    <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+      <div className="flex justify-between items-center mb-6">
         <h3 className="text-lg font-semibold text-gray-900">
           Build Your Setlist ({setlist.length}/{maxSongs})
         </h3>
         {setlist.length > 0 && (
           <button
             onClick={clearSetlist}
-            className="text-sm text-red-600 hover:text-red-800 font-medium"
+            className="text-sm text-red-600 hover:text-red-800 font-medium px-3 py-1 rounded border border-red-200 hover:border-red-300 transition-colors"
           >
             Clear All
           </button>
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Available Songs */}
         <div>
-          <h4 className="font-medium text-gray-800 mb-3">Available Songs</h4>
+          <h4 className="font-medium text-gray-800 mb-4">Available Songs</h4>
           <input
             type="text"
             placeholder="Search songs..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded mb-3 text-sm"
+            className="w-full p-3 border border-gray-300 rounded-lg mb-4 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
           />
-          <div className="max-h-64 overflow-y-auto border border-gray-200 rounded p-2">
+          <div className="max-h-72 overflow-y-auto border border-gray-200 rounded-lg p-3 bg-gray-50">
             {filteredSongs.length === 0 ? (
-              <p className="text-gray-500 text-sm text-center py-4">
+              <p className="text-gray-500 text-sm text-center py-8">
                 {searchTerm ? 'No songs found' : 'No available songs'}
               </p>
             ) : (
@@ -137,7 +137,7 @@ export default function SetlistDragDropPicker({
                   draggable
                   onDragStart={(e) => handleDragStart(e, song)}
                   onClick={() => addSongByClick(song)}
-                  className="p-2 mb-1 bg-gray-50 border border-gray-200 rounded cursor-move hover:bg-gray-100 text-sm transition-colors"
+                  className="p-3 mb-2 bg-white border border-gray-200 rounded-lg cursor-move hover:bg-gray-50 hover:border-gray-300 text-sm transition-all shadow-sm hover:shadow-md"
                 >
                   {song}
                 </div>
@@ -148,10 +148,10 @@ export default function SetlistDragDropPicker({
 
         {/* Setlist */}
         <div>
-          <h4 className="font-medium text-gray-800 mb-3">Your Setlist</h4>
+          <h4 className="font-medium text-gray-800 mb-4">Your Setlist</h4>
           <div
-            className={`min-h-64 border-2 border-dashed rounded p-3 transition-colors ${
-              dragOverIndex === null && draggedItem ? 'border-blue-400 bg-blue-50' : 'border-gray-300'
+            className={`min-h-72 border-2 border-dashed rounded-lg p-4 transition-colors ${
+              dragOverIndex === null && draggedItem ? 'border-blue-400 bg-blue-50' : 'border-gray-300 bg-gray-50'
             }`}
             onDragOver={(e) => {
               e.preventDefault();
@@ -160,12 +160,12 @@ export default function SetlistDragDropPicker({
             onDrop={handleDropOnList}
           >
             {setlist.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <p className="text-sm">Drag songs here or click to add</p>
-                <p className="text-xs mt-1">Songs will be played in order</p>
+              <div className="text-center py-12 text-gray-500">
+                <p className="text-sm mb-2">Drag songs here or click to add</p>
+                <p className="text-xs">Songs will be played in order</p>
               </div>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {setlist.map((song, index) => (
                   <div
                     key={`${song}-${index}`}
@@ -174,20 +174,20 @@ export default function SetlistDragDropPicker({
                     onDragOver={(e) => handleDragOver(e, index)}
                     onDragLeave={handleDragLeave}
                     onDrop={(e) => handleDrop(e, index)}
-                    className={`flex items-center justify-between p-2 border rounded cursor-move transition-colors ${
-                      dragOverIndex === index ? 'border-blue-400 bg-blue-50' : 'border-gray-200 bg-white hover:bg-gray-50'
+                    className={`flex items-center justify-between p-3 border rounded-lg cursor-move transition-all ${
+                      dragOverIndex === index ? 'border-blue-400 bg-blue-50 shadow-md' : 'border-gray-200 bg-white hover:bg-gray-50 shadow-sm hover:shadow-md'
                     }`}
                   >
                     <div className="flex items-center flex-1">
-                      <span className="text-xs text-gray-400 mr-2 w-6">{index + 1}.</span>
-                      <span className="text-sm text-gray-800">{song}</span>
+                      <span className="text-xs text-gray-400 mr-3 w-6 font-medium">{index + 1}.</span>
+                      <span className="text-sm text-gray-800 font-medium">{song}</span>
                     </div>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         removeSong(index);
                       }}
-                      className="text-red-500 hover:text-red-700 text-xs ml-2 px-1"
+                      className="text-red-500 hover:text-red-700 text-lg ml-2 px-2 py-1 rounded hover:bg-red-50 transition-colors"
                     >
                       ×
                     </button>
@@ -199,7 +199,7 @@ export default function SetlistDragDropPicker({
                   onDragOver={(e) => handleDragOver(e, setlist.length)}
                   onDragLeave={handleDragLeave}
                   onDrop={(e) => handleDrop(e, setlist.length)}
-                  className={`h-8 border-2 border-dashed rounded transition-colors ${
+                  className={`h-10 border-2 border-dashed rounded-lg transition-colors ${
                     dragOverIndex === setlist.length ? 'border-blue-400 bg-blue-50' : 'border-transparent'
                   }`}
                 />
@@ -210,9 +210,9 @@ export default function SetlistDragDropPicker({
       </div>
 
       {setlist.length > 0 && (
-        <div className="mt-4 p-3 bg-gray-50 rounded text-sm">
-          <h5 className="font-medium text-gray-800 mb-2">Preview:</h5>
-          <p className="text-gray-600">
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg text-sm border border-gray-200">
+          <h5 className="font-medium text-gray-800 mb-3">Preview:</h5>
+          <p className="text-gray-600 leading-relaxed">
             {setlist.slice(0, 3).join(' → ')}
             {setlist.length > 3 && ` → ... (${setlist.length - 3} more)`}
           </p>

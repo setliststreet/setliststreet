@@ -39,7 +39,7 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Consolidated games for main page - only 4 items
+  // Consolidated games for main page - now 5 items including Setlist Bingo
   const mainGames = [
     {
       title: 'Song Prediction Games',
@@ -56,6 +56,14 @@ const HomePage = () => {
       category: 'Strategy Game',
       featured: false,
       gameCount: 'Full setlist'
+    },
+    {
+      title: 'Setlist Bingo',
+      description: 'Create a 5x5 bingo card with Dead & Company songs. Get lines, columns, diagonals, or four corners during the show!',
+      href: '/setlist-bingo',
+      category: 'Bingo Game',
+      featured: false,
+      gameCount: '25 squares'
     },
     {
       title: 'Timing Predictions',
@@ -168,93 +176,89 @@ const HomePage = () => {
         <meta name="description" content="Grateful Dead 60th Anniversary prediction games! 15 different games for Dead & Company at Golden Gate Park Aug 1-3, 2025." />
       </Head>
 
-      <div className="bg-white min-h-screen">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header Section */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Setlist Street
-            </h1>
-            <div className="mb-6">
-              <h2 className="text-2xl font-semibold text-gray-700 mb-2">
-                Grateful Dead 60th Anniversary Concerts (GD60)
-              </h2>
-              <p className="text-lg text-gray-600 mb-2">
-                Golden Gate Park, San Francisco
-              </p>
-              <p className="text-lg text-gray-600">
-                Dead & Company - August 1, 2, 3, 2025
-              </p>
-            </div>
-          </div>
+      {/* Header Section */}
+      <div className="text-center mb-16">
+        <h1 className="text-4xl font-bold text-gray-800 mb-6">
+          Setlist Street
+        </h1>
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Grateful Dead 60th Anniversary Concerts (GD60)
+          </h2>
+          <p className="text-lg text-gray-600 mb-2">
+            Golden Gate Park, San Francisco
+          </p>
+          <p className="text-lg text-gray-600">
+            Dead & Company - August 1, 2, 3, 2025
+          </p>
+        </div>
+      </div>
 
-          {/* Show Schedule - Compact Horizontal Layout */}
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
-              Show Schedule
-            </h2>
-            <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
-              <div className="bg-white border border-gray-200 rounded-lg p-3 flex-1 min-w-[200px] text-center">
-                <h3 className="font-semibold text-purple-700 text-sm">Show 1</h3>
-                <p className="text-gray-600 text-sm">Friday, August 1</p>
-                <p className="text-xs text-gray-500">Deadline: 7:00 PM PT</p>
-              </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-3 flex-1 min-w-[200px] text-center">
-                <h3 className="font-semibold text-purple-700 text-sm">Show 2</h3>
-                <p className="text-gray-600 text-sm">Saturday, August 2</p>
-                <p className="text-xs text-gray-500">Deadline: 7:00 PM PT</p>
-              </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-3 flex-1 min-w-[200px] text-center">
-                <h3 className="font-semibold text-purple-700 text-sm">Show 3</h3>
-                <p className="text-gray-600 text-sm">Sunday, August 3</p>
-                <p className="text-xs text-gray-500">Deadline: 7:00 PM PT</p>
-              </div>
-            </div>
+      {/* Show Schedule - More Spaced */}
+      <div className="mb-16">
+        <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
+          Show Schedule
+        </h2>
+        <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] text-center shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="font-semibold text-purple-700 text-sm">Show 1</h3>
+            <p className="text-gray-600 text-sm mt-1">Friday, August 1</p>
+            <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
           </div>
-            
-          {/* Countdown Timer */}
-          <div className="mb-12">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-md mx-auto text-center">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                Next Submission Deadline
-              </h2>
-              <div className="text-3xl font-bold text-purple-600">
-                {timeToDeadline}
-              </div>
-              <p className="text-sm text-gray-600 mt-2">
-                Submissions close at 7:00 PM PT before each show
-              </p>
-            </div>
+          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] text-center shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="font-semibold text-purple-700 text-sm">Show 2</h3>
+            <p className="text-gray-600 text-sm mt-1">Saturday, August 2</p>
+            <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
           </div>
+          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] text-center shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="font-semibold text-purple-700 text-sm">Show 3</h3>
+            <p className="text-gray-600 text-sm mt-1">Sunday, August 3</p>
+            <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
+          </div>
+        </div>
+      </div>
+        
+      {/* Countdown Timer */}
+      <div className="mb-16">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 max-w-md mx-auto text-center shadow-sm">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Next Submission Deadline
+          </h2>
+          <div className="text-3xl font-bold text-purple-600 mb-4">
+            {timeToDeadline}
+          </div>
+          <p className="text-sm text-gray-600">
+            Submissions close at 7:00 PM PT before each show
+          </p>
+        </div>
+      </div>
 
-          {/* Game Count Banner */}
-          <div className="mb-12">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 max-w-4xl mx-auto text-center">
-              <p className="text-xl font-bold text-gray-800">
-                15 Games Available | Statistical Insights | Cash Prizes | Charity Donations | Exclusive Prizes
-              </p>
-            </div>
-          </div>
+      {/* Game Count Banner */}
+      <div className="mb-16">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-4xl mx-auto text-center shadow-sm">
+          <p className="text-xl font-bold text-gray-800">
+            16 Games Available | Statistical Insights | Cash Prizes | Charity Donations | Exclusive Prizes
+          </p>
+        </div>
+      </div>
 
-          {/* All Games Grid - Now Consolidated to 4 Main Games */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Choose Your Game</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-              {mainGames.map((game, index) => (
-                <GameCard key={index} game={game} />
-              ))}
-            </div>
-          </div>
+      {/* All Games Grid - Now 5 Main Games */}
+      <div className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Choose Your Game</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
+          {mainGames.map((game, index) => (
+            <GameCard key={index} game={game} />
+          ))}
+        </div>
+      </div>
 
-          {/* Utility Tools */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Tools & Results</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-              {utilityLinks.map((item, index) => (
-                <UtilityCard key={index} item={item} />
-              ))}
-            </div>
-          </div>
+      {/* Utility Tools */}
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Tools & Results</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+          {utilityLinks.map((item, index) => (
+            <UtilityCard key={index} item={item} />
+          ))}
         </div>
       </div>
     </MainLayout>
