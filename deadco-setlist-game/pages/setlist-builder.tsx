@@ -80,10 +80,10 @@ export default function SetlistBuilder() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Setlist Builder
+              Fantasy Setlist
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Build your complete setlist prediction for Dead & Company. Predict the order of songs across both sets and encore.
+              Build your fantasy setlist prediction for Dead & Company. Create your ideal show lineup like a fantasy sports league!
             </p>
           </div>
 

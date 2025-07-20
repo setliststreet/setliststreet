@@ -39,119 +39,39 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // All games organized in a unified grid system
-  const allGames = [
-    // Main Games (Row 1)
+  // Consolidated games for main page - only 4 items
+  const mainGames = [
     {
-      title: 'Guess the Opener',
-      description: 'Predict which song will open each show',
-      href: '/guess-opener',
-      category: 'Main Game',
+      title: 'Song Prediction Games',
+      description: 'Predict openers, closers, encores, bust outs, and more. 9 different song guessing games.',
+      href: '/song-games',
+      category: 'Multiple Games',
       featured: false,
+      gameCount: '9 games'
     },
     {
-      title: 'Guess the Encore',
-      description: 'Predict the encore song for each show',
-      href: '/guess-encore',
-      category: 'Main Game',
-      featured: false,
-    },
-    {
-      title: 'Guess the Bust Out',
-      description: 'Predict rare songs that haven\'t been played recently',
-      href: '/guess-bust-out',
-      category: 'Main Game',
-      featured: false,
-    },
-    {
-      title: 'Setlist Bingo',
-      description: 'Create bingo cards and win with lines or corners',
-      href: '/setlist-bingo',
-      category: 'Main Game',
-      featured: false,
-    },
-    {
-      title: 'Setlist Builder',
-      description: 'Build your own complete setlist prediction',
+      title: 'Fantasy Setlist',
+      description: 'Build your complete fantasy setlist prediction like a fantasy sports league. Drag and drop songs to create your ideal show.',
       href: '/setlist-builder',
-      category: 'Main Game',
+      category: 'Strategy Game',
       featured: false,
-    },
-    
-    // Timing Games (Row 2)
-    {
-      title: 'Guess Start Time',
-      description: 'Predict when the show will begin',
-      href: '/guess-start-time',
-      category: 'Timing Game',
-      featured: false,
+      gameCount: 'Full setlist'
     },
     {
-      title: 'Guess End Time',
-      description: 'Predict when the show will end or total length',
-      href: '/guess-end-time',
-      category: 'Timing Game',
+      title: 'Timing Predictions',
+      description: 'Predict start times, end times, and set break lengths. Test your timing instincts.',
+      href: '/timing-games',
+      category: 'Multiple Games', 
       featured: false,
-    },
-    {
-      title: 'Guess Set Break',
-      description: 'Predict the length of set break',
-      href: '/guess-set-break-length',
-      category: 'Timing Game',
-      featured: false,
-    },
-    
-    // Advanced Song Games (Row 3)
-    {
-      title: 'Set 2 Opener',
-      description: 'Predict the second set opening song',
-      href: '/guess-set2-opener',
-      category: 'Advanced Song Game',
-      featured: false,
-    },
-    {
-      title: 'Set 1 Closer',
-      description: 'Predict the first set closing song',
-      href: '/guess-set1-closer',
-      category: 'Advanced Song Game',
-      featured: false,
-    },
-    {
-      title: 'Set 2 Closer',
-      description: 'Predict the second set closing song',
-      href: '/guess-set2-closer',
-      category: 'Advanced Song Game',
-      featured: false,
-    },
-    {
-      title: 'Pre Drums/Space',
-      description: 'Predict the song before drums/space',
-      href: '/guess-pre-drums-song',
-      category: 'Advanced Song Game',
-      featured: false,
-    },
-    {
-      title: 'Post Drums/Space',
-      description: 'Predict the song after drums/space',
-      href: '/guess-post-drums-song',
-      category: 'Advanced Song Game',
-      featured: false,
-    },
-    
-    // Special Games (Row 4)
-    {
-      title: 'Songs NOT Played',
-      description: 'Predict which popular songs WON\'T be played',
-      href: '/guess-songs-not-played',
-      category: 'Special Game',
-      featured: true,
+      gameCount: '3 games'
     },
     {
       title: 'Guess Next Song (Live)',
-      description: 'Real-time predictions during live shows with community voting',
+      description: 'Real-time predictions during live shows with community voting and live updates.',
       href: '/guess-next-song',
       category: 'Live Game',
       featured: true,
+      gameCount: 'Live only'
     }
   ];
 
@@ -177,6 +97,7 @@ const HomePage = () => {
     href: string;
     category: string;
     featured?: boolean;
+    gameCount?: string;
   }
 
   const GameCard = ({ game }: { game: Game }) => {
@@ -197,17 +118,24 @@ const HomePage = () => {
               {game.description}
             </p>
             <div className="mt-auto">
-              <div className="text-xs text-purple-600 font-medium mb-2">
-                {game.category}
+              <div className="flex justify-between items-center mb-2">
+                <div className="text-xs text-purple-600 font-medium">
+                  {game.category}
+                </div>
+                {game.gameCount && (
+                  <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                    {game.gameCount}
+                  </div>
+                )}
               </div>
               {isFeatured && (
-                <div className="text-xs text-purple-700 font-bold">
+                <div className="text-xs text-purple-700 font-bold mb-2">
                   FEATURED
                 </div>
               )}
-              <div className="text-xs text-gray-400 italic mt-2">
-                Sponsored by: [TBD]
-              </div>
+              <button className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium">
+                {game.gameCount?.includes('games') ? 'View All Games' : 'Play Now'}
+              </button>
             </div>
           </div>
         </div>
@@ -308,11 +236,11 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* All Games Grid */}
+          {/* All Games Grid - Now Consolidated to 4 Main Games */}
           <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">All Prediction Games</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
-              {allGames.map((game, index) => (
+            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Choose Your Game</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {mainGames.map((game, index) => (
                 <GameCard key={index} game={game} />
               ))}
             </div>
