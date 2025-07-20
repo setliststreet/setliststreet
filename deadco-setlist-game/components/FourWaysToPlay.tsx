@@ -1,218 +1,122 @@
 import React, { useState } from 'react';
 
 interface FourWaysToPlayProps {
-  onPlayModeSelect?: (mode: 'fun' | 'charity' | 'cash' | 'prize') => void;
-  onSubmissionClick?: (mode: 'fun' | 'charity' | 'cash' | 'prize', amount?: number) => void;
+  onSubmissionClick: (playMode: string, amount?: number) => void;
+  gameType?: string;
 }
 
-export default function FourWaysToPlay({ onPlayModeSelect, onSubmissionClick }: FourWaysToPlayProps) {
-  const [selectedMode, setSelectedMode] = useState<'fun' | 'charity' | 'cash' | 'prize' | null>(null);
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
-  const [customAmount, setCustomAmount] = useState<string>('');
+export default function FourWaysToPlay({ onSubmissionClick, gameType = 'prediction' }: FourWaysToPlayProps) {
+  const [selectedMode, setSelectedMode] = useState<string>('');
+  const [customAmount, setCustomAmount] = useState<number>(5);
 
   const playModes = [
     {
-      id: 'fun' as const,
+      id: 'fun',
       title: 'Play for Fun',
-      description: 'Just for the love of the music',
-      color: 'border-blue-200 hover:border-blue-300',
-      needsPayment: false,
+      description: 'Free play, leaderboard glory',
+      buttonText: 'Play Free'
     },
     {
-      id: 'charity' as const,
+      id: 'charity',
       title: 'Play for Charity',
-      description: 'Support a good cause',
-      color: 'border-green-200 hover:border-green-300',
-      needsPayment: true,
+      description: 'Donate $1-$10, winners choose charity',
+      buttonText: 'Donate & Play'
     },
     {
-      id: 'cash' as const,
+      id: 'cash',
       title: 'Play for Cash',
-      description: 'Real money games',
-      color: 'border-yellow-200 hover:border-yellow-300',
-      needsPayment: true,
+      description: 'Entry fee builds prize pool',
+      buttonText: 'Enter Pool'
     },
     {
-      id: 'prize' as const,
+      id: 'prize',
       title: 'Play for Prize',
-      description: 'Win exclusive merchandise',
-      color: 'border-purple-200 hover:border-purple-300',
-      needsPayment: false,
-    },
+      description: 'Compete for sponsored rewards',
+      buttonText: 'Compete'
+    }
   ];
 
-  const paymentAmounts = [1, 5, 10];
-
-  const handleModeSelect = (mode: 'fun' | 'charity' | 'cash' | 'prize') => {
-    const modeConfig = playModes.find(m => m.id === mode);
+  const handleModeSelection = (modeId: string) => {
+    setSelectedMode(modeId);
     
-    if (!modeConfig?.needsPayment) {
-      // For fun and prize modes, submit immediately
-      handleSubmit(mode);
-    } else {
-      // For cash and charity modes, show payment options
-      setSelectedMode(mode);
-      setSelectedAmount(null);
-      setCustomAmount('');
-    }
-  };
-
-  const handleAmountSelect = (amount: number) => {
-    setSelectedAmount(amount);
-    setCustomAmount('');
-  };
-
-  const handleCustomAmountChange = (value: string) => {
-    setCustomAmount(value);
-    setSelectedAmount(null);
-  };
-
-  const handleSubmit = (mode: 'fun' | 'charity' | 'cash' | 'prize', amount?: number) => {
-    if (onPlayModeSelect) {
-      onPlayModeSelect(mode);
-    }
-    if (onSubmissionClick) {
-      onSubmissionClick(mode, amount);
-    }
-    
-    // Reset selection state
-    setSelectedMode(null);
-    setSelectedAmount(null);
-    setCustomAmount('');
-  };
-
-  const handlePaymentSubmit = () => {
-    if (!selectedMode) return;
-    
-    const amount = selectedAmount || parseFloat(customAmount);
-    if (isNaN(amount) || amount <= 0) {
-      alert('Please select or enter a valid amount');
-      return;
-    }
-    
-    handleSubmit(selectedMode, amount);
-  };
-
-  const getSelectedAmount = () => {
-    return selectedAmount || (customAmount ? parseFloat(customAmount) : null);
+    // Auto-submit when mode is selected
+    setTimeout(() => {
+      if (modeId === 'charity' || modeId === 'cash') {
+        onSubmissionClick(modeId, customAmount);
+      } else {
+        onSubmissionClick(modeId);
+      }
+    }, 100);
   };
 
   return (
-    <section className="py-8 bg-white">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Ways to Play
-        </h2>
-        <p className="text-gray-600">
-          Choose how you want to experience the game
-        </p>
-      </div>
-
-      {/* Mode Selection */}
-      <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto mb-8">
+    <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
+      <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
+        Choose Your Play Mode
+      </h3>
+      
+      {/* Horizontal Play Mode Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {playModes.map((mode) => (
           <button
             key={mode.id}
-            onClick={() => handleModeSelect(mode.id)}
-            className={`
-              bg-white ${mode.color} border-2 p-4 rounded-lg shadow-sm
-              transform transition-all duration-200 hover:shadow-md
-              focus:outline-none focus:ring-2 focus:ring-purple-300
-              flex-1 min-w-[200px] max-w-[250px]
-              ${selectedMode === mode.id ? 'ring-2 ring-purple-300' : ''}
-            `}
+            onClick={() => handleModeSelection(mode.id)}
+            className={`p-4 rounded-lg border-2 text-left transition-all shadow-sm hover:shadow-md ${
+              selectedMode === mode.id
+                ? 'border-purple-500 bg-purple-50'
+                : 'border-gray-200 hover:border-gray-300 bg-white'
+            }`}
           >
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2 text-gray-800">{mode.title}</h3>
-              <p className="text-sm text-gray-600">{mode.description}</p>
-              <div className="mt-3">
-                <span className="text-xs text-purple-600 font-medium">
-                  {mode.needsPayment ? 'Select Amount' : 'Click to Submit'}
-                </span>
-              </div>
+            <h4 className="font-semibold text-gray-800 mb-2 text-sm">
+              {mode.title}
+            </h4>
+            <p className="text-xs text-gray-600 mb-3">
+              {mode.description}
+            </p>
+            <div className={`text-xs font-medium ${
+              selectedMode === mode.id ? 'text-purple-700' : 'text-gray-500'
+            }`}>
+              {mode.buttonText}
             </div>
           </button>
         ))}
       </div>
 
-      {/* Payment Amount Selection */}
-      {selectedMode && playModes.find(m => m.id === selectedMode)?.needsPayment && (
-        <div className="max-w-2xl mx-auto bg-gray-50 border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-            Select Your {selectedMode === 'cash' ? 'Entry Fee' : 'Donation Amount'}
-          </h3>
-          
-          {/* Preset Amounts */}
-          <div className="flex flex-wrap justify-center gap-3 mb-4">
-            {paymentAmounts.map((amount) => (
+      {/* Amount Selection for Charity/Cash Modes */}
+      {(selectedMode === 'charity' || selectedMode === 'cash') && (
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+          <h4 className="font-medium text-gray-800 mb-3">
+            {selectedMode === 'charity' ? 'Donation Amount' : 'Entry Amount'}
+          </h4>
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
+            {[1, 2, 5, 10, 15, 20].map((amount) => (
               <button
                 key={amount}
-                onClick={() => handleAmountSelect(amount)}
-                className={`
-                  px-6 py-3 rounded-lg border-2 font-semibold transition-colors
-                  ${selectedAmount === amount
-                    ? 'border-purple-500 bg-purple-50 text-purple-700'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                  }
-                `}
+                onClick={() => setCustomAmount(amount)}
+                className={`py-2 px-3 rounded text-sm font-medium transition-colors ${
+                  customAmount === amount
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
+                }`}
               >
                 ${amount}
               </button>
             ))}
           </div>
-
-          {/* Custom Amount */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2 text-center">
-              Or enter custom amount:
-            </label>
-            <div className="flex justify-center">
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                <input
-                  type="number"
-                  min="1"
-                  step="0.01"
-                  value={customAmount}
-                  onChange={(e) => handleCustomAmountChange(e.target.value)}
-                  placeholder="0.00"
-                  className="pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300 w-32"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <div className="text-center">
-            <button
-              onClick={handlePaymentSubmit}
-              disabled={!getSelectedAmount()}
-              className={`
-                px-8 py-3 rounded-lg font-semibold transition-colors
-                ${getSelectedAmount()
-                  ? 'bg-purple-600 text-white hover:bg-purple-700'
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                }
-              `}
-            >
-              {selectedMode === 'cash' 
-                ? `Pay $${getSelectedAmount() || '0'} & Submit`
-                : `Donate $${getSelectedAmount() || '0'} & Submit`
-              }
-            </button>
-          </div>
-
-          {/* Cancel Button */}
-          <div className="text-center mt-3">
-            <button
-              onClick={() => setSelectedMode(null)}
-              className="text-sm text-gray-500 hover:text-gray-700 underline"
-            >
-              Cancel
-            </button>
-          </div>
         </div>
       )}
-    </section>
+
+      {/* Confirmation Message */}
+      {selectedMode && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+          <p className="text-green-800 text-sm font-medium">
+            {selectedMode === 'fun' && `✓ Playing for fun! Your ${gameType} has been submitted.`}
+            {selectedMode === 'charity' && `✓ Thank you! Your $${customAmount} donation and ${gameType} have been submitted.`}
+            {selectedMode === 'cash' && `✓ Entered! Your $${customAmount} entry and ${gameType} are in the cash pool.`}
+            {selectedMode === 'prize' && `✓ Competing for prizes! Your ${gameType} has been submitted.`}
+          </p>
+        </div>
+      )}
+    </div>
   );
 } 

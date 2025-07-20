@@ -166,10 +166,10 @@ export default function SetlistBuilder() {
             </div>
           </div>
 
-          {/* Play Mode Selection */}
+          {/* Play Mode Selection & Auto-Submit */}
           <div className="mt-12">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">Choose Your Play Mode</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Choose Your Play Mode</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
               {[
                 { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
                 { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
@@ -178,7 +178,11 @@ export default function SetlistBuilder() {
               ].map((mode) => (
                 <button
                   key={mode.id}
-                  onClick={() => setSelectedPlayMode(mode.id)}
+                  onClick={() => {
+                    setSelectedPlayMode(mode.id);
+                    // Auto-submit when mode is selected
+                    setTimeout(() => handleSubmit(), 100);
+                  }}
                   className={`p-4 rounded-lg border-2 text-left transition-all shadow-sm hover:shadow-md ${
                     selectedPlayMode === mode.id
                       ? 'border-purple-500 bg-purple-50'
@@ -190,16 +194,6 @@ export default function SetlistBuilder() {
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* Submit Button */}
-          <div className="text-center mt-10">
-            <button
-              onClick={handleSubmit}
-              className="bg-purple-600 text-white px-10 py-4 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg shadow-lg hover:shadow-xl"
-            >
-              Submit Setlist Prediction
-            </button>
           </div>
         </div>
 

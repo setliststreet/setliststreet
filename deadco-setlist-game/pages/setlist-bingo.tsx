@@ -308,8 +308,8 @@ export default function SetlistBingo() {
 
           {/* Play Mode Selection & Submit */}
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">Choose Your Play Mode</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Choose Your Play Mode</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               {[
                 { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
                 { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
@@ -318,26 +318,21 @@ export default function SetlistBingo() {
               ].map((mode) => (
                 <button
                   key={mode.id}
-                  onClick={() => setSelectedPlayMode(mode.id)}
-                  className={`p-3 rounded-lg border-2 text-left transition-all shadow-sm ${
+                  onClick={() => {
+                    setSelectedPlayMode(mode.id);
+                    // Auto-submit when mode is selected
+                    setTimeout(() => handleSubmit(), 100);
+                  }}
+                  className={`p-4 rounded-lg border-2 text-left transition-all shadow-sm hover:shadow-md ${
                     selectedPlayMode === mode.id
                       ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-gray-300 bg-white hover:shadow-md'
+                      : 'border-gray-200 hover:border-gray-300 bg-white'
                   }`}
                 >
-                  <h3 className="font-semibold text-gray-800 mb-1 text-sm">{mode.title}</h3>
+                  <h3 className="font-semibold text-gray-800 mb-2 text-sm">{mode.title}</h3>
                   <p className="text-xs text-gray-600">{mode.desc}</p>
                 </button>
               ))}
-            </div>
-
-            <div className="text-center">
-              <button
-                onClick={handleSubmit}
-                className="bg-purple-600 text-white py-3 px-8 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg shadow-lg hover:shadow-xl"
-              >
-                Submit Bingo Card
-              </button>
             </div>
           </div>
 
