@@ -251,20 +251,20 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* All Games Grid - MainLayout Should Handle Padding */}
-      <div className="mb-16">
+      {/* All Games Grid - Force Visible Margins */}
+      <div className="mb-16 mx-4 sm:mx-8 lg:mx-16">
         <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Choose Your Game</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-4xl mx-auto">
           {mainGames.map((game, index) => (
             <GameCard key={index} game={game} />
           ))}
         </div>
       </div>
 
-      {/* Utility Tools - MainLayout Should Handle Padding */}
-      <div className="mb-8">
+      {/* Utility Tools - Force Visible Margins */}
+      <div className="mb-8 mx-4 sm:mx-8 lg:mx-16">
         <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Tools & Results</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-xl mx-auto">
           {utilityLinks.map((item, index) => (
             <UtilityCard key={index} item={item} />
           ))}
