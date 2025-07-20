@@ -191,7 +191,7 @@ export default function Legal() {
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-white/80">
                 <span className="text-yellow-300">📧</span>
-                <span>legal@setliststreet.com</span>
+                <span>setliststreet@proton.me</span>
               </div>
               <div className="flex items-center gap-2 text-white/80">
                 <span className="text-blue-300">💬</span>
