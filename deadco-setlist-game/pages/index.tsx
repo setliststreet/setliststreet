@@ -194,23 +194,23 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Show Schedule - More Spaced */}
+      {/* Show Schedule - Properly Contained */}
       <div className="mb-16">
         <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
           Show Schedule
         </h2>
-        <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] text-center shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex flex-wrap justify-center gap-4">
+          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow">
             <h3 className="font-semibold text-purple-700 text-sm">Show 1</h3>
             <p className="text-gray-600 text-sm mt-1">Friday, August 1</p>
             <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
           </div>
-          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] text-center shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow">
             <h3 className="font-semibold text-purple-700 text-sm">Show 2</h3>
             <p className="text-gray-600 text-sm mt-1">Saturday, August 2</p>
             <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
           </div>
-          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] text-center shadow-sm hover:shadow-md transition-shadow">
+          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow">
             <h3 className="font-semibold text-purple-700 text-sm">Show 3</h3>
             <p className="text-gray-600 text-sm mt-1">Sunday, August 3</p>
             <p className="text-xs text-gray-500 mt-1">Deadline: 7:00 PM PT</p>
@@ -235,17 +235,17 @@ const HomePage = () => {
 
       {/* Game Count Banner */}
       <div className="mb-16">
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 max-w-4xl mx-auto text-center shadow-sm">
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center shadow-sm">
           <p className="text-xl font-bold text-gray-800">
             16 Games Available | Statistical Insights | Cash Prizes | Charity Donations | Exclusive Prizes
           </p>
         </div>
       </div>
 
-      {/* All Games Grid - Now 5 Main Games */}
+      {/* All Games Grid - Properly Contained with Margins */}
       <div className="mb-16">
         <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Choose Your Game</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {mainGames.map((game, index) => (
             <GameCard key={index} game={game} />
           ))}

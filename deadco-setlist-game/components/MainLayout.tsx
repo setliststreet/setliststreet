@@ -14,8 +14,8 @@ export default function MainLayout({ children, title, description }: MainLayoutP
       <Header />
       
       <main className="flex-grow">
-        {/* Global Container with Consistent Margins */}
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        {/* Global Container with Enhanced Margins */}
+        <div className="max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 xl:px-20">
           {title && (
             <div className="text-center mb-12 pt-12">
               <h1 className="text-4xl font-bold text-gray-900 mb-6">
