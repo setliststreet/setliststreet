@@ -171,6 +171,8 @@ export default function Component({ prop, optional = false }: ComponentProps) {
 - [ ] **Backend Integration**: Connect Supabase for real data persistence
 - [ ] **Authentication**: Complete sign in/signup flow
 - [ ] **Payment Processing**: Implement Stripe integration
+- [ ] **Live API Integration**: Connect to setlist.fm API for real-time results
+- [ ] **Song Selection UX**: Create interactive scroll wheel for song picking
 
 ### Medium Priority
 - [ ] **Performance**: Image optimization, code splitting

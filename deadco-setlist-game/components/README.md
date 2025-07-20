@@ -108,6 +108,13 @@ interface FourWaysToPlayProps {
 - Touch/mouse interactions
 - Visual song browsing
 
+**🎯 BOUNTY OPPORTUNITY ($30+)**: This component needs enhancement!
+- Current implementation is basic
+- Needs smooth animations and better UX
+- Touch/gesture support for mobile
+- Visual feedback and selection states
+- Integration with all song guessing games
+
 #### `SpinWheelSongPicker.tsx`
 **Purpose**: Spinning wheel song selection
 **Features**:

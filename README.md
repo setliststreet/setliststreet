@@ -66,6 +66,18 @@ setliststreet/
 - **Current State**: UI exists, backend integration needed
 - **Bounty**: **$25 or negotiable**
 
+### 📡 **Live API Integration ($25+ bounty)**
+- **Task**: Implement live integration with setlist.fm API for real-time results
+- **Includes**: Live show tracking, automatic result verification, real-time scoring
+- **Current State**: Mock data only, no live integration
+- **Bounty**: **$25 or negotiable**
+
+### 🎛️ **Interactive Song Selection UI ($30+ bounty)**
+- **Task**: Create cool scroll wheel interface for single song guessing games
+- **Includes**: iPod-style circular selector, smooth animations, touch/mouse interactions
+- **Current State**: Basic text input, needs engaging visual interface
+- **Bounty**: **$30 or negotiable**
+
 ### 🏢 **Sponsor Integration ($25+ bounty)**
 - **Task**: Create sponsor logo placeholders per game
 - **Includes**: Dynamic sponsor management, game-specific branding
@@ -97,6 +109,8 @@ setliststreet/
 ### 🚧 **What Needs Work**
 - **Visual Design**: Basic styling, needs Dead & Company aesthetic
 - **Backend Integration**: Authentication, payments, data persistence
+- **Live API Integration**: Real-time setlist.fm integration for live results
+- **Song Selection UX**: Cool scroll wheel interface for song picking
 - **Performance**: Image optimization, loading states
 - **Testing**: Unit tests, integration tests
 - **Accessibility**: ARIA labels, keyboard navigation

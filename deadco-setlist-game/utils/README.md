@@ -363,6 +363,44 @@ export const gameQueries = {
 };
 ```
 
+### 📡 **Setlist.fm API Integration ($25+ Bounty)**
+```typescript
+// setlistFmClient.ts - BOUNTY OPPORTUNITY
+interface SetlistFmAPI {
+  getArtistSetlists(artistId: string): Promise<Setlist[]>;
+  getLiveSetlist(showId: string): Promise<LiveSetlist>;
+  subscribeToLiveUpdates(showId: string, callback: (update: SetlistUpdate) => void): void;
+}
+
+// Live results verification
+export const liveResultsQueries = {
+  async verifyPredictions(gameId: string, actualSetlist: Setlist) {
+    // Compare user predictions with actual setlist from setlist.fm
+    // Update scores in real-time
+    // Trigger winner notifications
+  },
+  
+  async trackLiveShow(showId: string) {
+    // Monitor setlist.fm for live updates
+    // Push real-time updates to connected users
+    // Handle song additions, corrections, timing
+  }
+};
+
+// Example integration
+const setupLiveTracking = (showDate: string) => {
+  const setlistFmId = getSetlistFmShowId(showDate);
+  
+  // Subscribe to live updates
+  setlistFmAPI.subscribeToLiveUpdates(setlistFmId, (update) => {
+    // Process real-time setlist updates
+    updateGameScores(update);
+    notifyUsers(update);
+    updateLeaderboards();
+  });
+};
+```
+
 ## 🧪 Testing Utilities
 
 ### Mock Data Generators
