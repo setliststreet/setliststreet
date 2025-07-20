@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16">
         
         {/* Single Row Layout - Always Horizontal */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
+        <div className="flex flex-wrap justify-between items-center gap-8">
           
           {/* Left Sponsor Logos */}
           <div className="flex justify-center lg:justify-start space-x-3">
