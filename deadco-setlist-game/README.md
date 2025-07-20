@@ -1,149 +1,226 @@
-# Setlist Street - Dead & Company Prediction Games
+# 🎸 Setlist Street - Main Application
 
-A web platform for Dead & Company fans to predict setlists, play bingo, test trivia knowledge, and compete with fellow Deadheads.
+## Overview
+This is the main Next.js application for Setlist Street, featuring 16+ prediction games for Grateful Dead 60th Anniversary concerts. Built with modern React, TypeScript, and Tailwind CSS.
 
-## 🎯 Features
-
-- **Setlist Bingo**: Create multiple bingo boards with song predictions
-- **Setlist Builder**: Drag-and-drop interface to predict entire setlists
-- **Trivia Challenge**: Test Dead & Company knowledge 
-- **Leaderboard**: Track top players and community stats
-- **Sponsor Integration**: Support for sponsors and charity partnerships
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 
-### Installation
-
-1. Clone the repository
+### Development Setup
 ```bash
-git clone [your-repo-url]
-cd setlist-street
-```
-
-2. Install dependencies
-```bash
+# Install dependencies
 npm install
-```
 
-3. Run the development server
-```bash
+# Start development server
 npm run dev
+
+# Open browser to http://localhost:3000
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Build & Deploy
+```bash
+# Production build
+npm run build
+
+# Start production server
+npm run start
+
+# Lint code
+npm run lint
+```
 
 ## 📁 Project Structure
 
 ```
 deadco-setlist-game/
-├── components/          # React components
-│   ├── BingoBoard/     # Bingo game components
-│   ├── Layout.tsx      # Main layout wrapper
-│   └── ...
-├── pages/              # Next.js pages
-│   ├── index.tsx       # Homepage
-│   ├── setlistbuilder-barebones.tsx  # Core setlist builder
-│   └── ...
-├── theme/              # Design system and theming
-├── utils/              # Utility functions
-├── scripts/            # Data processing scripts
-└── public/             # Static assets
+├── components/              # Reusable React components
+│   ├── Header.tsx          # Site navigation
+│   ├── Footer.tsx          # Footer with sponsor placeholders
+│   ├── MainLayout.tsx      # Global layout wrapper
+│   ├── FourWaysToPlay.tsx  # Payment mode selection
+│   └── BingoBoard/         # Bingo game components
+├── pages/                  # Next.js pages (file-based routing)
+│   ├── index.tsx           # Homepage with game selection
+│   ├── guess-opener.tsx    # Song prediction games
+│   ├── setlist-bingo.tsx   # Bingo board game
+│   ├── setlist-builder.tsx # Fantasy setlist game
+│   └── game/[id].tsx       # Dynamic game pages
+├── utils/                  # Helper functions
+│   ├── supabaseClient.ts   # Database connection (ready for backend)
+│   ├── songProbabilities.ts # Song statistics
+│   └── leaderboardData.ts  # Mock leaderboard data
+├── styles/                 # CSS and styling
+│   └── globals.css         # Global styles and theme
+├── lib/data/               # Static data
+│   ├── bands.ts            # Band information
+│   └── games.ts            # Game configurations
+└── theme/                  # Design system
+    └── SetlistStreetTheme.ts # Theme configuration
 ```
 
 ## 🎮 Game Types
 
-### Setlist Bingo
-- Create 5x5 bingo cards with song predictions
-- Real-time gameplay during shows
-- Multiple board strategy support
+### 1. Song Prediction Games (`/song-games`)
+- **Guess the Opener**: Predict first set opener
+- **Guess the Encore**: Predict encore song(s)
+- **Guess Bust Out**: Predict rare/never-played songs
+- **Set Closers**: Predict set-ending songs
+- **Pre/Post Drums**: Predict songs before/after Drums & Space
 
-### Setlist Builder (Barebones)
-- Structured setlist prediction:
-  - **Set 1**: Opener → Songs → Closer
-  - **Set 2**: Opener → Songs → Drums/Space → Back From Space → Songs → Closer  
-  - **Encores**: Dynamic 1-4 encores
-- Drag & drop from song pool
-- Autocomplete song entry
-- Dynamic list building
+### 2. Setlist Bingo (`/setlist-bingo`)
+- 5x5 bingo card with Dead & Company songs
+- Win conditions: lines, columns, diagonals, four corners
+- Drag-and-drop song selection
 
-### Trivia Challenge
-- Multiple difficulty levels
-- Dead & Company history and song knowledge
-- Timed questions and tournaments
+### 3. Fantasy Setlist (`/setlist-builder`)
+- Build complete setlist predictions
+- Set 1, Set 2 (before/after Drums), Encore
+- Drag-and-drop interface with hints
 
-## 🎨 Design System
+### 4. Timing Games (`/timing-games`)
+- Show start/end time predictions
+- Set break length predictions
 
-The app uses a professional design system inspired by the official Dead & Company website:
-- Clean typography (Inter font family)
-- Sophisticated neutral color palette
-- Minimal, professional aesthetics
-- Responsive design principles
+## 🧩 Key Components
 
-## 🗃️ Data
+### `MainLayout`
+Global layout wrapper providing consistent header, footer, and content structure.
 
-The platform includes:
-- Comprehensive Dead & Company setlist database
-- Song frequency and popularity data
-- Show venue and date information
-- User scoring and leaderboard data
+### `FourWaysToPlay`
+Standardized payment mode selection:
+- Play for Fun (free)
+- Play for Charity (donation)
+- Play for Cash (prize pool)
+- Play for Prize (sponsored rewards)
 
-## 🛠️ Built With
+### `Header`
+Responsive navigation with FAQ, Sign In, Sign Up links. Includes mobile hamburger menu.
 
-- **Framework**: Next.js 15.4.1
-- **Frontend**: React 19.1.0
-- **Styling**: Tailwind CSS + Custom theme system
-- **Drag & Drop**: react-dnd + @dnd-kit
-- **Animations**: Framer Motion
-- **Database**: Supabase (configured)
-- **Language**: TypeScript
+### `SetlistDragDropPicker`
+Reusable drag-and-drop component for song selection used across multiple games.
 
-## 📋 Available Scripts
+## 🎨 Styling & Design
 
-- `npm run dev` - Start development server with Turbopack
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+### Design System
+- **Primary Colors**: Purple (#7c3aed), Grateful Dead rainbow palette
+- **Fonts**: Orbitron (headings), Montserrat Alternates (body), Oswald (display)
+- **Framework**: Tailwind CSS with custom utilities
+- **Responsive**: Mobile-first design with breakpoints
 
-## 🚀 Deployment
+### Theme Configuration
+Located in `/theme/SetlistStreetTheme.ts` - centralized design tokens for consistency.
 
-This project is designed to deploy on Vercel, but can be deployed to any platform that supports Next.js.
+## 📊 Data & State Management
 
-### Deploy on Vercel
-1. Push to GitHub
-2. Connect repository to Vercel
-3. Deploy automatically
+### Current State
+- **Client-side**: React hooks (useState, useEffect)
+- **Data**: Mock data in `/lib/data/` and `/utils/`
+- **Persistence**: Local storage for temporary state
 
-## 📝 Development Notes
+### Prepared for Backend
+- **Database**: Supabase client configured in `/utils/supabaseClient.ts`
+- **Schema**: Ready for users, games, entries, songs tables
+- **Authentication**: UI components exist, backend integration needed
 
-### Key Components
-- `setlistbuilder-barebones.tsx` - Core drag-and-drop setlist builder
-- `Layout.tsx` - Professional navigation and layout
-- `BingoBoard/` - Complete bingo game system
-- `SetlistStreetTheme.ts` - Centralized design system
+## 🔧 Development Guidelines
 
-### Database Integration
-- Supabase client configured in `utils/supabaseClient.ts`
-- CSV data processing scripts in `scripts/`
-- Song database ready for integration
+### Code Standards
+- **TypeScript**: Strict mode enabled
+- **ESLint**: Configured for Next.js and React
+- **File Naming**: PascalCase for components, kebab-case for pages
+- **Imports**: Absolute imports from project root
+
+### Component Patterns
+```typescript
+// Standard component structure
+interface ComponentProps {
+  prop: string;
+  optional?: boolean;
+}
+
+export default function Component({ prop, optional = false }: ComponentProps) {
+  const [state, setState] = useState<string>('');
+  
+  return (
+    <div className="responsive-classes">
+      {/* Component content */}
+    </div>
+  );
+}
+```
+
+### Responsive Design
+```css
+/* Mobile first approach */
+.class {
+  @apply base-styles;
+  @apply sm:small-screens;
+  @apply md:medium-screens;
+  @apply lg:large-screens;
+  @apply xl:extra-large;
+}
+```
+
+## 🚨 Known Issues & TODOs
+
+### High Priority
+- [ ] **Visual Design Overhaul**: Implement assets from `/visualelements/`
+- [ ] **Backend Integration**: Connect Supabase for real data persistence
+- [ ] **Authentication**: Complete sign in/signup flow
+- [ ] **Payment Processing**: Implement Stripe integration
+
+### Medium Priority
+- [ ] **Performance**: Image optimization, code splitting
+- [ ] **Testing**: Unit tests, integration tests
+- [ ] **Accessibility**: ARIA labels, keyboard navigation
+- [ ] **SEO**: Meta tags, structured data
+
+### Low Priority
+- [ ] **PWA Features**: Offline support, push notifications
+- [ ] **Analytics**: User tracking, game statistics
+- [ ] **Admin Panel**: Game management interface
+
+## 🔗 External Dependencies
+
+### Core Framework
+- **Next.js 15**: React framework with SSR/SSG
+- **React 18**: UI library with hooks
+- **TypeScript**: Type safety and developer experience
+
+### UI & Styling
+- **Tailwind CSS**: Utility-first CSS framework
+- **Framer Motion**: Animations and transitions
+- **React DnD**: Drag and drop functionality
+
+### Development
+- **ESLint**: Code linting and quality
+- **PostCSS**: CSS processing
+- **Turbopack**: Fast bundler for development
+
+## 📈 Performance Considerations
+
+### Optimization Strategies
+- **Static Generation**: Most pages are statically generated
+- **Code Splitting**: Pages load only necessary code
+- **Image Optimization**: Next.js automatic image optimization
+- **CSS Purging**: Tailwind removes unused styles
+
+### Monitoring
+- **Build Analysis**: Bundle size tracking
+- **Core Web Vitals**: Performance metrics
+- **Lighthouse**: Regular performance audits
+
+---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests and linting
-5. Submit a pull request
+1. **Fork & Clone**: Get your own copy
+2. **Create Branch**: `git checkout -b feature/your-feature`
+3. **Develop**: Follow coding standards
+4. **Test**: `npm run build` to verify
+5. **Submit PR**: Clear description of changes
 
-## 📄 License
-
-This project is for entertainment purposes only. Not affiliated with Grateful Dead or Dead & Company.
-
-## 🎵 Acknowledgments
-
-- Dead & Company for the incredible music
-- Grateful Dead community for inspiration  
-- The Deadhead community for testing and feedback
+**See main project README for bounty opportunities!**
