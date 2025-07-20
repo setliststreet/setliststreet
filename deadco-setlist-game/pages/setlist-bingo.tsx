@@ -96,7 +96,7 @@ export default function SetlistBingo() {
 
   const handleDrop = (e: React.DragEvent, row: number, col: number) => {
     e.preventDefault();
-    if (draggedSong && row !== 2 || col !== 2) {
+    if (draggedSong && !(row === 2 && col === 2)) {
       updateBingoSquare(row, col, draggedSong);
     }
     setDraggedSong(null);
@@ -158,11 +158,11 @@ export default function SetlistBingo() {
             </div>
           </div>
 
-          {/* Main Bingo Builder with Three-Column Layout */}
-          <div className="grid grid-cols-7 gap-6 mb-8">
+          {/* Main Bingo Builder with Three-Column Layout - IMPROVED SPACING */}
+          <div className="grid grid-cols-7 gap-12 mb-12">
             {/* LEFT: Song Candidates (2/7 width) */}
-            <div className="col-span-2">
-              <h3 className="font-semibold text-gray-800 mb-4 text-sm">Available Songs → Drag to Board</h3>
+            <div className="col-span-2 bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <h3 className="font-semibold text-gray-800 mb-6 text-base">Available Songs → Drag to Board</h3>
               
               {/* Search Input */}
               <input
@@ -170,14 +170,14 @@ export default function SetlistBingo() {
                 placeholder="Search songs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg mb-4 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                className="w-full p-3 border border-gray-300 rounded-lg mb-6 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
               />
 
               {/* Search Results */}
               {suggestions.length > 0 && (
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-2 text-sm">Search Results:</h3>
-                  <div className="h-32 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50 mb-4">
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-800 mb-3 text-sm">Search Results:</h3>
+                  <div className="h-32 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-white">
                     <div className="space-y-1">
                       {suggestions.map((song, index) => (
                         <div
@@ -195,9 +195,9 @@ export default function SetlistBingo() {
               )}
 
               {/* Popular Songs - Limited to 15 with Scrolling */}
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2 text-sm">Popular Songs → Drag to Board</h3>
-                <div className="h-64 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50">
+              <div className="mb-6">
+                <h3 className="font-semibold text-gray-800 mb-3 text-sm">Popular Songs → Drag to Board</h3>
+                <div className="h-64 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-white">
                   <div className="space-y-1">
                     {allSongs.filter(song => !bingoBoard.flat().includes(song)).slice(0, 15).map((song, index) => (
                       <div
@@ -221,16 +221,16 @@ export default function SetlistBingo() {
               </div>
 
               {/* Board Controls */}
-              <div className="space-y-2 mt-4">
+              <div className="space-y-3">
                 <button
                   onClick={generateRandomBoard}
-                  className="w-full bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
                 >
                   Generate Random Board
                 </button>
                 <button
                   onClick={clearBoard}
-                  className="w-full bg-gray-600 text-white py-2 px-3 rounded-lg hover:bg-gray-700 transition-colors text-sm"
+                  className="w-full bg-gray-600 text-white py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
                 >
                   Clear Board
                 </button>
@@ -238,8 +238,8 @@ export default function SetlistBingo() {
             </div>
 
             {/* CENTER: Bingo Board (3/7 width) */}
-            <div className="col-span-3">
-              <h3 className="font-semibold text-gray-800 mb-4 text-sm">Your Bingo Card → Drop Songs Here</h3>
+            <div className="col-span-3 bg-white rounded-lg p-8 border-2 border-purple-200 shadow-lg">
+              <h3 className="font-semibold text-gray-800 mb-6 text-base">Your Bingo Card → Drop Songs Here</h3>
               
               <div className="bg-white border-2 border-gray-300 rounded-lg p-4 shadow-sm">
                 <div className="grid grid-cols-5 gap-2">
@@ -277,9 +277,9 @@ export default function SetlistBingo() {
               </div>
 
               {/* Board Stats */}
-              <div className="mt-4 text-center">
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                  <h4 className="font-semibold text-purple-800 mb-1">Progress</h4>
+              <div className="mt-6 text-center">
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-purple-800 mb-2">Progress</h4>
                   <p className="text-purple-700 text-sm">
                     Filled: {bingoBoard.flat().filter(cell => cell && cell !== '').length}/25 squares
                   </p>
@@ -291,10 +291,10 @@ export default function SetlistBingo() {
             </div>
 
             {/* RIGHT: Hints & Stats (2/7 width) */}
-            <div className="col-span-2">
-              <h3 className="font-semibold text-gray-800 mb-4 text-sm">Quick Stats & Hints</h3>
+            <div className="col-span-2 bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <h3 className="font-semibold text-gray-800 mb-6 text-base">Quick Stats & Hints</h3>
               
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {/* Quick Stats */}
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <h4 className="font-semibold text-blue-800 mb-3 text-sm">Song Statistics</h4>

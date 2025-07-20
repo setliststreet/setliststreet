@@ -1,3 +1,4 @@
+import UniversalPaymentOptions from '@/components/UniversalPaymentOptions';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import MainLayout from '../../components/MainLayout';
@@ -162,3 +163,5 @@ export default function GamePage() {
     </MainLayout>
   );
 } 
+
+<UniversalPaymentOptions />

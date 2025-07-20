@@ -1,3 +1,4 @@
+import UniversalPaymentOptions from '@/components/UniversalPaymentOptions';
 import React from 'react';
 import { useRouter } from 'next/router';
 import MainLayout from '../../components/MainLayout';
@@ -15,3 +16,5 @@ export default function ResultsPage() {
     </MainLayout>
   );
 } 
+
+<UniversalPaymentOptions />
