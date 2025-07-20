@@ -127,14 +127,14 @@ export default function SetlistDragDropPicker({
           />
           
           {/* Limited Song Display - Show only 5 at a time */}
-          <div className="h-64 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50">
+          <div className="h-48 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50">
             {filteredSongs.length === 0 ? (
               <p className="text-gray-500 text-xs text-center py-8">
                 {searchTerm ? 'No songs found' : 'No available songs'}
               </p>
             ) : (
               <div className="space-y-1">
-                {filteredSongs.slice(0, 20).map((song, index) => (
+                {filteredSongs.slice(0, 5).map((song, index) => (
                   <div
                     key={`${song}-${index}`}
                     draggable
@@ -145,10 +145,10 @@ export default function SetlistDragDropPicker({
                     {song}
                   </div>
                 ))}
-                {filteredSongs.length > 20 && (
+                {filteredSongs.length > 5 && (
                   <div className="text-center py-2">
                     <p className="text-xs text-gray-500">
-                      +{filteredSongs.length - 20} more songs (search to filter)
+                      +{filteredSongs.length - 5} more songs (search to filter)
                     </p>
                   </div>
                 )}

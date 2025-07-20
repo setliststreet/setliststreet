@@ -85,12 +85,12 @@ export default function SetlistBuilder() {
         </p>
       </div>
 
-      {/* Main Fantasy Setlist Builder - Three Column Layout */}
-      <div className="grid grid-cols-7 gap-6">
+      {/* Main Fantasy Setlist Builder - Three Column Layout with Enhanced Spacing */}
+      <div className="grid grid-cols-7 gap-12 mb-16">
         {/* LEFT: Song Candidates will be handled by SetlistDragDropPicker component (2/7 width) */}
         
         {/* CENTER: Setlist Builder Sections (3/7 width) */}
-        <div className="col-span-3 space-y-6">
+        <div className="col-span-3 space-y-6 px-4">
           {/* Set 1 */}
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-gray-800">Set 1</h2>
@@ -141,7 +141,7 @@ export default function SetlistBuilder() {
         </div>
 
         {/* RIGHT: Hints & Stats Sidebar (2/7 width) */}
-        <div className="col-span-2 space-y-6">
+        <div className="col-span-2 space-y-6 px-4">
           <h3 className="text-lg font-bold text-gray-800">Strategy & Stats</h3>
           
           {/* Quick Stats */}
@@ -226,35 +226,35 @@ export default function SetlistBuilder() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Play Mode Selection & Auto-Submit */}
-        <div className="mt-12">
-          <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Choose Your Play Mode</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            {[
-              { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
-              { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
-              { id: 'cash', title: 'Play for Cash', desc: 'Entry fee builds prize pool' },
-              { id: 'prize', title: 'Play for Prize', desc: 'Compete for sponsored rewards' }
-            ].map((mode) => (
-              <button
-                key={mode.id}
-                onClick={() => {
-                  setSelectedPlayMode(mode.id);
-                  // Auto-submit when mode is selected
-                  setTimeout(() => handleSubmit(), 100);
-                }}
-                className={`p-4 rounded-lg border-2 text-left transition-all shadow-sm hover:shadow-md ${
-                  selectedPlayMode === mode.id
-                    ? 'border-purple-500 bg-purple-50'
-                    : 'border-gray-200 hover:border-gray-300 bg-white'
-                }`}
-              >
-                <h3 className="font-semibold text-gray-800 mb-2 text-sm">{mode.title}</h3>
-                <p className="text-xs text-gray-600">{mode.desc}</p>
-              </button>
-            ))}
-          </div>
+      {/* Play Mode Selection & Auto-Submit - Moved to Bottom */}
+      <div className="mt-16">
+        <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Choose Your Play Mode</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          {[
+            { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
+            { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
+            { id: 'cash', title: 'Play for Cash', desc: 'Entry fee builds prize pool' },
+            { id: 'prize', title: 'Play for Prize', desc: 'Compete for sponsored rewards' }
+          ].map((mode) => (
+            <button
+              key={mode.id}
+              onClick={() => {
+                setSelectedPlayMode(mode.id);
+                // Auto-submit when mode is selected
+                setTimeout(() => handleSubmit(), 100);
+              }}
+              className={`p-4 rounded-lg border-2 text-left transition-all shadow-sm hover:shadow-md ${
+                selectedPlayMode === mode.id
+                  ? 'border-purple-500 bg-purple-50'
+                  : 'border-gray-200 hover:border-gray-300 bg-white'
+              }`}
+            >
+              <h3 className="font-semibold text-gray-800 mb-2 text-sm">{mode.title}</h3>
+              <p className="text-xs text-gray-600">{mode.desc}</p>
+            </button>
+          ))}
         </div>
       </div>
     </MainLayout>
