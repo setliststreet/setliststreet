@@ -188,26 +188,26 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Show Schedule - Moved Above Games */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          {/* Show Schedule - Compact Horizontal Layout */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
               Show Schedule
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <h3 className="font-semibold text-purple-700">Show 1</h3>
-                <p className="text-gray-600">Friday, August 1</p>
-                <p className="text-sm text-gray-500">Deadline: 7:00 PM PT</p>
+            <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+              <div className="bg-white border border-gray-200 rounded-lg p-3 flex-1 min-w-[200px] text-center">
+                <h3 className="font-semibold text-purple-700 text-sm">Show 1</h3>
+                <p className="text-gray-600 text-sm">Friday, August 1</p>
+                <p className="text-xs text-gray-500">Deadline: 7:00 PM PT</p>
               </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <h3 className="font-semibold text-purple-700">Show 2</h3>
-                <p className="text-gray-600">Saturday, August 2</p>
-                <p className="text-sm text-gray-500">Deadline: 7:00 PM PT</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-3 flex-1 min-w-[200px] text-center">
+                <h3 className="font-semibold text-purple-700 text-sm">Show 2</h3>
+                <p className="text-gray-600 text-sm">Saturday, August 2</p>
+                <p className="text-xs text-gray-500">Deadline: 7:00 PM PT</p>
               </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-4">
-                <h3 className="font-semibold text-purple-700">Show 3</h3>
-                <p className="text-gray-600">Sunday, August 3</p>
-                <p className="text-sm text-gray-500">Deadline: 7:00 PM PT</p>
+              <div className="bg-white border border-gray-200 rounded-lg p-3 flex-1 min-w-[200px] text-center">
+                <h3 className="font-semibold text-purple-700 text-sm">Show 3</h3>
+                <p className="text-gray-600 text-sm">Sunday, August 3</p>
+                <p className="text-xs text-gray-500">Deadline: 7:00 PM PT</p>
               </div>
             </div>
           </div>

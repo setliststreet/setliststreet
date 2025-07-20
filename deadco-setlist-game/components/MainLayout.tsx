@@ -14,21 +14,19 @@ export default function MainLayout({ children, title, description }: MainLayoutP
       <Header />
       
       <main className="flex-grow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {title && (
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                {title}
-              </h1>
-              {description && (
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  {description}
-                </p>
-              )}
-            </div>
-          )}
-          {children}
-        </div>
+        {title && (
+          <div className="text-center mb-8 pt-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              {title}
+            </h1>
+            {description && (
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                {description}
+              </p>
+            )}
+          </div>
+        )}
+        {children}
       </main>
       
       <Footer />

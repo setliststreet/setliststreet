@@ -87,150 +87,194 @@ export default function SetlistBuilder() {
             </p>
           </div>
 
-          {/* Game Instructions */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">How to Play</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Scoring:</h3>
-                <ul className="space-y-1">
-                  <li>• Exact song in exact position = 20 points</li>
-                  <li>• Correct song in wrong position = 10 points</li>
-                  <li>• Bonus points for rare songs and perfect sequences</li>
-                </ul>
+          {/* Main Content Grid - Builder + Hints Side by Side */}
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-8 mb-8">
+            
+            {/* Main Builder Area (3/4 width on large screens) */}
+            <div className="xl:col-span-3 space-y-8">
+              
+              {/* Game Instructions */}
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                <h2 className="text-xl font-bold text-gray-800 mb-4">How to Play</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-2">Scoring:</h3>
+                    <ul className="space-y-1">
+                      <li>• Exact song in exact position = 20 points</li>
+                      <li>• Correct song in wrong position = 10 points</li>
+                      <li>• Bonus points for rare songs and perfect sequences</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-2">Strategy Tips:</h3>
+                    <ul className="space-y-1">
+                      <li>• Set 1 typically has 7-9 songs</li>
+                      <li>• Set 2 has Drums/Space in the middle</li>
+                      <li>• Encores are usually 1-2 songs</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
+
+              {/* Set 1 */}
               <div>
-                <h3 className="font-semibold text-gray-800 mb-2">Strategy Tips:</h3>
-                <ul className="space-y-1">
-                  <li>• Set 1 typically has 7-9 songs</li>
-                  <li>• Set 2 has Drums/Space in the middle</li>
-                  <li>• Encores are usually 1-2 songs</li>
-                </ul>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 1</h2>
+                <SetlistDragDropPicker
+                  availableSongs={allSongs}
+                  maxSongs={12}
+                  onSetlistChange={(songs) => updateSetSection('set1', songs)}
+                />
               </div>
-            </div>
-          </div>
 
-          {/* Set 1 */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 1</h2>
-            <SetlistDragDropPicker
-              availableSongs={allSongs}
-              maxSongs={12}
-              onSetlistChange={(songs) => updateSetSection('set1', songs)}
-            />
-          </div>
+              {/* Set 2 Before Drums/Space */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 2 (Before Drums/Space)</h2>
+                <SetlistDragDropPicker
+                  availableSongs={allSongs}
+                  maxSongs={8}
+                  onSetlistChange={(songs) => updateSetSection('set2Before', songs)}
+                />
+              </div>
 
-          {/* Set 2 Before Drums/Space */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 2 (Before Drums/Space)</h2>
-            <SetlistDragDropPicker
-              availableSongs={allSongs}
-              maxSongs={8}
-              onSetlistChange={(songs) => updateSetSection('set2Before', songs)}
-            />
-          </div>
+              {/* Drums/Space Notice */}
+              <div>
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+                  <h3 className="text-lg font-semibold text-purple-800 mb-2">Drums / Space</h3>
+                  <p className="text-purple-600">Traditional drums and space segment (automatically included)</p>
+                </div>
+              </div>
 
-          {/* Drums/Space Notice */}
-          <div className="mb-8">
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
-              <h3 className="text-lg font-semibold text-purple-800 mb-2">Drums / Space</h3>
-              <p className="text-purple-600">Traditional drums and space segment (automatically included)</p>
-            </div>
-          </div>
+              {/* Set 2 After Drums/Space */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 2 (After Drums/Space)</h2>
+                <SetlistDragDropPicker
+                  availableSongs={allSongs}
+                  maxSongs={8}
+                  onSetlistChange={(songs) => updateSetSection('set2After', songs)}
+                />
+              </div>
 
-          {/* Set 2 After Drums/Space */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Set 2 (After Drums/Space)</h2>
-            <SetlistDragDropPicker
-              availableSongs={allSongs}
-              maxSongs={8}
-              onSetlistChange={(songs) => updateSetSection('set2After', songs)}
-            />
-          </div>
+              {/* Encore */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Encore</h2>
+                <SetlistDragDropPicker
+                  availableSongs={allSongs}
+                  maxSongs={3}
+                  onSetlistChange={(songs) => updateSetSection('encores', [songs])}
+                />
+              </div>
 
-          {/* Encore */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Encore</h2>
-            <SetlistDragDropPicker
-              availableSongs={allSongs}
-              maxSongs={3}
-              onSetlistChange={(songs) => updateSetSection('encores', [songs])}
-            />
-          </div>
+              {/* Play Mode Selection */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Choose Your Play Mode</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {[
+                    { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
+                    { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
+                    { id: 'cash', title: 'Play for Cash', desc: 'Entry fee builds prize pool' },
+                    { id: 'prize', title: 'Play for Prize', desc: 'Compete for sponsored rewards' }
+                  ].map((mode) => (
+                    <button
+                      key={mode.id}
+                      onClick={() => setSelectedPlayMode(mode.id)}
+                      className={`p-4 rounded-lg border-2 text-left transition-all ${
+                        selectedPlayMode === mode.id
+                          ? 'border-purple-500 bg-purple-50'
+                          : 'border-gray-200 hover:border-gray-300 bg-white'
+                      }`}
+                    >
+                      <h3 className="font-semibold text-gray-800 mb-1">{mode.title}</h3>
+                      <p className="text-sm text-gray-600">{mode.desc}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          {/* Play Mode Selection */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Choose Your Play Mode</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                { id: 'fun', title: 'Play for Fun', desc: 'Free play, leaderboard glory' },
-                { id: 'charity', title: 'Play for Charity', desc: 'Donate $1-$10, winners choose charity' },
-                { id: 'cash', title: 'Play for Cash', desc: 'Entry fee builds prize pool' },
-                { id: 'prize', title: 'Play for Prize', desc: 'Compete for sponsored rewards' }
-              ].map((mode) => (
+              {/* Submit Button */}
+              <div className="text-center">
                 <button
-                  key={mode.id}
-                  onClick={() => setSelectedPlayMode(mode.id)}
-                  className={`p-4 rounded-lg border-2 text-left transition-all ${
-                    selectedPlayMode === mode.id
-                      ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-gray-300 bg-white'
-                  }`}
+                  onClick={handleSubmit}
+                  className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg"
                 >
-                  <h3 className="font-semibold text-gray-800 mb-1">{mode.title}</h3>
-                  <p className="text-sm text-gray-600">{mode.desc}</p>
+                  Submit Setlist Prediction
                 </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <div className="text-center">
-            <button
-              onClick={handleSubmit}
-              className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg"
-            >
-              Submit Setlist Prediction
-            </button>
-          </div>
-
-          {/* Current Preview */}
-          {(setlist.set1.length > 0 || setlist.set2Before.length > 0 || setlist.set2After.length > 0) && (
-            <div className="mt-8 bg-gray-50 border border-gray-200 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4">Your Setlist Preview</h3>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-sm">
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Set 1 ({setlist.set1.length} songs)</h4>
-                  <ul className="space-y-1">
-                    {setlist.set1.map((song, index) => (
-                      <li key={index} className="text-gray-600">{index + 1}. {song}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Set 2 ({setlist.set2Before.length + setlist.set2After.length + 2} songs)</h4>
-                  <ul className="space-y-1">
-                    {setlist.set2Before.map((song, index) => (
-                      <li key={index} className="text-gray-600">{index + 1}. {song}</li>
-                    ))}
-                    <li className="text-purple-600 font-medium">Drums</li>
-                    <li className="text-purple-600 font-medium">Space</li>
-                    {setlist.set2After.map((song, index) => (
-                      <li key={index} className="text-gray-600">{setlist.set2Before.length + index + 3}. {song}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Encore ({setlist.encores[0]?.length || 0} songs)</h4>
-                  <ul className="space-y-1">
-                    {setlist.encores[0]?.map((song, index) => (
-                      <li key={index} className="text-gray-600">{index + 1}. {song}</li>
-                    ))}
-                  </ul>
-                </div>
               </div>
             </div>
-          )}
+
+            {/* Hints Sidebar (1/4 width on large screens) */}
+            <div className="xl:col-span-1 space-y-6">
+              
+              {/* Statistical Hints */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sticky top-4">
+                <h3 className="text-lg font-bold text-blue-800 mb-3">Quick Stats</h3>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <h4 className="font-semibold text-blue-700">Most Common Openers:</h4>
+                    <ul className="text-blue-600 text-xs mt-1 space-y-1">
+                      <li>• Feel Like a Stranger (18%)</li>
+                      <li>• Help on the Way (15%)</li>
+                      <li>• Shakedown Street (12%)</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-blue-700">Common Set 1 Closers:</h4>
+                    <ul className="text-blue-600 text-xs mt-1 space-y-1">
+                      <li>• Cassidy (14%)</li>
+                      <li>• Deal (12%)</li>
+                      <li>• Let It Grow (10%)</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-blue-700">Popular Pairings:</h4>
+                    <ul className="text-blue-600 text-xs mt-1 space-y-1">
+                      <li>• Scarlet → Fire (89%)</li>
+                      <li>• China Cat → Rider (78%)</li>
+                      <li>• Playing → Drums (71%)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Strategy Tips */}
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <h3 className="text-lg font-bold text-green-800 mb-3">Pro Tips</h3>
+                <div className="space-y-2 text-sm text-green-700">
+                  <p>• Mix common and rare songs for best scoring potential</p>
+                  <p>• Consider venue size - smaller venues favor acoustic songs</p>
+                  <p>• Check recent shows for songs due for rotation</p>
+                  <p>• Weather affects song choice - rain brings "Looks Like Rain"</p>
+                </div>
+              </div>
+
+              {/* Current Preview */}
+              {(setlist.set1.length > 0 || setlist.set2Before.length > 0 || setlist.set2After.length > 0) && (
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Preview</h3>
+                  <div className="space-y-3 text-xs">
+                    {setlist.set1.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold text-gray-700">Set 1 ({setlist.set1.length})</h4>
+                        <p className="text-gray-600">{setlist.set1.slice(0, 3).join(' → ')}{setlist.set1.length > 3 && '...'}</p>
+                      </div>
+                    )}
+                    {setlist.set2Before.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold text-gray-700">Set 2 Start ({setlist.set2Before.length})</h4>
+                        <p className="text-gray-600">{setlist.set2Before.slice(0, 2).join(' → ')}{setlist.set2Before.length > 2 && '...'}</p>
+                      </div>
+                    )}
+                    {setlist.set2After.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold text-gray-700">Post-Space ({setlist.set2After.length})</h4>
+                        <p className="text-gray-600">{setlist.set2After.slice(0, 2).join(' → ')}{setlist.set2After.length > 2 && '...'}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+            </div>
+          </div>
         </div>
       </div>
     </MainLayout>
