@@ -46,15 +46,8 @@ const TimingGamesHub = () => {
               Timing Prediction Games
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Predict the timing and flow of Dead & Company shows. When will they start? How long will set break be? Test your timing instincts!
+              Test your instincts for Dead & Company's timing patterns. Predict start times, end times, and set lengths.
             </p>
-          </div>
-
-          {/* Back Button */}
-          <div className="mb-8">
-            <Link href="/" className="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium">
-              ← Back to Main Games
-            </Link>
           </div>
 
           {/* Game Instructions */}
