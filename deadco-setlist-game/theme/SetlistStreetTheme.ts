@@ -48,7 +48,7 @@ export const SetlistStreetTheme = {
     primary: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     display: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', 
     mono: '"JetBrains Mono", "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", monospace',
-    weights: {
+    weights: {.
       light: '300',
       normal: '400', 
       medium: '500',

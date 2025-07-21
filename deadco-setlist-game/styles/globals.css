@@ -78,6 +78,20 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
 }
+.countdown-outer {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.countdown-inner {
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.countdown-between {
+  padding-left: 0.5rem;
+}
+
 
 .glass-dark {
   background: rgba(0, 0, 0, 0.05);
