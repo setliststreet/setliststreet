@@ -5,6 +5,92 @@ import MainLayout from '../components/MainLayout';
 import { SetlistStreetTheme } from '../theme/SetlistStreetTheme.ts';
 
 
+ export function ShowSchedule() {
+  const [showScheduleOpen, setShowScheduleOpen] = useState(false);
+
+  const toggleSchedule = () => {
+    setShowScheduleOpen(!showScheduleOpen);
+  };
+
+  return (
+    <div className="mb-8 mt-8">
+      <div className="countdown-outer">
+        <div className="center-wrapper">
+          <h2 className="schedule-button" onClick={toggleSchedule}>
+            SHOW SCHEDULE 📚
+          </h2>
+        </div>
+
+        <div className="countdown-inner"></div>
+
+        {showScheduleOpen && (
+          <div className="flex flex-wrap justify-center gap-4 mt-6">
+            <div
+              className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow"
+              style={{
+                background: SetlistStreetTheme.backgrounds.card,
+                color: SetlistStreetTheme.colors.neutrals.black,
+                padding: SetlistStreetTheme.layout.containerPadding,
+                borderRadius: SetlistStreetTheme.layout.borderRadius,
+                border: `1px solid ${SetlistStreetTheme.components.card.border}`,
+                boxShadow: SetlistStreetTheme.components.card.shadow,
+              }}
+            >
+              <h3 className="font-semibold text-purple-700 text-sm">Show 1</h3>
+              <p className="text-gray-600 text-sm mt-1">Friday, August 1</p>
+              <div className="text-xs text-blue-700 font-semibold mt-1">
+                Guest: Billy Strings
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
+            </div>
+
+            <div className="countdown-between"></div>
+
+            <div
+              className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow"
+              style={{
+                background: SetlistStreetTheme.backgrounds.card,
+                color: SetlistStreetTheme.colors.neutrals.black,
+                padding: SetlistStreetTheme.layout.containerPadding,
+                borderRadius: SetlistStreetTheme.layout.borderRadius,
+                border: `1px solid ${SetlistStreetTheme.components.card.border}`,
+                boxShadow: SetlistStreetTheme.components.card.shadow,
+              }}
+            >
+              <h3 className="font-semibold text-purple-700 text-sm">Show 2</h3>
+              <p className="text-gray-600 text-sm mt-1">Saturday, August 2</p>
+              <div className="text-xs text-blue-700 font-semibold mt-1">
+                Guest: Sturgill “Johnny Blue Skies” Simpson
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
+            </div>
+
+            <div className="countdown-between"></div>
+
+            <div
+              className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow"
+              style={{
+                background: SetlistStreetTheme.backgrounds.card,
+                color: SetlistStreetTheme.colors.neutrals.black,
+                padding: SetlistStreetTheme.layout.containerPadding,
+                borderRadius: SetlistStreetTheme.layout.borderRadius,
+                border: `1px solid ${SetlistStreetTheme.components.card.border}`,
+                boxShadow: SetlistStreetTheme.components.card.shadow,
+              }}
+            >
+              <h3 className="font-semibold text-purple-700 text-sm">Show 3</h3>
+              <p className="text-gray-600 text-sm mt-1">Sunday, August 3</p>
+              <div className="text-xs text-blue-700 font-semibold mt-1">
+                Guest: Trey Anastasio Band
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 const HomePage = () => {
   const [timeToDeadline, setTimeToDeadline] = useState('');
 
@@ -112,13 +198,12 @@ const HomePage = () => {
 
   const GameCard = ({ game }: { game: Game }) => {
     return (
+
                         <div className="countdown-outer">
 
       <Link href={game.href} className="group">
 
-                        <div className="countdown-inner"></div>
 
-        <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 border-2 border-gray-200 hover:border-gray-300 h-full">
 
                         <div className="countdown-inner"></div>
 
@@ -134,11 +219,11 @@ const HomePage = () => {
               {/* Removed category and gameCount display */}
             </div>
           </div>
-        </div>
       </Link>
        </div>
     );
   };
+
 
   const UtilityCard = ({ item }: { item: Game }) => (
     <Link href={item.href} className="group">
@@ -172,11 +257,8 @@ const HomePage = () => {
       {/* Header Section */}
       <div className="text-center mb-16">
                         <div className="countdown-outer">
-
-        <h1 className="text-4xl font-bold text-gray-800 mb-6">
-          Setlist Street
-        </h1>
-        </div>
+</div>
+                                 <h1 className="logo-text">SETLIST STREET</h1>
       </div>
 
       {/* Hero Section */}
@@ -185,10 +267,10 @@ const HomePage = () => {
         <div className="bg-purple-50 border border-purple-200 rounded-lg p-8 max-w-4xl mx-auto shadow-sm">
                              <div className="countdown-inner">
           </div>
-          <p className="text-xl text-gray-700 leading-relaxed">
+          <p className="subtitle-font">
             Created in honor of the <span className="font-semibold text-purple-700">Grateful Dead 60th Anniversary concerts</span> … a series of setlist prediction games.
           </p>
-          <p className="text-xl text-gray-700 leading-relaxed mt-4">
+          <p className="subtitle-font">
             16 Games Available | Statistical Insights | Cash Prizes | Charity Donations | Exclusive Prizes
           </p>
                              <div className="countdown-inner">
@@ -197,102 +279,54 @@ const HomePage = () => {
       </div>
 
       {/* Show Schedule - Properly Contained */}
-      <div className="mb-8 mt-8">
-                        <div className="countdown-outer">
 
-
-        <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
-          Show Schedule
-        </h2>
-                          <div className="countdown-inner">
+               <div className="countdown-inner">
 </div>
 
-        <div className="flex flex-wrap justify-center gap-4"
+<div className="center-wrapper flex justify-center">
+  <ShowSchedule />
+</div>
 
-        >
-          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow"
 
-           style={{
-                          background: SetlistStreetTheme.backgrounds.card,
-                          color: SetlistStreetTheme.colors.neutrals.black,
-                          padding: SetlistStreetTheme.layout.containerPadding,
-                          borderRadius: SetlistStreetTheme.layout.borderRadius,
-                          border: `1px solid ${SetlistStreetTheme.components.card.border}`,
-                          boxShadow: SetlistStreetTheme.components.card.shadow,
-                        }}
-          >
-            <h3 className="font-semibold text-purple-700 text-sm">Show 1</h3>
-            <p className="text-gray-600 text-sm mt-1">Friday, August 1</p>
-            <div className="text-xs text-blue-700 font-semibold mt-1">Guest: Billy Strings</div>
-            <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
-          </div>
-                                     <div className="countdown-between">
-          </div>
-          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow"
-           style={{
-                                    background: SetlistStreetTheme.backgrounds.card,
-                                    color: SetlistStreetTheme.colors.neutrals.black,
-                                    padding: SetlistStreetTheme.layout.containerPadding,
-                                    borderRadius: SetlistStreetTheme.layout.borderRadius,
-                                    border: `1px solid ${SetlistStreetTheme.components.card.border}`,
-                                    boxShadow: SetlistStreetTheme.components.card.shadow,
-                                  }}
-          >
-            <h3 className="font-semibold text-purple-700 text-sm">Show 2</h3>
-            <p className="text-gray-600 text-sm mt-1">Saturday, August 2</p>
-            <div className="text-xs text-blue-700 font-semibold mt-1">Guest: Sturgill “Johnny Blue Skies” Simpson</div>
-            <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
-          </div>
-                                     <div className="countdown-between">
-          </div>
-          <div className="bg-white border border-gray-200 rounded-lg p-4 flex-1 min-w-[200px] max-w-[280px] text-center shadow-sm hover:shadow-md transition-shadow"
-           style={{
-                                    background: SetlistStreetTheme.backgrounds.card,
-                                    color: SetlistStreetTheme.colors.neutrals.black,
-                                    padding: SetlistStreetTheme.layout.containerPadding,
-                                    borderRadius: SetlistStreetTheme.layout.borderRadius,
-                                    border: `1px solid ${SetlistStreetTheme.components.card.border}`,
-                                    boxShadow: SetlistStreetTheme.components.card.shadow,
-                                  }}
-          >
-            <h3 className="font-semibold text-purple-700 text-sm">Show 3</h3>
-            <p className="text-gray-600 text-sm mt-1">Sunday, August 3</p>
-            <div className="text-xs text-blue-700 font-semibold mt-1">Guest: Trey Anastasio Band</div>
-            <p className="text-xs text-gray-500 mt-1">Music starts 4 pm</p>
-          </div>
-        </div>
-        </div>
-      </div>
+
+
+
+
+
+
 
       {/* Countdown Timer */}
-      <div className="mb-16"
-        style={{
-                                          background: SetlistStreetTheme.backgrounds.card,
-                                          color: SetlistStreetTheme.colors.neutrals.black,
-                                          padding: SetlistStreetTheme.layout.containerPadding,
-                                          borderRadius: SetlistStreetTheme.layout.borderRadius,
-                                          border: `1px solid ${SetlistStreetTheme.components.card.border}`,
-                                          boxShadow: SetlistStreetTheme.components.card.shadow,
-                                        }}
-     >
 
-         <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 max-w-md mx-auto text-center shadow-sm">
-            <div className="countdown-outer">
-           <h2 className="text-xl font-semibold text-gray-800 mb-4">
-             Next Submission Deadline
-           </h2>
-           <div className="text-3xl font-bold text-purple-600 mb-4">
-             {timeToDeadline}
+
+
+       <div className="w-full flex justify-center mb-8">
+           <div className="next-submission flex flex-col items-center text-center">
+             <div className="mb-4"
+
+             style={{
+                     fontSize: '30px',
+                     fontWeight: '900',
+                     color: '#9333ea',
+                     marginBottom: '0.1rem',
+                   }}
+             >
+               Next Submission Deadline
+             </div>
+
+             <div className="text-5xl font-extrabold text-purple-600 mb-4">
+               {timeToDeadline}
+             </div>
+
+             <p className="text-sm text-gray-600">
+               Submissions close at 7:00 PM PT before each show
+             </p>
            </div>
-           <p className="text-sm text-gray-600">
-             Submissions close at 7:00 PM PT before each show
-           </p>
-
-         </div>
          </div>
 
 
-      </div>
+
+
+
 
       {/* All Games - 3 Column Layout with Centered Game Cards */}
       <div className="mb-8 mt-8"
@@ -304,21 +338,17 @@ const HomePage = () => {
                   >
 
 
-        <div className="grid grid-cols-12 max-w-4xl mx-auto"
+
+
+        <div className="next-submission"
 
         >
+
           {/* Left Padding */}
           <div className="col-span-3"></div>
           {/* Center: Game Cards */}
           <div className="col-span-6 flex flex-col gap-6"
-            style={{
-                                              background: SetlistStreetTheme.backgrounds.card,
-                                              color: SetlistStreetTheme.colors.neutrals.black,
-                                              padding: SetlistStreetTheme.layout.containerPadding,
-                                              borderRadius: SetlistStreetTheme.layout.borderRadius,
-                                              border: `1px solid ${SetlistStreetTheme.components.card.border}`,
-                                              boxShadow: SetlistStreetTheme.components.card.shadow,
-                                            }}
+
           >
 
 
@@ -335,7 +365,6 @@ const HomePage = () => {
 
         </div>
         </div>
-
 
       </div>
 

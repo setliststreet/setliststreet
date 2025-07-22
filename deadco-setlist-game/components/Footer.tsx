@@ -13,15 +13,12 @@ export default function Footer() {
           
           {/* Left Sponsor Logos */}
           <div className="flex justify-center lg:justify-start space-x-3">
-          <div className="countdown-between">
-                      </div>
-            <div className="bg-gray-200 border border-gray-300 rounded-lg p-3 w-20 h-12 flex items-center justify-center">
+          <div className="schedule-button">
               <span className="text-gray-500 text-xs text-center">Sponsor</span>
-            </div>
-            <div className="bg-gray-200 border border-gray-300 rounded-lg p-3 w-20 h-12 flex items-center justify-center">
-              <span className="text-gray-500 text-xs text-center">Sponsor</span>
-            </div>
 
+
+
+          </div>
           </div>
 
           {/* Center Navigation Links */}
@@ -54,16 +51,12 @@ export default function Footer() {
           </div>
 
           {/* Right Sponsor Logos */}
-          <div className="flex justify-center lg:justify-end space-x-3">
-            <div className="bg-gray-200 border border-gray-300 rounded-lg p-3 w-20 h-12 flex items-center justify-center">
-              <span className="text-gray-500 text-xs text-center">Sponsor</span>
-            </div>
-            <div className="bg-gray-200 border border-gray-300 rounded-lg p-3 w-20 h-12 flex items-center justify-center">
-              <span className="text-gray-500 text-xs text-center">Sponsor</span>
-            </div>
-            <div className="countdown-between">
-            </div>
-          </div>
+           <div className="schedule-button">
+                        <span className="text-gray-500 text-xs text-center">Sponsor</span>
+
+
+
+                    </div>
 
         </div>
       </div>
