@@ -8,10 +8,8 @@ export default function Footer() {
     </div>
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16">
         
-        {/* Single Row Layout - Always Horizontal */}
         <div className="flex flex-wrap justify-between items-center gap-8">
           
-          {/* Left Sponsor Logos */}
           <div className="flex justify-center lg:justify-start space-x-3">
           <div className="schedule-button">
               <span className="text-gray-500 text-xs text-center">Sponsor</span>
@@ -24,40 +22,37 @@ export default function Footer() {
           {/* Center Navigation Links */}
           <div className="flex-grow flex flex-col items-center">
             <nav className="flex flex-wrap justify-center items-center gap-8 mb-3">
-              <Link 
-                href="/terms" 
-                className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-100 border border-transparent hover:border-gray-200"
+              <Link
+                href="/terms"
+                className="link-button"
               >
                 Terms of Service
               </Link>
-              <Link 
-                href="/about-this-app" 
-                className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-100 border border-transparent hover:border-gray-200"
+              <Link
+                href="/about-this-app"
+                className="link-button"
               >
                 About this App
               </Link>
-              <Link 
-                href="/privacy" 
-                className="text-gray-600 hover:text-gray-900 text-sm font-medium transition-colors py-2 px-4 rounded-lg hover:bg-gray-100 border border-transparent hover:border-gray-200"
+              <Link
+                href="/privacy"
+                className="link-button"
               >
                 Privacy Policy
               </Link>
             </nav>
-            
+
             {/* Copyright - Centered under links */}
-            <p className="text-gray-500 text-sm text-center">
+            <p                 className="custom-button"
+>
               © 2025 Setlist Street. All rights reserved.
             </p>
           </div>
 
           {/* Right Sponsor Logos */}
-           <div className="schedule-button">
-                        <span className="text-gray-500 text-xs text-center">Sponsor</span>
-
-
-
-                    </div>
-
+          <div className="schedule-button">
+                       <span className="text-gray-500 text-xs text-center">Sponsor</span>
+</div>
         </div>
       </div>
       <div className="countdown-outer">

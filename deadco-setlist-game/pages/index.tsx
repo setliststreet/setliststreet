@@ -187,40 +187,42 @@ const HomePage = () => {
     }
   ];
 
-  interface Game {
-    title: string;
-    description: string;
-    href: string;
-    category: string;
-    featured?: boolean;
-    gameCount?: string;
-  }
+ interface Game {
+   title: string;
+   description: string;
+   href: string;
+   category: string;
+   featured?: boolean;
+   gameCount?: string;
+ }
 
-  const GameCard = ({ game }: { game: Game }) => {
-    return (
+const GameCard = ({
+  game,
+  index,
+  total,
+}: {
+  game: Game;
+  index: number;
+  total: number;
+}) => {
+  return (
+    <Link href={game.href} className="group no-underline block w-full h-full">
+      <div className="flex flex-col items-center text-center text-black">
+              <div className="countdown-inner"></div>
 
-                        <div className="countdown-outer">
+        <h3 className="text-xl font-bold mb-3">{game.title}</h3>
+        <div className="countdown-inner"></div>
+        <p className="text-base mb-4">{game.description}</p>
+                <div className="countdown-inner"></div>
 
-      <Link href={game.href} className="group">
+      </div>
+    </Link>
+  );
+};
 
-                        <div className="countdown-inner"></div>
 
-          <div className="flex flex-col items-center text-center h-full">
-            <h3 className="text-xl font-bold mb-3 text-gray-800">
-              {game.title}
-            </h3>
-            <p className="text-gray-600 text-base mb-4">
-              {game.description}
-            </p>
 
-            <div className="flex flex-col items-center gap-1 mt-auto">
-              {/* Removed category and gameCount display */}
-            </div>
-          </div>
-      </Link>
-       </div>
-    );
-  };
+
 
 
   const UtilityCard = ({ item }: { item: Game }) => (
@@ -262,7 +264,7 @@ const HomePage = () => {
       {/* Hero Section */}
       <div className="text-center mb-16">
 
-        <div className="bg-purple-50 border border-purple-200 rounded-lg p-8 max-w-4xl mx-auto shadow-sm">
+        <div className=" rounded-lg p-8 max-w-4xl ">
                              <div className="countdown-inner">
           </div>
           <p className="subtitle-font">
@@ -337,31 +339,64 @@ const HomePage = () => {
 
 
 
-
-        <div className="next-submission"
-
-        >
-
-          {/* Left Padding */}
-          <div className="col-span-3"></div>
-          {/* Center: Game Cards */}
-          <div className="col-span-6 flex flex-col gap-6"
-
-          >
+       <div className="w-full max-w-4xl mx-auto">
+         <div className="padding-between mb-20"></div>
 
 
-                  <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">Choose Your Game</h2>
-            {mainGames.map((game, index) => (
-              <GameCard key={index} game={game} />
-            ))}
-                       <div className="countdown-outer">
 
-        </div>.
-          </div>
-          {/* Right Padding */}
-          <div className="col-span-3"></div>
+<div className="flex justify-center mb-8">
+  <div className="game-card">
+    Choose Your Game
+  </div>
+</div>
+
+<div className="countdown-inner"></div>
+
+
+
+<div className="flex justify-center">
+  <div className="w-full max-w-4xl px-4">
+    <div className="flex flex-wrap justify-center">
+     {mainGames.map((game, index) => {
+       const colors = ['#e1a811', '#ff5733', '#3498db', '#2ecc71'];
+       const bgColor = colors[index % colors.length];
+       return (
+         <div
+           key={index}
+           className="game-card"
+           style={{ backgroundColor: bgColor }}
+         >
+           <GameCard game={game} index={index} total={mainGames.length} />
+         </div>
+       );
+     })}
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         </div>
+
         </div>
 
       </div>

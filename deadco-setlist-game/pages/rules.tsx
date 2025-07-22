@@ -1,8 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Head from 'next/head';
+import Link from 'next/link';
 import MainLayout from '../components/MainLayout';
+import { SetlistStreetTheme } from '../theme/SetlistStreetTheme';
 
 const RulesPage = () => {
+  const [timeToDeadline, setTimeToDeadline] = useState('');
+
+  // Calculate time to next 7PM PT deadline
+  useEffect(() => {
+    const calculateTimeToDeadline = () => {
+      try {
+        const now = new Date();
+        const showDates = [
+          new Date('2025-08-01T19:00:00-07:00'), // Friday 8/1 7PM PT
+          new Date('2025-08-02T19:00:00-07:00'), // Saturday 8/2 7PM PT
+          new Date('2025-08-03T19:00:00-07:00'), // Sunday 8/3 7PM PT
+        ];
+        const nextDeadline = showDates.find(date => date > now);
+        if (!nextDeadline) {
+          setTimeToDeadline('All shows completed');
+          return;
+        }
+        const timeDiff = nextDeadline.getTime() - now.getTime();
+        if (timeDiff < 0) {
+          setTimeToDeadline('Invalid date');
+          return;
+        }
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        setTimeToDeadline(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+      } catch (error) {
+        setTimeToDeadline('Error calculating deadline');
+        console.error(error);
+      }
+    };
+    calculateTimeToDeadline();
+    const interval = setInterval(calculateTimeToDeadline, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const gameRules = [
     {
       title: 'Guess the Opener',
@@ -87,67 +127,100 @@ const RulesPage = () => {
 
   return (
     <MainLayout>
-      <div className="bg-white min-h-screen">
-        <div className="container mx-auto px-6 py-12">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              How to Play
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Complete rules and scoring information for all Setlist Street prediction games
-            </p>
-          </div>
+      <Head>
+        <title>Setlist Street - Game Rules</title>
+        <meta
+          name="description"
+          content="Rules and scoring for Setlist Street prediction games for Dead & Company at Golden Gate Park, Aug 1-3, 2025."
+        />
+      </Head>
 
-          {/* Quick Start */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Quick Start Guide</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-purple-600 font-bold">1</span>
+
+
+
+
+{/* Header */}
+<div className="text-center mb-16">
+  <div className="countdown-outer">
+    <h1 className="logo-text">How to Play</h1>
+    <p className="subtitle-font max-w-4xl mx-auto">
+      Complete rules and scoring information for all Setlist Street prediction games
+    </p>
+  </div>
+</div>
+
+
+      {/* Quick Start */}
+      <div className="mb-12">
+        <div className="countdown-outer">
+          <div className="w-full max-w-4xl mx-auto px-4">
+            <div className="flex justify-center mb-8">
+              <div className="game-card">Quick Start Guide</div>
+            </div>
+            <div className="countdown-outer">
+              <div className="w-full max-w-4xl mx-auto px-4">
+                <div className="flex justify-center mb-8">
+                  <div className="game-card">Quick Start Guide</div>
                 </div>
-                <h3 className="font-semibold text-gray-800">Sign Up</h3>
-                <p className="text-sm text-gray-600">Create your free account</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-purple-600 font-bold">2</span>
-                </div>
-                <h3 className="font-semibold text-gray-800">Choose Games</h3>
-                <p className="text-sm text-gray-600">Pick your prediction games</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-purple-600 font-bold">3</span>
-                </div>
-                <h3 className="font-semibold text-gray-800">Make Predictions</h3>
-                <p className="text-sm text-gray-600">Submit before 7PM PT</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-purple-600 font-bold">4</span>
-                </div>
-                <h3 className="font-semibold text-gray-800">Watch & Win</h3>
-                <p className="text-sm text-gray-600">Follow live results</p>
+                <motion.div
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {[
+                    { step: '1', title: 'Sign Up', desc: 'Create your free account' },
+                    { step: '2', title: 'Choose Games', desc: 'Pick your prediction games' },
+                    { step: '3', title: 'Make Predictions', desc: 'Submit before 7PM PT' },
+                    { step: '4', title: 'Watch & Win', desc: 'Follow live results' },
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className={`game-card game-card--color${(index % 4) + 1} text-center`}
+                      style={{
+                        background: SetlistStreetTheme.backgrounds.card,
+                        border: `1px solid ${SetlistStreetTheme.components.card.border}`,
+                        boxShadow: SetlistStreetTheme.components.card.shadow,
+                        padding: SetlistStreetTheme.layout.containerPadding,
+                      }}
+                    >
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 animate-float-skull game-card--color${(index % 4) + 1}`}>
+                        <span className="text-black font-bold">{item.step}</span>
+                      </div>
+                      <h3 className="font-semibold text-black">{item.title}</h3>
+                      <p className="text-sm text-gray-600">{item.desc}</p>
+                    </div>
+                  ))}
+                </motion.div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Game Rules */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Game Rules</h2>
+      {/* Game Rules */}
+      <div className="mb-12">
+        <div className="countdown-outer">
+          <div className="flex justify-center mb-8">
+            <div className="game-card">Game Rules</div>
+          </div>
+          <div className="w-full max-w-4xl mx-auto px-4">
             <div className="grid gap-6">
               {gameRules.map((game, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm"
+                  className="game-card game-card--color1"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
+                  style={{
+                    background: SetlistStreetTheme.backgrounds.card,
+                    border: `1px solid ${SetlistStreetTheme.components.card.border}`,
+                    boxShadow: SetlistStreetTheme.components.card.shadow,
+                  }}
                 >
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{game.title}</h3>
-                  <p className="text-gray-600 mb-4">{game.description}</p>
+                  <h3 className="text-xl font-bold mb-2 text-black">{game.title}</h3>
+                  <p className="text-base mb-4 text-gray-600">{game.description}</p>
                   <ul className="space-y-2">
                     {game.rules.map((rule, ruleIndex) => (
                       <li key={ruleIndex} className="flex items-start">
@@ -160,20 +233,31 @@ const RulesPage = () => {
               ))}
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Scoring Rules */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Scoring & Prizes</h2>
+      {/* Scoring Rules */}
+      <div className="mb-12">
+        <div className="countdown-outer">
+          <div className="flex justify-center mb-8">
+            <div className="game-card">Scoring & Prizes</div>
+          </div>
+          <div className="w-full max-w-4xl mx-auto px-4">
             <div className="grid gap-6 lg:grid-cols-2">
               {scoringRules.map((section, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm"
+                  className="game-card game-card--color2"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
+                  style={{
+                    background: SetlistStreetTheme.backgrounds.card,
+                    border: `1px solid ${SetlistStreetTheme.components.card.border}`,
+                    boxShadow: SetlistStreetTheme.components.card.shadow,
+                  }}
                 >
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">{section.title}</h3>
+                  <h3 className="text-xl font-bold mb-4 text-black">{section.title}</h3>
                   <ul className="space-y-2">
                     {section.rules.map((rule, ruleIndex) => (
                       <li key={ruleIndex} className="flex items-start">
@@ -186,11 +270,27 @@ const RulesPage = () => {
               ))}
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Fair Play */}
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Fair Play Guidelines</h2>
-            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm max-w-3xl mx-auto">
+      {/* Fair Play */}
+      <div className="mb-12">
+        <div className="countdown-outer">
+          <div className="flex justify-center mb-8">
+            <div className="game-card">Fair Play Guidelines</div>
+          </div>
+          <div className="w-full max-w-4xl mx-auto px-4">
+            <motion.div
+              className="game-card game-card--color3 max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              style={{
+                background: SetlistStreetTheme.backgrounds.card,
+                border: `1px solid ${SetlistStreetTheme.components.card.border}`,
+                boxShadow: SetlistStreetTheme.components.card.shadow,
+              }}
+            >
               <ul className="space-y-3">
                 {fairPlay.map((rule, index) => (
                   <li key={index} className="flex items-start">
@@ -199,18 +299,27 @@ const RulesPage = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           </div>
+        </div>
+      </div>
 
-          {/* Contact */}
-          <div className="text-center bg-gray-50 border border-gray-200 rounded-lg p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Questions About the Rules?</h2>
+      {/* Contact */}
+      <div className="text-center mb-12">
+        <div className="countdown.outer">
+          <div className="game-card max-w-3xl mx-auto">
+            <h2 className="text-xl font-bold text-black mb-4">Questions About the Rules?</h2>
             <p className="text-gray-600 mb-4">
               Need clarification on scoring or game mechanics?
             </p>
-            <p className="text-gray-600">
-              Contact us at <a href="mailto:setliststreet@proton.me" className="text-purple-600 hover:text-purple-800 font-semibold">setliststreet@proton.me</a>
-            </p>
+            <Link
+              href="mailto:setliststreet@proton.me"
+              className="link-button"
+              role="link"
+              tabIndex={0}
+            >
+              Contact us at setliststreet@proton.me
+            </Link>
           </div>
         </div>
       </div>
@@ -218,4 +327,4 @@ const RulesPage = () => {
   );
 };
 
-export default RulesPage; 
+export default RulesPage;

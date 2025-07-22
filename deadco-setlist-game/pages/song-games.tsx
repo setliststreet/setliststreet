@@ -4,7 +4,6 @@ import Link from 'next/link';
 import MainLayout from '../components/MainLayout';
 
 const SongGamesHub = () => {
-  // Organize games by show structure
   const gamesBySection = {
     set1: [
       {
@@ -12,14 +11,16 @@ const SongGamesHub = () => {
         description: 'Predict which song will open the first set',
         href: '/guess-opener',
         difficulty: 'Medium',
-        players: '247 active'
+        players: '247 active',
+        bgColor: '#e1a811'
       },
       {
         title: 'Set 1 Closer',
         description: 'Predict which song will close the first set',
         href: '/guess-set1-closer',
-        difficulty: 'Medium', 
-        players: '203 active'
+        difficulty: 'Medium',
+        players: '203 active',
+        bgColor: '#e1a811'
       }
     ],
     set2: [
@@ -28,35 +29,39 @@ const SongGamesHub = () => {
         description: 'Predict which song will open the second set',
         href: '/guess-set2-opener',
         difficulty: 'Medium',
-        players: '178 active'
+        players: '178 active',
+        bgColor: '#e1a811'
       },
       {
         title: 'Pre-Drums Song',
         description: 'Predict the last song before Drums/Space',
         href: '/guess-pre-drums-song',
         difficulty: 'Hard',
-        players: '134 active'
+        players: '134 active',
+        bgColor: '#e1a811'
       },
       {
-        title: 'Post-Drums Song', 
+        title: 'Post-Drums Song',
         description: 'Predict the first song after Drums/Space',
         href: '/guess-post-drums-song',
         difficulty: 'Hard',
-        players: '142 active'
+        players: '142 active',
+        bgColor: '#e1a811'
       },
       {
         title: 'Set 2 Closer',
         description: 'Predict which song will close the second set',
         href: '/guess-set2-closer',
         difficulty: 'Hard',
-        players: '165 active'
+        players: '165 active',
+        bgColor: '#e1a811'
       }
     ],
     encore: [
       {
         title: 'Guess the Encore',
         description: 'Predict the encore song(s)',
-        href: '/guess-encore', 
+        href: '/guess-encore',
         difficulty: 'Hard',
         players: '189 active'
       }
@@ -80,39 +85,24 @@ const SongGamesHub = () => {
     ]
   };
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Easy': return 'text-green-600 bg-green-50';
-      case 'Medium': return 'text-blue-600 bg-blue-50';
-      case 'Hard': return 'text-orange-600 bg-orange-50';
-      case 'Expert': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
-    }
-  };
-
-  const GameCard = ({ game }: { game: any }) => (
+  const GameCard = ({ game }) => (
     <Link href={game.href} className="group">
-      <div className={`
-        bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-4 
-        border-2 border-gray-200 hover:border-gray-300 h-full
-        ${game.featured ? 'ring-2 ring-purple-300' : ''}
-      `}>
-        <div className="text-center h-full flex flex-col">
-          <h3 className="text-lg font-bold mb-2 text-gray-800">
-            {game.title}
-          </h3>
-          <p className="text-gray-600 text-sm mb-3 flex-grow">
-            {game.description}
-          </p>
-          
-          <div className="mt-auto space-y-2">
-            <div className="h-8 w-full bg-gray-200 rounded mb-2 flex items-center justify-center text-xs text-gray-500">Sponsor Logo</div>
-            <div className="flex justify-center items-center">
-              <span className="text-xs px-2 py-1 rounded-full text-gray-700 bg-gray-100">
-                {game.players}
-              </span>
-            </div>
-          </div>
+      <div
+        className="w-[280px] h-[180px] border-[5px] rounded-xl relative hover:scale-[1.07] transition-transform duration-300 shadow-cartoon"
+        style={{ backgroundColor: game.bgColor || '#facc15', borderColor: '#000' }}
+      >
+        <div
+          className="absolute inset-[10px] border-[4px] rounded-lg flex flex-col items-center justify-between p-4 shadow-inner-cartoon"
+          style={{ backgroundColor: '#ffb6c1', borderColor: '#000' }}
+        >
+          <h3 className="text-[18px] font-extrabold uppercase text-black text-center leading-tight font-cartoon">{game.title}</h3>
+          <p className="text-[13px] text-black font-medium text-center font-cartoon">{game.description}</p>
+          <button
+            className="mt-3 px-4 py-1.5 rounded-full bg-white border-[3px] text-black font-bold text-sm hover:bg-yellow-100 transition-all duration-200 shadow-md font-cartoon"
+            style={{ borderColor: '#000' }}
+          >
+            🎮 {game.players}
+          </button>
         </div>
       </div>
     </Link>
@@ -121,74 +111,51 @@ const SongGamesHub = () => {
   return (
     <MainLayout>
       <Head>
-        <title>Song Prediction Games - Setlist Street</title>
+        <title >Song Prediction Games - Setlist Street</title>
         <meta name="description" content="Predict individual songs in Dead & Company setlists - openers, closers, encores, and more!" />
       </Head>
 
+  <div className="countdown-outer"></div>
       <div className="bg-white min-h-screen">
         <div className="container mx-auto px-6 py-8">
-          {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Song Prediction Games
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h1 className="logo-small-text">Song Prediction Games</h1>
+            <p className="subtitle-font max-w-4xl mx-auto">
               Test your knowledge of Dead & Company's setlist patterns. Predict specific songs for key positions in each show.
             </p>
           </div>
 
-          {/* Games Organized by Show Structure */}
+  <div className="countdown-outer"></div>
+
           <div className="space-y-12">
-            
-            {/* Set 1 Games */}
-            <div className="mb-8 mt-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Set 1 Predictions</h2>
-              <div className="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto">
-                {gamesBySection.set1.map((game, index) => (
-                  <div key={index} className="flex-1 min-w-[280px] max-w-[320px] px-3">
-                    <GameCard game={game} />
+            {/* Section UI */}
+            {Object.entries(gamesBySection).map(([sectionKey, games]) => {
+              const sectionTitleMap = {
+                set1: '🎵 Set 1 Predictions',
+                set2: '🎶 Set 2 Predictions',
+                encore: '🎤 Encore Predictions',
+                special: '💡 Special Predictions'
+              };
+              const bgMap = {
+                set1: 'bg-red-100 text-red-700',
+                set2: 'bg-yellow-100 text-yellow-700',
+                encore: 'bg-blue-100 text-blue-700',
+                special: 'bg-purple-100 text-purple-700'
+              };
+              return (
+                <section key={sectionKey} className={`rounded-xl p-6 shadow-inner ${bgMap[sectionKey]}`}>
+                  <h2 className={`text-3xl font-bold text-center mb-6`}>{sectionTitleMap[sectionKey]}</h2>
+                  <div className="flex flex-wrap justify-center gap-6 mx-auto max-w-6xl">
+                    {games.map((game, index) => (
+                      <div key={index} className="flex-1 min-w-[260px] max-w-[300px] px-3">
+                        <GameCard game={game} />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </section>
+              );
+            })}
 
-            {/* Set 2 Games */}
-            <div className="mb-8 mt-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Set 2 Predictions</h2>
-              <div className="flex flex-wrap justify-center gap-4 max-w-6xl mx-auto">
-                {gamesBySection.set2.map((game, index) => (
-                  <div key={index} className="flex-1 min-w-[240px] max-w-[280px] px-2">
-                    <GameCard game={game} />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Encore Games */}
-            <div className="mb-8 mt-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Encore Predictions</h2>
-              <div className="flex justify-center max-w-md mx-auto px-3">
-                <div className="flex-1 min-w-[280px] max-w-[320px] px-3"></div> {/* Left Padding */}
-                {gamesBySection.encore.map((game, index) => (
-                  <div key={index} className="flex-1 min-w-[280px] max-w-[320px] px-3">
-                    <GameCard game={game} />
-                  </div>
-                ))}
-                <div className="flex-1 min-w-[280px] max-w-[320px] px-3"></div> {/* Right Padding */}
-              </div>
-            </div>
-
-            {/* Special/Advanced Games */}
-            <div className="mb-8 mt-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Special Predictions</h2>
-              <div className="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto">
-                {gamesBySection.special.map((game, index) => (
-                  <div key={index} className="flex-1 min-w-[280px] max-w-[320px] px-3">
-                    <GameCard game={game} />
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -196,4 +163,4 @@ const SongGamesHub = () => {
   );
 };
 
-export default SongGamesHub; 
+export default SongGamesHub;
