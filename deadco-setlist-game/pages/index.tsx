@@ -203,8 +203,6 @@ const HomePage = () => {
 
       <Link href={game.href} className="group">
 
-
-
                         <div className="countdown-inner"></div>
 
           <div className="flex flex-col items-center text-center h-full">
