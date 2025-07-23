@@ -323,17 +323,9 @@ const GameCard = ({
            </div>
          </div>
 
-
-
-
-
-
       {/* All Games - 3 Column Layout with Centered Game Cards */}
       <div className="mb-8 mt-8"
-
       >
-
-
                   <div className="countdown-outer"
                   >
 

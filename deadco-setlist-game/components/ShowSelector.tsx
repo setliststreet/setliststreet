@@ -6,7 +6,7 @@ export interface Show {
   venue: string;
   city: string;
   state: string;
-  guest?: string; // Added guest property
+  guest?: string;
 }
 
 interface ShowSelectorProps {
@@ -17,11 +17,10 @@ interface ShowSelectorProps {
 export default function ShowSelector({ onShowSelect, selectedShow }: ShowSelectorProps) {
   const [show, setShow] = useState<Show | null>(selectedShow || null);
 
-  // Only these three shows for the toggle
   const upcomingShows: Show[] = [
     {
       id: '1',
-      date: '2025-08-01', // Friday
+      date: '2025-08-01',
       venue: 'Golden Gate Park',
       city: 'San Francisco',
       state: 'CA',
@@ -29,7 +28,7 @@ export default function ShowSelector({ onShowSelect, selectedShow }: ShowSelecto
     },
     {
       id: '2',
-      date: '2025-08-02', // Saturday
+      date: '2025-08-02',
       venue: 'Golden Gate Park',
       city: 'San Francisco',
       state: 'CA',
@@ -37,7 +36,7 @@ export default function ShowSelector({ onShowSelect, selectedShow }: ShowSelecto
     },
     {
       id: '3',
-      date: '2025-08-03', // Sunday
+      date: '2025-08-03',
       venue: 'Golden Gate Park',
       city: 'San Francisco',
       state: 'CA',
@@ -50,7 +49,6 @@ export default function ShowSelector({ onShowSelect, selectedShow }: ShowSelecto
     onShowSelect?.(selectedShow);
   };
 
-  // Custom formatter to ensure correct weekday
   const formatShowDate = (dateString: string) => {
     const date = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = {

@@ -142,7 +142,7 @@ const RulesPage = () => {
 {/* Header */}
 <div className="text-center mb-16">
   <div className="countdown-outer">
-    <h1 className="logo-text">How to Play</h1>
+    <h1 className="logo-small-text">How to Play</h1>
     <p className="subtitle-font max-w-4xl mx-auto">
       Complete rules and scoring information for all Setlist Street prediction games
     </p>
@@ -154,9 +154,7 @@ const RulesPage = () => {
       <div className="mb-12">
         <div className="countdown-outer">
           <div className="w-full max-w-4xl mx-auto px-4">
-            <div className="flex justify-center mb-8">
-              <div className="game-card">Quick Start Guide</div>
-            </div>
+
             <div className="countdown-outer">
               <div className="w-full max-w-4xl mx-auto px-4">
                 <div className="flex justify-center mb-8">

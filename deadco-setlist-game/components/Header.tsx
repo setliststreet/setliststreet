@@ -11,8 +11,7 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
 
-                                               <Link href="/" className="logo-button">SETLIST STREET</Link>
-
+          <Link href="/" className="logo-button">SETLIST STREET</Link>
 
           {/* Desktop Navigation Links */}
           <nav className="flex items-center gap-4 lg:gap-6">
