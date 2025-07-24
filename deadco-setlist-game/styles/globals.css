@@ -149,6 +149,31 @@ select:focus {
   background: #6d28d9;
 }
 
+
+
+.cartoon-button {
+  background-color: #fde047;
+  border: 2px solid #000;
+  border-radius: 9999px;
+  padding: 0.15rem 0.6rem;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  color: #000;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 0 #000;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.cartoon-button:hover {
+  background-color: #facc15;
+  transform: translateY(-1px);
+  box-shadow: 2px 2px 0 #000;
+}
+
+
+
 .btn-primary:active {
   transform: translateY(0);
 }
@@ -385,6 +410,18 @@ select:focus {
   color: #374151;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 /* Loading animations */
 .loading-spinner {
   width: 40px;
@@ -447,6 +484,8 @@ select:focus {
     outline-offset: 2px;
   }
 }
+
+
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {

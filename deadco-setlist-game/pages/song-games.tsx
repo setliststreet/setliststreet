@@ -12,7 +12,7 @@ const SongGamesHub = () => {
         href: '/guess-opener',
         difficulty: 'Medium',
         players: '247 active',
-        bgColor: '#e1a811'
+        bgColor: '#ffdf2b'
       },
       {
         title: 'Set 1 Closer',
@@ -20,7 +20,7 @@ const SongGamesHub = () => {
         href: '/guess-set1-closer',
         difficulty: 'Medium',
         players: '203 active',
-        bgColor: '#e1a811'
+        bgColor: '#ffdf2b'
       }
     ],
     set2: [
@@ -30,7 +30,7 @@ const SongGamesHub = () => {
         href: '/guess-set2-opener',
         difficulty: 'Medium',
         players: '178 active',
-        bgColor: '#e1a811'
+        bgColor: '#fbbf24'
       },
       {
         title: 'Pre-Drums Song',
@@ -38,7 +38,7 @@ const SongGamesHub = () => {
         href: '/guess-pre-drums-song',
         difficulty: 'Hard',
         players: '134 active',
-        bgColor: '#e1a811'
+        bgColor: '#fbbf24'
       },
       {
         title: 'Post-Drums Song',
@@ -46,7 +46,7 @@ const SongGamesHub = () => {
         href: '/guess-post-drums-song',
         difficulty: 'Hard',
         players: '142 active',
-        bgColor: '#e1a811'
+        bgColor: '#fbbf24'
       },
       {
         title: 'Set 2 Closer',
@@ -54,7 +54,7 @@ const SongGamesHub = () => {
         href: '/guess-set2-closer',
         difficulty: 'Hard',
         players: '165 active',
-        bgColor: '#e1a811'
+        bgColor: '#fbbf24'
       }
     ],
     encore: [
@@ -63,7 +63,8 @@ const SongGamesHub = () => {
         description: 'Predict the encore song(s)',
         href: '/guess-encore',
         difficulty: 'Hard',
-        players: '189 active'
+        players: '189 active',
+        bgColor: '#a5f3fc'
       }
     ],
     special: [
@@ -72,7 +73,8 @@ const SongGamesHub = () => {
         description: 'Predict rare songs that haven\'t been played recently',
         href: '/guess-bust-out',
         difficulty: 'Expert',
-        players: '156 active'
+        players: '156 active',
+        bgColor: '#c4b5fd'
       },
       {
         title: 'Songs NOT Played',
@@ -80,7 +82,7 @@ const SongGamesHub = () => {
         href: '/guess-songs-not-played',
         difficulty: 'Expert',
         players: '98 active',
-        featured: true
+        bgColor: '#c4b5fd'
       }
     ]
   };
@@ -88,21 +90,18 @@ const SongGamesHub = () => {
   const GameCard = ({ game }) => (
     <Link href={game.href} className="group">
       <div
-        className="w-[280px] h-[180px] border-[5px] rounded-xl relative hover:scale-[1.07] transition-transform duration-300 shadow-cartoon"
-        style={{ backgroundColor: game.bgColor || '#facc15', borderColor: '#000' }}
+        className="w-[280px] h-[140px]  rounded-[1rem] relative hover:scale-105 "
+        style={{ backgroundColor: game.bgColor }}
       >
         <div
-          className="absolute inset-[10px] border-[4px] rounded-lg flex flex-col items-center justify-between p-4 shadow-inner-cartoon"
-          style={{ backgroundColor: '#ffb6c1', borderColor: '#000' }}
+          className="absolute inset-[10px]  rounded-[1.5rem] flex flex-col items-center justify-center p-4 bg-white "
         >
-          <h3 className="text-[18px] font-extrabold uppercase text-black text-center leading-tight font-cartoon">{game.title}</h3>
-          <p className="text-[13px] text-black font-medium text-center font-cartoon">{game.description}</p>
-          <button
-            className="mt-3 px-4 py-1.5 rounded-full bg-white border-[3px] text-black font-bold text-sm hover:bg-yellow-100 transition-all duration-200 shadow-md font-cartoon"
-            style={{ borderColor: '#000' }}
-          >
-            🎮 {game.players}
-          </button>
+          <h3 className="text-[18px] font-extrabold uppercase text-black text-center leading-tight font-cartoon drop-shadow-cartoon">{game.title}</h3>
+          <p className="text-[13px] text-black font-medium text-center font-cartoon drop-shadow-cartoon">{game.description}</p>
+         <button className="cartoon-button">
+           🎮 {game.players}
+         </button>
+
         </div>
       </div>
     </Link>
@@ -110,25 +109,21 @@ const SongGamesHub = () => {
 
   return (
     <MainLayout>
-      <Head>
-        <title >Song Prediction Games - Setlist Street</title>
-        <meta name="description" content="Predict individual songs in Dead & Company setlists - openers, closers, encores, and more!" />
-      </Head>
-
-  <div className="countdown-outer"></div>
-      <div className="bg-white min-h-screen">
-        <div className="container mx-auto px-6 py-8">
+      <div className="bg-sky-200 min-h-screen pb-16">
+        <div className="container mx-auto px-6 py-12">
           <div className="text-center mb-12">
+          <div className="countdown-outer"></div>
             <h1 className="logo-small-text">Song Prediction Games</h1>
-            <p className="subtitle-font max-w-4xl mx-auto">
-              Test your knowledge of Dead & Company's setlist patterns. Predict specific songs for key positions in each show.
+                      <div className="countdown-outer"></div>
+
+            <p className="subtitle-font text-black font-cartoon text-[18px] leading-snug drop-shadow-cartoon max-w-2xl mx-auto">
+              Test your knowledge of Dead &amp; Company's setlist patterns. Predict specific songs for key positions in each show.
             </p>
           </div>
 
-  <div className="countdown-outer"></div>
+          <div className="countdown-outer"></div>
 
-          <div className="space-y-12">
-            {/* Section UI */}
+          <div className="space-y-16">
             {Object.entries(gamesBySection).map(([sectionKey, games]) => {
               const sectionTitleMap = {
                 set1: '🎵 Set 1 Predictions',
@@ -137,21 +132,52 @@ const SongGamesHub = () => {
                 special: '💡 Special Predictions'
               };
               const bgMap = {
-                set1: 'bg-red-100 text-red-700',
-                set2: 'bg-yellow-100 text-yellow-700',
-                encore: 'bg-blue-100 text-blue-700',
-                special: 'bg-purple-100 text-purple-700'
+                set1: 'bg-red-200',
+                set2: 'bg-yellow-200',
+                encore: 'bg-blue-200',
+                special: 'bg-purple-200'
               };
               return (
-                <section key={sectionKey} className={`rounded-xl p-6 shadow-inner ${bgMap[sectionKey]}`}>
-                  <h2 className={`text-3xl font-bold text-center mb-6`}>{sectionTitleMap[sectionKey]}</h2>
-                  <div className="flex flex-wrap justify-center gap-6 mx-auto max-w-6xl">
-                    {games.map((game, index) => (
-                      <div key={index} className="flex-1 min-w-[260px] max-w-[300px] px-3">
-                        <GameCard game={game} />
-                      </div>
-                    ))}
-                  </div>
+
+                <section key={sectionKey} className={`shadow-3xl-cartoon p-8 ${bgMap[sectionKey]}`}>
+
+                            <div className="countdown-outer"></div>
+          <div className="countdown-outer"></div>
+
+                  <h2 className="text-4xl font-bold text-center mb-6  drop-shadow-cartoon">{sectionTitleMap[sectionKey]}</h2>
+          <div className="countdown-outer"></div>
+
+
+
+               <div className="flex flex-wrap justify-center gap-8 mx-auto max-w-6xl px-4 py-8 rounded-[2rem] bg-white/80  shadow-3xl-cartoon">
+
+               {games.map((game, index) => (
+                 <div
+                   key={index}
+                   className="
+                     flex
+                     items-center
+                     justify-center
+                     min-w-[260px]
+                     max-w-[300px]
+                     w-full
+                     px-4
+                     py-4
+                     text-center
+                   "
+                 >
+                   <GameCard game={game} />
+                 </div>
+               ))}
+
+
+
+               </div>
+
+
+
+
+
                 </section>
               );
             })}
