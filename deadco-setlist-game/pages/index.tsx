@@ -207,7 +207,7 @@ const GameCard = ({
 }) => {
   return (
     <Link href={game.href} className="group no-underline block w-full h-full">
-      <div className="flex flex-col items-center text-center text-black">
+      <div className="show-selector-button">
               <div className="countdown-inner"></div>
 
         <h3 className="text-xl font-bold mb-3">{game.title}</h3>
@@ -355,7 +355,7 @@ const GameCard = ({
        return (
          <div
            key={index}
-           className="game-card"
+           className="show-selector-button"
            style={{ backgroundColor: bgColor }}
          >
            <GameCard game={game} index={index} total={mainGames.length} />

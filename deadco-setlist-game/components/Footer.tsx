@@ -12,10 +12,7 @@ export default function Footer() {
           
           <div className="flex justify-center lg:justify-start space-x-3">
           <div className="schedule-button">
-              <span className="text-gray-500 text-xs text-center">Sponsor</span>
-
-
-
+                       <a href="/sponsor" className="text-purple-600 underline font-bold">Sponsor</a>
           </div>
           </div>
 
@@ -51,7 +48,11 @@ export default function Footer() {
 
           {/* Right Sponsor Logos */}
           <div className="schedule-button">
-                       <span className="text-gray-500 text-xs text-center">Sponsor</span>
+
+
+
+
+                       <a href="/sponsor" className="text-purple-600 underline font-bold">Sponsor</a>
 </div>
         </div>
       </div>

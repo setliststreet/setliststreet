@@ -94,7 +94,7 @@ const GuessSet1CloserPage = () => {
           <div className="mt-4"></div>
           {/* Show Selection */}
           <div className="max-w-md mx-auto mb-8">
-            <ShowSelector 
+            <ShowSelector
               onShowSelect={(show: Show) => setSelectedShow(show)}
               selectedShow={selectedShow ?? undefined}
             />
@@ -106,8 +106,8 @@ const GuessSet1CloserPage = () => {
                 <span className="text-lg font-semibold text-gray-700">[PLACEHOLDER SPONSOR NAME]</span>
                 <span className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-2xl">[PLACEHOLDER SPONSOR LOGO]</span>
               </div>
-              <PoolSizeDisplay 
-                gameId="guess-set1-closer" 
+              <PoolSizeDisplay
+                gameId="guess-set1-closer"
                 showId={selectedShow?.id}
                 showDate={selectedShow?.date}
               />
@@ -151,7 +151,6 @@ const GuessSet1CloserPage = () => {
             <div className="w-2"></div>
             {/* Col 6: Stats (optional) */}
             <div>
-              {/* Add stats or hints here if desired */}
             </div>
             {/* Col 7: Padding */}
             <div></div>
@@ -172,4 +171,4 @@ const GuessSet1CloserPage = () => {
   );
 };
 
-export default GuessSet1CloserPage; 
+export default GuessSet1CloserPage;

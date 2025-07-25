@@ -147,8 +147,6 @@ const SongGamesHub = () => {
                   <h2 className="text-4xl font-bold text-center mb-6  drop-shadow-cartoon">{sectionTitleMap[sectionKey]}</h2>
           <div className="countdown-outer"></div>
 
-
-
                <div className="flex flex-wrap justify-center gap-8 mx-auto max-w-6xl px-4 py-8 rounded-[2rem] bg-white/80  shadow-3xl-cartoon">
 
                {games.map((game, index) => (
@@ -170,9 +168,7 @@ const SongGamesHub = () => {
                  </div>
                ))}
 
-
-
-               </div>
+             </div>
 
 
 
