@@ -6,7 +6,7 @@ import PoolSizeDisplay from '../components/PoolSizeDisplay';
 import ShowSelector from '../components/ShowSelector';
 import { Show } from '../components/ShowSelector';
 
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 5;
 
 interface Song {
   name: string;
@@ -41,8 +41,22 @@ const GuessOpenerPage = () => {
           return;
         }
 
-        const songMap: Record<string, { count: number; lastOpener: string }> = {};
+        // Collect all unique songs from all sets
+        const allSongsSet = new Set<string>();
+        data.setlist.forEach((setlist: any) => {
+          if (setlist.sets?.set) {
+            setlist.sets.set.forEach((set: any) => {
+              if (set.song?.length) {
+                set.song.forEach((song: any) => {
+                  if (song.name) allSongsSet.add(song.name);
+                });
+              }
+            });
+          }
+        });
 
+        // Collect opener stats
+        const songMap: Record<string, { count: number; lastOpener: string }> = {};
         data.setlist.forEach((setlist: any) => {
           const showDate = setlist.eventDate;
           if (setlist.sets?.set) {
@@ -67,17 +81,25 @@ const GuessOpenerPage = () => {
 
         const total = Object.values(songMap).reduce((sum, s) => sum + s.count, 0);
 
-        const processedSongs = Object.entries(songMap).map(([name, stats]) => {
-          const probability = ((stats.count / total) * 100).toFixed(1);
+        // Merge all unique songs with opener stats
+        const processedSongs = Array.from(allSongsSet).sort().map(name => {
+          const stats = songMap[name];
+          let probability = 0;
+          let lastOpener = '';
           let frequency = 'Low';
-          if (stats.count >= 5) frequency = 'Very High';
-          else if (stats.count >= 3) frequency = 'High';
-          else if (stats.count >= 2) frequency = 'Medium';
-
+          if (stats) {
+            probability = parseFloat(((stats.count / total) * 100).toFixed(1));
+            lastOpener = stats.lastOpener;
+            if (stats.count >= 5) frequency = 'Very High';
+            else if (stats.count >= 3) frequency = 'High';
+            else if (stats.count >= 2) frequency = 'Medium';
+          } else {
+            frequency = 'Never Opened';
+          }
           return {
             name,
-            openerProbability: parseFloat(probability),
-            lastOpener: stats.lastOpener,
+            openerProbability: probability,
+            lastOpener,
             frequency,
           };
         });
@@ -160,11 +182,13 @@ const GuessOpenerPage = () => {
 
       <div className="min-h-screen bg-gradient-to-b from-purple-400 to-blue-500 flex items-center justify-center">
         <div className="container mx-auto px-4 py-8">
+          <div className='countdown-outer'></div>
           {/* Header with Sponsor Logos */}
           <div className="flex items-center justify-center mb-8 gap-8 perspective-1500 rotateX-12">
             <div className="w-32 h-32 bg-gradient-to-br from-yellow-300 to-orange-300 rounded-full flex items-center justify-center text-5xl font-extrabold text-purple-900 shadow-cartoon">
               🎸
             </div>
+          
             <h1 className="logo-text">Guess the Opener</h1>
             <div className="w-32 h-32 bg-gradient-to-br from-yellow-300 to-orange-300 rounded-full flex items-center justify-center text-5xl font-extrabold text-purple-900 shadow-cartoon">
               🎵

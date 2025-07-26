@@ -432,6 +432,45 @@ select:focus {
     0 4px 10px rgba(0,0,0,0.3);
 }
 
+.green-game-card {
+  display: inline-block;
+  background: linear-gradient(135deg, #b7f7c8 0%, #38b2ac 100%);
+  color: #073b2a;
+  padding: 22px 44px;
+  font-weight: 00;
+  font-size: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 24px;
+  text-decoration: none;
+  letter-spacing: 1.7px;
+  font-family: var(--font-body);
+  max-width: 620px;
+  margin-bottom: 32px;
+  box-shadow:
+    0 10px 0 #38b2ac,
+    0 10px 24px rgba(56, 178, 172, 0.25),
+    0 0px 0px #000;
+  transition: all 0.25s cubic-bezier(.4,2,.3,1);
+  position: relative;
+}
+
+.green-game-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow:
+    0 16px 0 #38b2ac,
+    0 16px 36px rgba(56, 178, 172, 0.35);
+  background: linear-gradient(135deg, #a7f3d0 0%, #17a713 100%);
+  cursor: pointer;
+}
+
+.green-game-card:active {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 6px 0 #38b246,
+    0 6px 12px rgba(35, 195, 40, 0.18);
+}
+
 
 
 .center-wrapper {
@@ -546,4 +585,4 @@ select:focus {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-} 
+}

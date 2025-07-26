@@ -73,13 +73,33 @@ export default function FourWaysToPlay({
       {/* Standardized Horizontal 4-Column Grid */}
       <div className="grid grid-cols-9 w-full items-center">
         <div className="w-4"></div>
-        <button onClick={() => handleModeSelection('fun')}>Play for Fun</button>
+        <button
+          className="cartoon-btn px-4 py-2 rounded-lg font-cartoon text-lg bg-yellow-300 border-4 border-yellow-500 shadow-lg hover:scale-105 hover:bg-yellow-400 transition-transform duration-150 active:translate-y-1"
+          onClick={() => handleModeSelection('fun')}
+        >
+          Play for Fun
+        </button>
         <div className="w-0.5"></div>
-        <button onClick={() => handleModeSelection('charity')}>Play for Charity</button>
+        <button
+          className="cartoon-btn px-4 py-2 rounded-lg font-cartoon text-lg bg-pink-300 border-4 border-pink-500 shadow-lg hover:scale-105 hover:bg-pink-400 transition-transform duration-150 active:translate-y-1"
+          onClick={() => handleModeSelection('charity')}
+        >
+          Play for Charity
+        </button>
         <div className="w-0.5"></div>
-        <button onClick={() => handleModeSelection('cash')}>Play for Cash</button>
+        <button
+          className="cartoon-btn px-4 py-2 rounded-lg font-cartoon text-lg bg-blue-300 border-4 border-blue-500 shadow-lg hover:scale-105 hover:bg-blue-400 transition-transform duration-150 active:translate-y-1"
+          onClick={() => handleModeSelection('cash')}
+        >
+          Play for Cash
+        </button>
         <div className="w-0.5"></div>
-        <button onClick={() => handleModeSelection('prize')}>Play for Prize</button>
+        <button
+          className="cartoon-btn px-4 py-2 rounded-lg font-cartoon text-lg bg-green-300 border-4 border-green-500 shadow-lg hover:scale-105 hover:bg-green-400 transition-transform duration-150 active:translate-y-1"
+          onClick={() => handleModeSelection('prize')}
+        >
+          Play for Prize
+        </button>
         <div className="w-4"></div>
       </div>
 

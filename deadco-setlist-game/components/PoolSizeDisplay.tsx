@@ -61,49 +61,54 @@ export default function PoolSizeDisplay({ gameId, showId, onPrizeInfoClick, show
   const totalPlayers = poolData.funPlayers + poolData.cashPlayers + poolData.charityPlayers + poolData.prizePlayers;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 mb-8">
-      <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">
+    <div className="green-game-card bg-gradient-to-br from-green-100 via-white to-green-200 shadow-xl rounded-xl p-4 mb-6 border-0">
+      <h3 className="text-lg font-bold text-green-900 mb-3 text-center drop-shadow tracking-wide">
         Live Player Pool{showDate ? ` - ${formatShowDate(showDate)}` : showId ? ` - Show ${showId}` : ''}
       </h3>
-      <div className="flex flex-wrap gap-2 justify-center items-stretch w-full overflow-x-auto">
+      <div className='countdown-outer'></div>
+      
+      <div className="flex flex-wrap gap-x-4 gap-y-4 justify-center items-stretch w-full overflow-x-auto">
         {/* Total Players */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-center min-w-[110px] flex flex-col justify-center">
-          <div className="text-xl font-bold text-gray-800 leading-none">{totalPlayers}</div>
-          <div className="text-xs text-gray-600 leading-none">Total Players</div>
-          <div className="text-xs text-green-600 leading-none">Live</div>
+        <div className="bg-gradient-to-br from-gray-50 via-white to-gray-200 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
+          <div className="text-lg font-bold text-gray-900 leading-none drop-shadow">{totalPlayers}</div>
+          <div className="text-xs text-gray-600 leading-none font-semibold mt-1">Total Players</div>
+          <div className="text-xs text-green-600 leading-none mt-1 font-bold">Live</div>
         </div>
         {/* Fun Players */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-center min-w-[110px] flex flex-col justify-center">
-          <div className="text-xl font-bold text-blue-800 leading-none">{poolData.funPlayers}</div>
-          <div className="text-xs text-blue-700 leading-none">Fun Players</div>
-          <div className="text-xs text-blue-600 leading-none">Free Play</div>
+        <div className="bg-gradient-to-br from-blue-100 via-white to-blue-200 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
+          <div className="text-lg font-bold text-blue-900 leading-none drop-shadow">{poolData.funPlayers}</div>
+          <div className="text-xs text-blue-700 leading-none font-semibold mt-1">Fun Players</div>
+          <div className="text-xs text-blue-600 leading-none mt-1 font-bold">Free Play</div>
         </div>
         {/* Cash Players */}
-        <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-2 text-center min-w-[110px] flex flex-col justify-center">
-          <div className="text-xl font-bold text-green-800 leading-none">{poolData.cashPlayers}</div>
-          <div className="text-xs text-green-700 leading-none">Cash Players</div>
-          <div className="text-xs text-green-600 leading-none">Pool: ${poolData.cashPool.toLocaleString()}</div>
+        <div className="bg-gradient-to-br from-green-200 via-white to-green-300 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
+          <div className="text-lg font-bold text-green-900 leading-none drop-shadow">{poolData.cashPlayers}</div>
+          <div className="text-xs text-green-700 leading-none font-semibold mt-1">Cash Players</div>
+          <div className="text-xs text-green-700 leading-none mt-1 font-bold">Pool: ${poolData.cashPool.toLocaleString()}</div>
         </div>
         {/* Charity Players */}
-        <div className="bg-purple-50 border border-purple-200 rounded-lg px-4 py-2 text-center min-w-[110px] flex flex-col justify-center">
-          <div className="text-xl font-bold text-purple-800 leading-none">{poolData.charityPlayers}</div>
-          <div className="text-xs text-purple-700 leading-none">Charity Players</div>
-          <div className="text-xs text-purple-600 leading-none">${poolData.charityPool.toLocaleString()} • {poolData.uniqueCharities} charities</div>
+        <div className="bg-gradient-to-br from-purple-100 via-white to-purple-200 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
+          <div className="text-lg font-bold text-purple-900 leading-none drop-shadow">{poolData.charityPlayers}</div>
+          <div className="text-xs text-purple-700 leading-none font-semibold mt-1">Charity Players</div>
+          <div className="text-xs text-purple-700 leading-none mt-1 font-bold">${poolData.charityPool.toLocaleString()} • {poolData.uniqueCharities} charities</div>
         </div>
         {/* Prize Players */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-2 text-center min-w-[110px] flex flex-col justify-center">
-          <div className="text-xl font-bold text-yellow-800 leading-none">{poolData.prizePlayers}</div>
-          <div className="text-xs text-yellow-700 leading-none">Prize Players</div>
+        <div className="bg-gradient-to-br from-yellow-100 via-white to-yellow-200 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
+          <div className="text-lg font-bold text-yellow-900 leading-none drop-shadow">{poolData.prizePlayers}</div>
+          <div className="text-xs text-yellow-700 leading-none font-semibold mt-1">Prize Players</div>
           <button
             onClick={onPrizeInfoClick}
-            className="text-xs text-yellow-600 hover:text-yellow-800 underline leading-none mt-1"
+            className="px-4 py-2 rounded-lg font-cartoon text-xs bg-white border-2 border-yellow-400 shadow hover:scale-105 hover:bg-yellow-50 hover:text-yellow-700 transition-transform duration-150 active:translate-y-1 active:shadow-sm mt-2 font-bold tracking-wide"
+            style={{
+              boxShadow: '0 4px 0 #f7e07c, 0 4px 12px rgba(255, 221, 51, 0.18)'
+            }}
           >
             View Available Prizes →
           </button>
         </div>
       </div>
       <div className="mt-2 text-center">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 font-semibold drop-shadow">
           Pool sizes update every 5 seconds • Last updated: {new Date().toLocaleTimeString()}
         </p>
       </div>
@@ -115,4 +120,4 @@ export default function PoolSizeDisplay({ gameId, showId, onPrizeInfoClick, show
 function formatShowDate(dateStr: string) {
   const date = new Date(dateStr);
   return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-} 
+}

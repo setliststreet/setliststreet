@@ -118,13 +118,7 @@ export default function SetlistDragDropPicker({
         {/* Available Songs - Left Side (2/5 width) */}
         <div className="col-span-2">
           <h4 className="font-medium text-gray-800 mb-3 text-sm">Available Songs</h4>
-          <input
-            type="text"
-            placeholder="Search songs..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg mb-3 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-          />
+        
           
           {/* Limited Song Display - Show only 5 at a time */}
           <div className="h-48 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50">
