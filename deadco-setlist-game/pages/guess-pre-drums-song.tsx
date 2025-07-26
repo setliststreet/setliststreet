@@ -248,7 +248,7 @@ const GuessPreDrumsSongPage = () => {
                 Prev
               </button>
               <span className="mx-2 text-gray-700">
-                Page {currentPage} of {pageCount}
+                Page {currentPage} of {pageCount} 
               </span>
               <button
                 className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
