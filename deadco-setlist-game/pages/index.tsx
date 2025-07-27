@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import MainLayout from '../components/MainLayout';
-import { SetlistStreetTheme } from '../theme/SetlistStreetTheme.ts';
+import { SetlistStreetTheme } from '../theme/SetlistStreetTheme';
+import GuestSignupModal from './modals/GuestSignupModal';
+import { createClient } from '@supabase/supabase-js';
+import { clearGuestEmail, getGuestEmail } from '@/lib/guestHelpers';
+
+const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 
  export function ShowSchedule() {
@@ -93,6 +100,60 @@ import { SetlistStreetTheme } from '../theme/SetlistStreetTheme.ts';
 }
 const HomePage = () => {
   const [timeToDeadline, setTimeToDeadline] = useState('');
+    const [isGuestRegistered, setIsGuestRegistered] = useState(false);
+const [loading, setLoading] = useState(true);
+
+
+
+useEffect(() => {
+    const handleSession = async () => {
+      setLoading(true);
+
+      await supabase.auth.signOut(); // Log out any current Supabase session
+
+      const guestEmail = getGuestEmail();
+      if (!guestEmail) {
+        setIsGuestRegistered(false);
+        setLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('guest_users')
+        .select('email')
+        .eq('email', guestEmail)
+        .single();
+
+      if (data && data.email) {
+        setIsGuestRegistered(true);
+      } else {
+        setIsGuestRegistered(false);
+      }
+
+      setLoading(false);
+    };
+
+    handleSession();
+  }, []);
+
+
+
+
+
+
+  // 🧹 Logout Handler
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    clearGuestEmail();
+    setIsGuestRegistered(false);
+    setLoading(false);
+    alert('✅ Logged out successfully');
+  };
+
+
+
+
+
 
   // Calculate time to next 7PM PT deadline
   useEffect(() => {
@@ -254,6 +315,29 @@ const GameCard = ({
         <meta name="description" content="Grateful Dead 60th Anniversary prediction games! 15 different games for Dead & Company at Golden Gate Park Aug 1-3, 2025." />
       </Head>
 
+      <div className="countdown-inner"></div>
+<div className="center-wrapper flex justify-center mb-8">
+      <div className="flex justify-between items-center mb-4">
+        {isGuestRegistered && (
+          <button
+            className="button"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        )}
+      </div>
+
+      {isGuestRegistered ? (
+        <div className="text-green-600">🎉 You are logged in as a guest!</div>
+      ) : (
+        <div className="text-yellow-600">⚠️ Please register or enter your email.</div>
+      )}
+
+      </div>
+
+
+    
       {/* Header Section */}
       <div className="text-center mb-16">
                         <div className="countdown-outer">
@@ -288,8 +372,29 @@ const GameCard = ({
 </div>
 
 
+<div className="center-wrapper flex justify-center mb-8">
+
+   {loading ? (
+  <div className="text-center mt-20 text-gray-600">Loading...</div>
+) : (
+  <>
+    {!isGuestRegistered && (
+      <GuestSignupModal onSuccess={() => setIsGuestRegistered(true)} />
+    )}
+
+    {isGuestRegistered && (
+      <>
+        {/* Your full UI */}
+      </>
+    )}
+  </>
+)}
 
 
+</div>
+
+{isGuestRegistered && (
+        <>
 
 
 
@@ -395,8 +500,13 @@ const GameCard = ({
 
       {/* Utility Tools - Force Visible Margins */}
       {/* Remove the UtilityCard and utilityLinks rendering section entirely. Do not render any tools/results cards or sections. */}
+   </>
+   )}
     </MainLayout>
   );
+
+
+
 };
 
 export default HomePage;

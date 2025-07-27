@@ -1,4 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+
 
 export interface Show {
   id: string;
@@ -14,65 +21,152 @@ interface ShowSelectorProps {
   selectedShow?: Show;
 }
 
-export default function ShowSelector({ onShowSelect, selectedShow }: ShowSelectorProps) {
+const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow }) => {
   const [show, setShow] = useState<Show | null>(selectedShow || null);
   const [isLoading, setIsLoading] = useState(false);
 
   const upcomingShows: Show[] = [
     {
       id: '1',
-      date: '2025-08-01',
-      venue: 'Golden Gate Park',
-      city: 'San Francisco',
-      state: 'CA',
-      guest: 'Billy Strings',
+      date: '2025-05-15',
+      venue: 'Sphere at The Venetian Resort',
+      city: 'Las Vegas',
+      state: 'NV',
+      guest: 'Dead & Company',
     },
     {
       id: '2',
-      date: '2025-08-02',
-      venue: 'Golden Gate Park',
-      city: 'San Francisco',
-      state: 'CA',
-      guest: 'Sturgill “Johnny Blue Skies” Simpson',
+      date: '2025-05-16',
+      venue: 'Sphere at The Venetian Resort',
+      city: 'Las Vegas',
+      state: 'NV',
+      guest: 'Dead & Company',
     },
     {
       id: '3',
-      date: '2025-08-03',
-      venue: 'Golden Gate Park',
-      city: 'San Francisco',
-      state: 'CA',
-      guest: 'Trey Anastasio Band',
+      date: '2025-05-17',
+      venue: 'Sphere at The Venetian Resort',
+      city: 'Las Vegas',
+      state: 'NV',
+      guest: 'Dead & Company',
     },
+    // {
+    //   id: '2',
+    //   date: '2025-08-02',
+    //   venue: 'Golden Gate Park',
+    //   city: 'San Francisco',
+    //   state: 'CA',
+    //   guest: 'Sturgill “Johnny Blue Skies” Simpson',
+    // },
+    // {
+    //   id: '3',
+    //   date: '2025-08-03',
+    //   venue: 'Golden Gate Park',
+    //   city: 'San Francisco',
+    //   state: 'CA',
+    //   guest: 'Trey Anastasio Band',
+    // },
   ];
 
   useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 10);
+    setTimeout(() => setIsLoading(false), 10);
   }, []);
 
-  const handleShowSelect = (selectedShow: Show) => {
+  const handleShowSelect = async (selectedShow: Show) => {
     setShow(selectedShow);
     onShowSelect?.(selectedShow);
+
+
+    
+      try {
+        // Convert date from YYYY-MM-DD to DD-MM-YYYY
+        const [year, month, day] = selectedShow.date.split('-');
+        const formattedDate = `${day}-${month}-${year}`;
+
+        
+
+       const res = await fetch(
+  `/api/liveSetlist?date=${formattedDate}&city=${encodeURIComponent(selectedShow.city)}`
+);
+
+
+
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error(`setlist.fm API error: Status ${res.status}, ${errorText}`);
+          alert(`Error fetching setlist from setlist.fm: Status ${res.status} - ${errorText}`);
+          return;
+        }
+
+        const data = await res.json();
+
+        if (!data.setlist?.[0]) {
+          console.error('No setlist found for the specified show');
+          alert( `No setlist found for the show on ${formattedDate} in Las Vegas`);
+          return;
+        }
+
+        const setlist = data.setlist[0];
+
+        const songs = setlist.sets.set.flatMap((set: any) =>
+          set.song.map((song: any) => ({
+            name: song.name,
+            cover: song.cover?.name,
+            info: song.info,
+            tape: song.tape,
+          }))
+        );
+        const opener = setlist.sets.set[0]?.song[0]?.name || '';
+
+        const { error } = await supabase
+          .from('setlists')
+          .upsert(
+            {
+              show_id: selectedShow.id,
+              date: setlist.eventDate,
+              venue: setlist.venue.name,
+              city: setlist.venue.city.name,
+              state: setlist.venue.city.state,
+              songs: songs,
+              opener: opener,
+            },
+            { onConflict: ['show_id', 'date'] }
+          );
+
+        if (error) {
+          console.error('Supabase error:', error);
+          alert(`Error storing setlist in Supabase: ${error.message}`);
+          return;
+        }
+
+        console.log('Setlist stored successfully for show:', selectedShow.id);
+        alert(`Setlist successfully stored in Supabase for show on ${formattedDate} in Las Vegas`);
+      } catch (err) {
+        console.error('Failed to fetch or store setlist:', err);
+        alert(`Failed to fetch or store setlist: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      }
+    
+
+
   };
 
   const formatShowDate = (dateString: string) => {
     const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = {
+    return date.toLocaleDateString('en-US', {
       weekday: 'long',
       month: 'long',
       day: 'numeric',
       year: 'numeric',
-    };
-    return date.toLocaleDateString('en-US', options);
+    });
   };
 
   return (
     <div className="mt-6 mb-6 bg-white p-4 sm:p-6 rounded-lg border border-gray-200 max-w-full mx-auto">
       {isLoading ? (
         <div className="flex justify-center">
-          <div className="loading-spinner"></div>
+          <div className="animate-spin h-5 w-5 border-2 border-t-blue-500 rounded-full"></div>
         </div>
       ) : (
         <>
@@ -100,27 +194,17 @@ export default function ShowSelector({ onShowSelect, selectedShow }: ShowSelecto
                   })}
                 </div>
                 <div className="h-1"></div>
-                <div className="text-xs text-blue-700 font-semibold mb-0.5">
-                  {upcomingShow.guest}
-                </div>
+                <div className="text-xs text-blue-700 font-semibold mb-0.5">{upcomingShow.guest}</div>
                 <div className="h-1"></div>
                 <div className="text-xs text-gray-500">4 pm</div>
                 <div className="text-xs text-gray-500">{upcomingShow.city}</div>
               </button>
             ))}
           </div>
-          {/* {show && (
-            <div className="mt-4 p-3 glass rounded-lg text-center">
-              <div className="text-xs sm:text-sm font-medium gradient-text-deadco">
-                Selected: {formatShowDate(show.date)}
-              </div>
-              <div className="text-xs sm:text-sm text-gray-600">
-                {show.venue}, {show.city}, {show.state}
-              </div>
-            </div>
-          )} */}
         </>
       )}
     </div>
   );
-}
+};
+
+export default ShowSelector;

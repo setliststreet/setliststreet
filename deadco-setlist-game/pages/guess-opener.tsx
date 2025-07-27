@@ -5,6 +5,12 @@ import FourWaysToPlay from '../components/FourWaysToPlay';
 import PoolSizeDisplay from '../components/PoolSizeDisplay';
 import ShowSelector from '../components/ShowSelector';
 import { Show } from '../components/ShowSelector';
+import { getGuestEmail } from '../lib/guestHelpers'; 
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const PAGE_SIZE = 5;
 
@@ -40,6 +46,7 @@ const GuessOpenerPage = () => {
           console.error('API error:', data);
           return;
         }
+        
 
         // Collect all unique songs from all sets
         const allSongsSet = new Set<string>();
@@ -150,15 +157,81 @@ const GuessOpenerPage = () => {
     setSelectedSong('');
   };
 
-  const handleSubmission = (playMode: string, amount?: number) => {
-    if (!selectedSong) {
-      alert('Please select a song first');
+
+
+
+const handleSubmission = async (playMode: string, amount?: number) => {
+  if (!selectedSong || !selectedShow) {
+    alert('Please select a show and song first');
+    return;
+  }
+
+  // ✅ Fetch latest session (always fresh)
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
+
+  const userId = session?.user?.id || null;
+
+  let guestEmail: string | null = null;
+
+  // 🧑‍💻 If no logged-in user, use guest email
+  if (!userId) {
+    guestEmail = getGuestEmail();
+    if (!guestEmail) {
+      alert('Please log in or enter your email to continue.');
       return;
     }
-    console.log('Submitting:', { show: selectedShow, song: selectedSong, playMode, amount });
-    const amountText = amount ? ` ($${amount})` : '';
-    alert(`Prediction submitted for Show ${selectedShow ? selectedShow.id : ''}: ${selectedSong} (${playMode} mode${amountText})`);
+
+    // ✅ Check if guest user exists
+    const { data: guestData, error: guestError } = await supabase
+      .from('guest_users')
+      .select('*')
+      .eq('email', guestEmail)
+      .single();
+
+    if (guestError || !guestData) {
+      console.error('Guest user not found:', guestError);
+      alert('❌ No guest account found with that email.');
+      return;
+    }
+  }
+
+  const submission = {
+    user_id: userId,
+    guest_email: guestEmail,
+    show_id: selectedShow.id,
+    song: selectedSong,
+    play_mode: playMode,
+    amount: amount || null,
+    submitted_at: new Date().toISOString(),
   };
+
+  const { error: insertError } = await supabase
+    .from('opener_guesses')
+    .insert([submission]);
+
+  if (insertError) {
+    console.error('Supabase insert error:', insertError);
+    alert('❌ There was a problem submitting your prediction.');
+    return;
+  }
+
+  // 🟢 Success message
+  const amountText = amount ? ` ($${amount})` : '';
+  const venue = selectedShow.venue;
+  const city = selectedShow.city;
+  const date = new Date(selectedShow.date).toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  alert(`✅ Prediction submitted!\n\n🎵 Song: ${selectedSong}\n📍 Venue: ${venue}, ${city}\n📅 Date: ${date}\n🎮 Mode: ${playMode}${amountText}`);
+};
+
+
 
   const handlePrizeInfoClick = () => {
     setShowPrizeInfo(true);
@@ -167,6 +240,7 @@ const GuessOpenerPage = () => {
   const filteredSongs = songs.filter(song =>
     song.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  
   const pageCount = Math.ceil(filteredSongs.length / PAGE_SIZE);
   const pageSongs = filteredSongs.slice(
     (currentPage - 1) * PAGE_SIZE,
@@ -247,6 +321,10 @@ const GuessOpenerPage = () => {
               selectedShow={selectedShow || undefined}
               onShowSelect={handleShowSelect}
             />
+         
+
+  
+
           </div>
 
           {/* Sponsor Section */}
@@ -405,6 +483,7 @@ const GuessOpenerPage = () => {
           {/* Four Ways to Play */}
           <div className="mt-8 mb-8 perspective-1500 rotateX-12">
             <FourWaysToPlay
+              selectedSong={selectedShow ? selectedSong : ''}
               onSubmissionClick={handleSubmission}
               gameType="opener prediction"
               disabled={!selectedSong}

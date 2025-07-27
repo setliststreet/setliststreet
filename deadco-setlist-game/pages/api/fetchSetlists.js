@@ -1,4 +1,3 @@
-
 export default async function handler(req, res) {
   const { artistName, year } = req.query;
 
@@ -24,13 +23,13 @@ export default async function handler(req, res) {
     if (!response.ok) {
       console.error('Upstream Setlist.fm error:', response.status, text);
       return res.status(response.status).json({
-        error: `Upstream error`,
+        error: 'Upstream error',
         status: response.status,
         message: text,
       });
     }
 
-    let data = {};
+    let data;
     try {
       data = JSON.parse(text);
     } catch (jsonError) {
@@ -38,9 +37,9 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: 'Invalid JSON from upstream' });
     }
 
-    res.status(200).json(data);
+    return res.status(200).json(data);
   } catch (error) {
     console.error('Server error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }

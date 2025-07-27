@@ -1,13 +1,13 @@
 import React, { useState, useRef, useCallback } from 'react';
 
 interface SetlistDragDropPickerProps {
-  onSetlistChange?: (setlist: string[]) => void;
+  onSetlistChang\e?: (setlist: string[]) => void;
   availableSongs?: string[];
   maxSongs?: number;
 }
 
 interface DragItem {
-  type: 'song';
+/  type: 'song';
   songName: string;
   index?: number;
 }
