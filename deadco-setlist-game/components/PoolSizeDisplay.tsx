@@ -41,63 +41,119 @@ const PoolSizeDisplay: React.FC<PoolSizeDisplayProps> = ({
   const [totalPlayers, setTotalPlayers] = useState(0);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // ✅ Total Players from guest_users
-        const { count: totalGuestUsers, error: guestError } = await supabase
-          .from('guest_users')
-          .select('*', { count: 'exact', head: true });
+  const fetchData = async () => {
+    try {
+      let query = supabase
+        .from('opener_guesses')
+        .select('user_id, guest_user_id, play_mode');
 
-        if (guestError) console.error('guest_users error:', guestError);
-        setTotalPlayers(totalGuestUsers || 0);
-
-        // ✅ Get opener_guesses data
-        let query = supabase
-          .from('opener_guesses')
-          .select('user_id, song');
-
-        if (showId) {
-          query = query.eq('show_id', showId);
-        }
-
-        const { data: guesses, error: guessError } = await query;
-
-        if (guessError) {
-          console.error('opener_guesses error:', guessError);
-          return;
-        }
-
-        // ✅ Calculate player types based on logic or tags in future (mocked logic here)
-        const uniqueUsers = [...new Set(guesses.map(g => g.user_id))];
-        const total = uniqueUsers.length;
-
-        alert(`Total unique players: ${total}`);
-
-        const fun = Math.floor(total * 0.5);
-        const cash = Math.floor(total * 0.25);
-        const charity = Math.floor(total * 0.15);
-        const prize = total - fun - cash - charity;
-
-        const newPoolData: PoolData = {
-          funPlayers: fun,
-          cashPlayers: cash,
-          cashPool: cash * 20,
-          charityPlayers: charity,
-          charityPool: charity * 15,
-          uniqueCharities: Math.floor(charity / 2),
-          prizePlayers: prize
-        };
-
-        setPoolData(newPoolData);
-      } catch (err) {
-        console.error('Unexpected error:', err);
+      if (showId) {
+        query = query.eq('show_id', showId);
       }
-    };
 
-    fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return () => clearInterval(interval);
-  }, [gameId, showId]);
+      const { data: guesses, error } = await query;
+
+      if (error) {
+        console.error('Error fetching opener_guesses:', error);
+        return;
+      }
+
+      const uniquePlayers = new Map<string, string>(); // map<playerId, mode>
+
+      guesses.forEach(({ user_id, guest_user_id, play_mode }) => {
+        const playerId = user_id || guest_user_id;
+        if (playerId && !uniquePlayers.has(playerId)) {
+          uniquePlayers.set(playerId, play_mode);
+        }
+      });
+
+      const allModes = [...uniquePlayers.values()];
+
+      const funPlayers = allModes.filter(mode => mode === 'fun').length;
+      const cashPlayers = allModes.filter(mode => mode === 'cash').length;
+      const charityPlayers = allModes.filter(mode => mode === 'charity').length;
+      const prizePlayers = allModes.filter(mode => mode === 'prize').length;
+
+      const newPoolData: PoolData = {
+        funPlayers,
+        cashPlayers,
+        cashPool: cashPlayers * 20,
+        charityPlayers,
+        charityPool: charityPlayers * 15,
+        uniqueCharities: Math.floor(charityPlayers / 2),
+        prizePlayers
+      };
+
+      setPoolData(newPoolData);
+      setTotalPlayers(uniquePlayers.size);
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    }
+  };
+
+  fetchData();
+  const interval = setInterval(fetchData, 5000);
+  return () => clearInterval(interval);
+}, [gameId, showId]);
+
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // ✅ Total Players from guest_users
+  //       const { count: totalGuestUsers, error: guestError } = await supabase
+  //         .from('guest_users')
+  //         .select('*', { count: 'exact', head: true });
+
+  //       if (guestError) console.error('guest_users error:', guestError);
+  //       setTotalPlayers(totalGuestUsers || 0);
+
+  //       // ✅ Get opener_guesses data
+  //       let query = supabase
+  //         .from('opener_guesses')
+  //         .select('user_id, song');
+
+  //       if (showId) {
+  //         query = query.eq('show_id', showId);
+  //       }
+
+  //       const { data: guesses, error: guessError } = await query;
+
+  //       if (guessError) {
+  //         console.error('opener_guesses error:', guessError);
+  //         return;
+  //       }
+
+  //       const uniqueUsers = [...new Set(guesses.map(g => g.user_id))];
+  //       const total = uniqueUsers.length;
+
+  //       // alert(`Total unique players: ${total}`);
+
+  //       const fun = Math.floor(total * 0.5);
+  //       const cash = Math.floor(total * 0.25);
+  //       const charity = Math.floor(total * 0.15);
+  //       const prize = total - fun - cash - charity;
+
+  //       const newPoolData: PoolData = {
+  //         funPlayers: fun,
+  //         cashPlayers: cash,
+  //         cashPool: cash * 20,
+  //         charityPlayers: charity,
+  //         charityPool: charity * 15,
+  //         uniqueCharities: Math.floor(charity / 2),
+  //         prizePlayers: prize
+  //       };
+
+  //       setPoolData(newPoolData);
+  //     } catch (err) {
+  //       console.error('Unexpected error:', err);
+  //     }
+  //   };
+
+  //   fetchData();
+  //   const interval = setInterval(fetchData, 5000);
+  //   return () => clearInterval(interval);
+  // }, [gameId, showId]);
 
   const formatShowDate = (dateStr: string) => {
     const date = new Date(dateStr);

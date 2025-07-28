@@ -142,10 +142,10 @@ const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow 
         }
 
         console.log('Setlist stored successfully for show:', selectedShow.id);
-        alert(`Setlist successfully stored in Supabase for show on ${formattedDate} in Las Vegas`);
+        // alert(`Setlist successfully stored in Supabase for show on ${formattedDate} in Las Vegas`);
       } catch (err) {
         console.error('Failed to fetch or store setlist:', err);
-        alert(`Failed to fetch or store setlist: ${err instanceof Error ? err.message : 'Unknown error'}`);
+        // alert(`Failed to fetch or store setlist: ${err instanceof Error ? err.message : 'Unknown error'}`);
       }
     
 

@@ -281,11 +281,6 @@ const GameCard = ({
   );
 };
 
-
-
-
-
-
   const UtilityCard = ({ item }: { item: Game }) => (
     <Link href={item.href} className="group">
       <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 border-2 border-gray-200 hover:border-gray-300">

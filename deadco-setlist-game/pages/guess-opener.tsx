@@ -5,8 +5,10 @@ import FourWaysToPlay from '../components/FourWaysToPlay';
 import PoolSizeDisplay from '../components/PoolSizeDisplay';
 import ShowSelector from '../components/ShowSelector';
 import { Show } from '../components/ShowSelector';
-import { getGuestEmail } from '../lib/guestHelpers'; 
 import { createClient } from '@supabase/supabase-js';
+import { getGuestEmail,  getOpenerWinnerStatus , storeOpenerWinnerStatus } from '@/lib/guestHelpers';
+
+
 
 const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
@@ -29,6 +31,8 @@ const GuessOpenerPage = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isWinner, setIsWinner] = useState<boolean | null>(null);
+
 
   const prizeInfo = [
     { sponsor: 'Dead Merch Co.', prize: 'Vintage Poster', value: '$75' },
@@ -146,6 +150,16 @@ const GuessOpenerPage = () => {
     return () => clearInterval(interval);
   }, []);
 
+
+
+useEffect(() => {
+  const winner = getOpenerWinnerStatus();
+  if (winner !== null) {
+    setIsWinner(winner);
+  }
+}, []);
+
+
   const getSelectedSongData = () => songs.find(song => song.name === selectedSong);
   const getProbabilityColor = (prob: number) =>
     prob >= 15 ? 'text-green-500' : prob >= 10 ? 'text-yellow-400' : prob >= 5 ? 'text-orange-400' : 'text-red-400';
@@ -166,7 +180,6 @@ const handleSubmission = async (playMode: string, amount?: number) => {
     return;
   }
 
-  // ✅ Fetch latest session (always fresh)
   const {
     data: { session },
     error: sessionError,
@@ -175,8 +188,8 @@ const handleSubmission = async (playMode: string, amount?: number) => {
   const userId = session?.user?.id || null;
 
   let guestEmail: string | null = null;
+  let guestUserId: string | null = null;
 
-  // 🧑‍💻 If no logged-in user, use guest email
   if (!userId) {
     guestEmail = getGuestEmail();
     if (!guestEmail) {
@@ -184,10 +197,9 @@ const handleSubmission = async (playMode: string, amount?: number) => {
       return;
     }
 
-    // ✅ Check if guest user exists
     const { data: guestData, error: guestError } = await supabase
       .from('guest_users')
-      .select('*')
+      .select('id, email')
       .eq('email', guestEmail)
       .single();
 
@@ -196,40 +208,66 @@ const handleSubmission = async (playMode: string, amount?: number) => {
       alert('❌ No guest account found with that email.');
       return;
     }
+
+    guestUserId = guestData.id;
   }
 
+  const { data: setlistData, error: setlistError } = await supabase
+    .from("setlists")
+    .select("opener")
+    .eq("show_id", selectedShow.id)
+    .single();
+
+  if (setlistError) {
+    console.error("Error fetching setlist:", setlistError);
+    alert("❌ Could not verify the winner. Try again later.");
+    return;
+  }
+
+  const actualOpener = setlistData?.opener?.trim().toLowerCase();
+  const guessedSong = selectedSong.trim().toLowerCase();
+
+  const isUserWinner = actualOpener === guessedSong;
+  setIsWinner(isUserWinner);
+
+  storeOpenerWinnerStatus(isUserWinner); // Local storage
+
   const submission = {
-    user_id: userId,
-    guest_email: guestEmail,
+    user_id: userId || null,
+    guest_user_id: !userId ? guestUserId : null,
     show_id: selectedShow.id,
     song: selectedSong,
     play_mode: playMode,
     amount: amount || null,
     submitted_at: new Date().toISOString(),
+    is_winner: isUserWinner,
   };
 
   const { error: insertError } = await supabase
-    .from('opener_guesses')
+    .from("opener_guesses")
     .insert([submission]);
 
   if (insertError) {
-    console.error('Supabase insert error:', insertError);
-    alert('❌ There was a problem submitting your prediction.');
+    console.error("Insert error:", insertError);
+    alert("❌ There was a problem submitting your prediction.");
     return;
   }
 
-  // 🟢 Success message
-  const amountText = amount ? ` ($${amount})` : '';
+  // ✅ Final user feedback
   const venue = selectedShow.venue;
   const city = selectedShow.city;
   const date = new Date(selectedShow.date).toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   });
+  const amountText = amount ? ` ($${amount})` : "";
 
-  alert(`✅ Prediction submitted!\n\n🎵 Song: ${selectedSong}\n📍 Venue: ${venue}, ${city}\n📅 Date: ${date}\n🎮 Mode: ${playMode}${amountText}`);
+  alert(
+    `✅ Prediction submitted!\n\n🎵 Song: ${selectedSong}\n📍 Venue: ${venue}, ${city}\n📅 Date: ${date}\n🎮 Mode: ${playMode}${amountText}\n`
+  );
 };
+
 
 
 
@@ -253,6 +291,50 @@ const handleSubmission = async (playMode: string, amount?: number) => {
         <title>Guess the Opener - Setlist Street</title>
         <meta name="description" content="Predict which song will open the first set at GD60" />
       </Head>
+
+
+{isWinner !== null && (
+    <div className="countdown-outer mb-6">
+
+  <div className="countdown-outer mb-6">
+<div className="countdown-outer mb-6">
+
+  {isWinner !== null && (
+  <div
+    className={`fixed top-0 left-0 w-full z-50 p-4 shadow-lg text-white text-center text-xl font-semibold transition-transform duration-500 ${
+      isWinner ? 'bg-green-600 animate-bounce' : 'bg-red-600 animate-shake'
+    }`}
+  >
+    <div className="flex items-center justify-center space-x-3">
+      {isWinner ? (
+        <>
+      
+             <div className="inline-block bg-gradient-to-br from-yellow-400 to-yellow-600 text-black px-10 py-5 rounded-[20px] max-w-[600px] mb-[30px]  transition-all duration-200 relative text-center font-black text-[22px] uppercase tracking-[1.5px]">
+ 🎉 Congratulations! You won the game! 🏆
+</div>
+    
+        </>
+      ) : (
+        <>
+        <div className="inline-block bg-gradient-to-br from-yellow-400 to-yellow-600 text-black px-10 py-5 rounded-[20px] max-w-[600px] mb-[30px]  transition-all duration-200 relative text-center font-black text-[22px] uppercase tracking-[1.5px]">
+ 😞 Oops! Better luck next time. 🎵
+</div>
+
+      
+        </>
+      )}
+    </div>
+  </div>
+)}
+
+
+  </div>
+   </div>
+    </div>
+)}
+
+
+
 
       <div className="min-h-screen bg-gradient-to-b from-purple-400 to-blue-500 flex items-center justify-center">
         <div className="container mx-auto px-4 py-8">
@@ -496,3 +578,4 @@ const handleSubmission = async (playMode: string, amount?: number) => {
 };
 
 export default GuessOpenerPage;
+
