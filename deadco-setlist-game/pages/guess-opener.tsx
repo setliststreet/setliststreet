@@ -128,9 +128,9 @@ const GuessOpenerPage = () => {
     const calcDeadline = () => {
       const now = new Date();
       const showDates = [
-        new Date('2025-08-01T19:00:00-07:00'),
-        new Date('2025-08-02T19:00:00-07:00'),
-        new Date('2025-08-03T19:00:00-07:00'),
+        new Date('2025-07-28T19:00:00-07:00'),
+        new Date('2025-07-28T19:00:00-07:00'),
+        new Date('2025-07-28T19:00:00-07:00'),
       ];
       const next = showDates.find(d => d > now);
       if (!next) {
@@ -172,9 +172,7 @@ useEffect(() => {
   };
 
 
-
-
-const handleSubmission = async (playMode: string, amount?: number) => {
+ const handleSubmission = async (playMode: string, amount?: number) => {
   if (!selectedSong || !selectedShow) {
     alert('Please select a show and song first');
     return;
@@ -212,6 +210,7 @@ const handleSubmission = async (playMode: string, amount?: number) => {
     guestUserId = guestData.id;
   }
 
+  // Get the actual opener from the setlist
   const { data: setlistData, error: setlistError } = await supabase
     .from("setlists")
     .select("opener")
@@ -227,10 +226,19 @@ const handleSubmission = async (playMode: string, amount?: number) => {
   const actualOpener = setlistData?.opener?.trim().toLowerCase();
   const guessedSong = selectedSong.trim().toLowerCase();
 
-  const isUserWinner = actualOpener === guessedSong;
-  setIsWinner(isUserWinner);
+  // Logic to determine is_winner
+  let isUserWinner: boolean | null = null;
 
-  storeOpenerWinnerStatus(isUserWinner); // Local storage
+  if (playMode === "fun") {
+    isUserWinner = actualOpener === guessedSong;
+    setIsWinner(isUserWinner);
+    storeOpenerWinnerStatus(isUserWinner);
+  } else {
+    // Defer winner decision for cash/charity/prize
+    isUserWinner = null;
+    setIsWinner(null);
+    storeOpenerWinnerStatus(null);
+  }
 
   const submission = {
     user_id: userId || null,
@@ -267,6 +275,9 @@ const handleSubmission = async (playMode: string, amount?: number) => {
     `✅ Prediction submitted!\n\n🎵 Song: ${selectedSong}\n📍 Venue: ${venue}, ${city}\n📅 Date: ${date}\n🎮 Mode: ${playMode}${amountText}\n`
   );
 };
+
+
+
 
 
 
@@ -430,10 +441,12 @@ const handleSubmission = async (playMode: string, amount?: number) => {
                 showDate={selectedShow.date}
               />
 
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
+<div className="flex items-center justify-center mb-8 gap-6 perspective-1500 rotateY-10">
+              <div className=" green-game-card  bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">Time Until Deadline</h3>
-                <div className="text-2xl font-bold text-purple-600">{timeToDeadline}</div>
+                <div className=" text-2xl font-bold text-purple-600">{timeToDeadline}</div>
                 <p className="text-sm text-gray-600 mt-2">Submissions close at 7:00 PM PT before each show</p>
+              </div>
               </div>
             </>
           ) : (

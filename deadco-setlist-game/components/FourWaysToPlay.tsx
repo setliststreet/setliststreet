@@ -42,7 +42,8 @@ const FourWaysToPlay: React.FC<FourWaysToPlayProps> = ({
         </div>
       )}
 
-      <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Choose Your Play Mode</h2>
+      <h2 className="logo-extra-small-text  text-center">Choose Your Play Mode</h2>
+      <div className='countdown-inner'></div>
       <div className="grid grid-cols-9 w-full items-center">
         <div className="w-4"></div>
 

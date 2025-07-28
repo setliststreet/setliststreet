@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+   import { Gift, Users, DollarSign, Heart, Sparkles } from 'lucide-react';
 
 const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
@@ -40,81 +41,61 @@ const PoolSizeDisplay: React.FC<PoolSizeDisplayProps> = ({
 
   const [totalPlayers, setTotalPlayers] = useState(0);
 
-  useEffect(() => {
-const fetchData = async () => {
-  try {
-    let query = supabase
-      .from('opener_guesses')
-      .select('user_id, guest_user_id, play_mode, amount');
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('opener_guesses')
+        .select('play_mode', { count: 'exact', head: false })
+        .eq('show_id', showId); // showId = '2' or dynamic
 
-    if (showId) {
-      query = query.eq('show_id', showId);
-    }
-
-    const { data: guesses, error } = await query;
-
-    if (error) {
-      console.error('Error fetching opener_guesses:', error);
-      return;
-    }
-
-    const uniquePlayers = new Map<string, { mode: string; amount: number }>();
-
-    guesses.forEach(({ user_id, guest_user_id, play_mode, amount }) => {
-      const playerId = user_id || guest_user_id;
-      if (!playerId) return;
-
-      // Only store the first entry for each player
-      if (!uniquePlayers.has(playerId)) {
-        uniquePlayers.set(playerId, {
-          mode: play_mode,
-          amount: Number(amount) || 0
-        });
+      if (error) {
+        console.error('Error fetching grouped counts:', error);
+        return;
       }
-    });
 
-    const all = [...uniquePlayers.values()];
+      const modeCounts = {
+        fun: 0,
+        cash: 0,
+        charity: 0,
+        prize: 0,
+      };
 
-    const funPlayers = all.filter(p => p.mode === 'fun').length;
-    const cashPlayers = all.filter(p => p.mode === 'cash').length;
-    const cashPool = all.filter(p => p.mode === 'cash').reduce((sum, p) => sum + p.amount, 0);
+      data.forEach((row: any) => {
+        if (row.play_mode && modeCounts.hasOwnProperty(row.play_mode)) {
+          modeCounts[row.play_mode]++;
+        }
+      });
 
-    const charityPlayers = all.filter(p => p.mode === 'charity').length;
-    const charityPool = all.filter(p => p.mode === 'charity').reduce((sum, p) => sum + p.amount, 0);
+      const newPoolData: PoolData = {
+        funPlayers: modeCounts.fun,
+        cashPlayers: modeCounts.cash,
+        cashPool: modeCounts.cash * 20, // Update logic as needed
+        charityPlayers: modeCounts.charity,
+        charityPool: modeCounts.charity * 15,
+        uniqueCharities: Math.floor(modeCounts.charity / 2),
+        prizePlayers: modeCounts.prize,
+      };
 
-    const prizePlayers = all.filter(p => p.mode === 'prize').length;
-    const uniqueCharities = Math.floor(charityPlayers / 2); // Or update with real data if needed
+    
 
-    const newPoolData: PoolData = {
-      funPlayers,
-      cashPlayers,
-      cashPool,
-      charityPlayers,
-      charityPool,
-      uniqueCharities,
-      prizePlayers
-    };
-
-    alert(
-      `🎮 Current Game Pools:\n\n` +
-      `👾 Fun Players: ${newPoolData.funPlayers}\n` +
-      `💰 Cash Players: ${newPoolData.cashPlayers} | Pool: $${newPoolData.cashPool}\n` +
-      `🎗 Charity Players: ${newPoolData.charityPlayers} | Pool: $${newPoolData.charityPool} | Unique Charities: ${newPoolData.uniqueCharities}\n` +
-      `🏆 Prize Players: ${newPoolData.prizePlayers}`
-    );
-
-    setPoolData(newPoolData);
-    setTotalPlayers(uniquePlayers.size);
-  } catch (err) {
-    console.error('Unexpected error:', err);
-  }
-};
-
+      setPoolData(newPoolData);
+      setTotalPlayers(
+        modeCounts.fun +
+        modeCounts.cash +
+        modeCounts.charity +
+        modeCounts.prize
+      );
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    }
+  };
 
   fetchData();
   const interval = setInterval(fetchData, 5000);
   return () => clearInterval(interval);
-}, [gameId, showId]);
+}, [showId]);
+
 
 
   // useEffect(() => {
@@ -186,59 +167,102 @@ const fetchData = async () => {
   };
 
   return (
-    <div className="green-game-card bg-gradient-to-br from-green-100 via-white to-green-200 shadow-xl rounded-xl p-4 mb-6 border-0">
-      <h3 className="text-lg font-bold text-green-900 mb-3 text-center drop-shadow tracking-wide">
-        Live Player Pool{showDate ? ` - ${formatShowDate(showDate)}` : showId ? ` - Show ${showId}` : ''}
-      </h3>
 
-      <div className="flex flex-wrap gap-x-4 gap-y-4 justify-center items-stretch w-full overflow-x-auto">
-        <div className="bg-gradient-to-br from-gray-50 via-white to-gray-200 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
-          <div className="text-lg font-bold text-gray-900 leading-none drop-shadow">{totalPlayers}</div>
-          <div className="text-xs text-gray-600 leading-none font-semibold mt-1">Total Players</div>
-          <div className="text-xs text-green-600 leading-none mt-1 font-bold">Live</div>
+
+<div className="w-full flex justify-center mt-10">
+  <div className="green-game-card bg-gradient-to-br from-green-50 via-white to-green-100 shadow-2xl rounded-2xl p-6 border border-green-200 w-full max-w-screen-xl">
+    <h3 className="text-xl font-extrabold text-green-800 mb-6 text-center drop-shadow tracking-wider">
+      🎮 Live Player Pool
+      {showDate ? ` - ${formatShowDate(showDate)}` : showId ? ` - Show ${showId}` : ''}
+    </h3>
+
+<div className='countdown-outer'></div>
+    <div className="flex flex-row justify-center items-stretch gap-6 overflow-x-auto px-2 pb-2">
+      {/* Card Component */}
+      {[
+        {
+          icon: <Users className="mx-auto text-gray-500 mb-2" size={24} />,
+          value: totalPlayers,
+          label: 'Total Players',
+          subLabel: 'Live',
+          textColor: 'text-gray-800',
+          subColor: 'text-green-600',
+          bg: 'from-gray-50 via-white to-gray-100 border-gray-200',
+        },
+        {
+          icon: <Sparkles className="mx-auto text-blue-500 mb-2" size={24} />,
+          value: poolData.funPlayers,
+          label: 'Fun Players',
+          subLabel: 'Free Play',
+          textColor: 'text-blue-900',
+          subColor: 'text-blue-500',
+          bg: 'from-blue-100 via-white to-blue-200 border-blue-100',
+        },
+        {
+          icon: <DollarSign className="mx-auto text-green-600 mb-2" size={24} />,
+          value: poolData.cashPlayers,
+          label: 'Cash Players',
+          subLabel: `Pool: $${poolData.cashPool.toLocaleString()}`,
+          textColor: 'text-green-800',
+          subColor: 'text-green-700',
+          bg: 'from-green-100 via-white to-green-200 border-green-100',
+        },
+        {
+          icon: <Heart className="mx-auto text-purple-500 mb-2" size={24} />,
+          value: poolData.charityPlayers,
+          label: 'Charity Players',
+          subLabel: `$${poolData.charityPool.toLocaleString()} • ${poolData.uniqueCharities} charities`,
+          textColor: 'text-purple-900',
+          subColor: 'text-purple-700',
+          bg: 'from-purple-100 via-white to-purple-200 border-purple-100',
+        },
+        {
+          icon: <Gift className="mx-auto text-yellow-600 animate-pulse mb-2" size={24} />,
+          value: poolData.prizePlayers,
+          label: 'Prize Players',
+        
+          textColor: 'text-yellow-900',
+          subColor: 'text-yellow-700',
+          bg: 'from-yellow-100 via-white to-yellow-200 border-yellow-100',
+        },
+      ].map((card, i) => (
+        <div
+          key={i}
+          className={`bg-gradient-to-br ${card.bg} rounded-xl px-5 py-5 text-center min-w-[130px] shadow-[0_8px_30px_rgba(0,0,0,0.05)] border transform transition-transform duration-300 hover:scale-[1.05] hover:rotate-x-[4deg] hover:rotate-y-[2deg]`}
+        >
+          {card.icon}
+          <div className={`text-xl font-bold ${card.textColor}`}>{card.value}</div>
+          <div className={`text-xs font-semibold ${card.subColor}`}>{card.label}</div>
+          {typeof card.subLabel === 'string' ? (
+            <div className={`text-xs font-bold mt-1 ${card.subColor}`}>{card.subLabel}</div>
+          ) : (
+            card.subLabel
+          )}
         </div>
-
-        <div className="bg-gradient-to-br from-blue-100 via-white to-blue-200 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
-          <div className="text-lg font-bold text-blue-900 leading-none drop-shadow">{poolData.funPlayers}</div>
-          <div className="text-xs text-blue-700 leading-none font-semibold mt-1">Fun Players</div>
-          <div className="text-xs text-blue-600 leading-none mt-1 font-bold">Free Play</div>
-        </div>
-
-        <div className="bg-gradient-to-br from-green-200 via-white to-green-300 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
-          <div className="text-lg font-bold text-green-900 leading-none drop-shadow">{poolData.cashPlayers}</div>
-          <div className="text-xs text-green-700 leading-none font-semibold mt-1">Cash Players</div>
-          <div className="text-xs text-green-700 leading-none mt-1 font-bold">
-            Pool: ${poolData.cashPool.toLocaleString()}
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-purple-100 via-white to-purple-200 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
-          <div className="text-lg font-bold text-purple-900 leading-none drop-shadow">{poolData.charityPlayers}</div>
-          <div className="text-xs text-purple-700 leading-none font-semibold mt-1">Charity Players</div>
-          <div className="text-xs text-purple-700 leading-none mt-1 font-bold">
-            ${poolData.charityPool.toLocaleString()} • {poolData.uniqueCharities} charities
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-yellow-100 via-white to-yellow-200 shadow-md rounded-lg px-3 py-3 text-center min-w-[90px] flex flex-col justify-center border-0">
-          <div className="text-lg font-bold text-yellow-900 leading-none drop-shadow">{poolData.prizePlayers}</div>
-          <div className="text-xs text-yellow-700 leading-none font-semibold mt-1">Prize Players</div>
-          <button
-            onClick={onPrizeInfoClick}
-            className="px-4 py-2 rounded-lg font-cartoon text-xs bg-white border-2 border-yellow-400 shadow hover:scale-105 hover:bg-yellow-50 hover:text-yellow-700 transition-transform duration-150 active:translate-y-1 active:shadow-sm mt-2 font-bold tracking-wide"
-            style={{ boxShadow: '0 4px 0 #f7e07c, 0 4px 12px rgba(255, 221, 51, 0.18)' }}
-          >
-            View Available Prizes →
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-2 text-center">
-        <p className="text-xs text-gray-500 font-semibold drop-shadow">
-          Pool sizes update every 5 seconds • Last updated: {new Date().toLocaleTimeString()}
-        </p>
-      </div>
+      ))}
     </div>
+
+<div className='countdown-outer'></div>
+
+ <button
+              onClick={onPrizeInfoClick}
+              className="px-3 py-2 rounded-md text-xs font-bold bg-white text-yellow-800 border border-yellow-400 shadow-md mt-2 hover:bg-yellow-50 hover:scale-105 transition-all duration-150 active:translate-y-[1px]"
+              style={{ boxShadow: '0 4px 0 #f7e07c, 0 4px 12px rgba(255, 221, 51, 0.18)' }}
+            >
+              View Prizes →
+            </button>
+
+            <div className='countdown-outer'></div>
+
+    <div className="mt-6 text-center">
+      <p className="text-xs text-gray-500 font-semibold drop-shadow-sm">
+        🔄 Pool updates every 5 seconds • Last updated: {new Date().toLocaleTimeString()}
+      </p>
+    </div>
+  </div>
+</div>
+
+
   );
 };
 

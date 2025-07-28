@@ -84,14 +84,10 @@ const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow 
         const [year, month, day] = selectedShow.date.split('-');
         const formattedDate = `${day}-${month}-${year}`;
 
-        
-
+      
        const res = await fetch(
   `/api/liveSetlist?date=${formattedDate}&city=${encodeURIComponent(selectedShow.city)}`
 );
-
-
-
 
         if (!res.ok) {
           const errorText = await res.text();

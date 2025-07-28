@@ -419,6 +419,19 @@ textarea:focus {
   text-align: center;
 }
 
+.logo-extra-small-text {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 30px;
+  line-height: 1;
+  color: #e1a811;
+  text-shadow:
+    -3px -3px 0 #1A2D5A,
+    3px -3px 0 #1A2D5A,
+    -3px 3px 0 #1A2D5A,
+    3px 3px 0 #1A2D5A;
+  text-align: center;
+}
+
 .logo-button {
   font-family: 'Luckiest Guy', cursive;
   font-size: 18px;
@@ -480,6 +493,7 @@ textarea:focus {
   transition: all 0.25s ease;
   position: relative;
 }
+
 
 .game-card::before {
   content: "";
@@ -575,6 +589,32 @@ textarea:focus {
 }
 
 
+
+.cartoon-btn {
+  background-color: #fff04f;
+  color: #2b2b2b;
+  border: 3px solid #ffcf00;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  font-family: 'Comic Sans MS', 'Comic Neue', cursive, sans-serif;
+  box-shadow: 0 4px 0 #d4b800, 0 6px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.cartoon-btn:hover {
+  background-color: #fff76d;
+  transform: scale(1.05);
+  box-shadow: 0 6px 0 #d4b800, 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cartoon-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #d4b800, 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
 
 

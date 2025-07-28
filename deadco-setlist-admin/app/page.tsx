@@ -1,103 +1,140 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  'https://cxfyeuwosrplubgaluwv.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM'
+);
+
+const shows = [
+  {
+    id: '1',
+    date: '15-05-2025',
+    venue: 'Sphere at The Venetian Resort',
+    city: 'Las Vegas',
+    state: 'NV',
+  },
+  {
+    id: '2',
+    date: '16-05-2025',
+    venue: 'Sphere at The Venetian Resort',
+    city: 'Las Vegas',
+    state: 'NV',
+  },
+  {
+    id: '3',
+    date: '17-05-2025',
+    venue: 'Sphere at The Venetian Resort',
+    city: 'Las Vegas',
+    state: 'NV',
+  },
+];
+
+export default function AdminSetlistPage() {
+  const [selectedShowId, setSelectedShowId] = useState('');
+  const [opener, setOpener] = useState('');
+  const [status, setStatus] = useState('');
+
+  const selectedShow = shows.find((show) => show.id === selectedShowId);
+
+  useEffect(() => {
+    const fetchOpener = async () => {
+      if (!selectedShow) return;
+      setOpener('Fetching...');
+
+      try {          
+       
+        const res = await fetch(
+  `/api/fetchSetlists?artistName=Dead%20%26%20Company&date=${selectedShow.date}&city=${encodeURIComponent(selectedShow.city)}`
+);
+
+        const data = await res.json();
+
+        if (data?.firstSong) {
+          setOpener(data.firstSong);
+          setStatus('');
+        } else {
+          setOpener('');
+          setStatus('⚠️ No opener found for this show.');
+        }
+      } catch (err) {
+        setOpener('');
+        setStatus('❌ Error fetching opener.');
+      }
+    };
+
+    if (selectedShowId) {
+      fetchOpener();
+    }
+  }, [selectedShowId]);
+
+  const handleSubmit = async () => {
+    if (!selectedShow || !opener || opener === 'Fetching...') {
+      setStatus('Please wait until the opener is fetched.');
+      return;
+    }
+
+    const { id, date, venue, city, state } = selectedShow;
+
+    const { error } = await supabase.from('setlists').upsert({
+      show_id: id,
+      date,
+      venue,
+      city,
+      state,
+      opener,
+    });
+
+    if (error) {
+      setStatus(`❌ Supabase Error: ${error.message}`);
+    } else {
+      setStatus('✅ Setlist saved successfully!');
+      setSelectedShowId('');
+      setOpener('');
+    }
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="max-w-xl mx-auto mt-10 p-6 border rounded-xl shadow-md bg-white space-y-4">
+      <h1 className="text-2xl font-bold text-center">🎸 Admin Setlist Panel</h1>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <select
+        className="w-full border p-2 rounded"
+        value={selectedShowId}
+        onChange={(e) => {
+          setSelectedShowId(e.target.value);
+          setStatus('');
+        }}
+      >
+        <option value="">-- Select a Show --</option>
+        {shows.map((show) => (
+          <option key={show.id} value={show.id}>
+            {show.date} — {show.venue}
+          </option>
+        ))}
+      </select>
+
+      {selectedShow && (
+        <div className="text-sm text-gray-800 space-y-1">
+          <p><strong>Venue:</strong> {selectedShow.venue}</p>
+          <p><strong>City:</strong> {selectedShow.city}</p>
+          <p><strong>State:</strong> {selectedShow.state}</p>
+          <p><strong>Opener:</strong> {opener}</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      )}
+
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+      >
+        Save to Supabase
+      </button>
+
+      {status && (
+        <p className="text-center text-sm text-gray-600">{status}</p>
+      )}
+    </main>
   );
 }
