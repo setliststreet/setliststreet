@@ -41,55 +41,75 @@ const PoolSizeDisplay: React.FC<PoolSizeDisplayProps> = ({
   const [totalPlayers, setTotalPlayers] = useState(0);
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      let query = supabase
-        .from('opener_guesses')
-        .select('user_id, guest_user_id, play_mode');
+const fetchData = async () => {
+  try {
+    let query = supabase
+      .from('opener_guesses')
+      .select('user_id, guest_user_id, play_mode, amount');
 
-      if (showId) {
-        query = query.eq('show_id', showId);
-      }
-
-      const { data: guesses, error } = await query;
-
-      if (error) {
-        console.error('Error fetching opener_guesses:', error);
-        return;
-      }
-
-      const uniquePlayers = new Map<string, string>(); // map<playerId, mode>
-
-      guesses.forEach(({ user_id, guest_user_id, play_mode }) => {
-        const playerId = user_id || guest_user_id;
-        if (playerId && !uniquePlayers.has(playerId)) {
-          uniquePlayers.set(playerId, play_mode);
-        }
-      });
-
-      const allModes = [...uniquePlayers.values()];
-
-      const funPlayers = allModes.filter(mode => mode === 'fun').length;
-      const cashPlayers = allModes.filter(mode => mode === 'cash').length;
-      const charityPlayers = allModes.filter(mode => mode === 'charity').length;
-      const prizePlayers = allModes.filter(mode => mode === 'prize').length;
-
-      const newPoolData: PoolData = {
-        funPlayers,
-        cashPlayers,
-        cashPool: cashPlayers * 20,
-        charityPlayers,
-        charityPool: charityPlayers * 15,
-        uniqueCharities: Math.floor(charityPlayers / 2),
-        prizePlayers
-      };
-
-      setPoolData(newPoolData);
-      setTotalPlayers(uniquePlayers.size);
-    } catch (err) {
-      console.error('Unexpected error:', err);
+    if (showId) {
+      query = query.eq('show_id', showId);
     }
-  };
+
+    const { data: guesses, error } = await query;
+
+    if (error) {
+      console.error('Error fetching opener_guesses:', error);
+      return;
+    }
+
+    const uniquePlayers = new Map<string, { mode: string; amount: number }>();
+
+    guesses.forEach(({ user_id, guest_user_id, play_mode, amount }) => {
+      const playerId = user_id || guest_user_id;
+      if (!playerId) return;
+
+      // Only store the first entry for each player
+      if (!uniquePlayers.has(playerId)) {
+        uniquePlayers.set(playerId, {
+          mode: play_mode,
+          amount: Number(amount) || 0
+        });
+      }
+    });
+
+    const all = [...uniquePlayers.values()];
+
+    const funPlayers = all.filter(p => p.mode === 'fun').length;
+    const cashPlayers = all.filter(p => p.mode === 'cash').length;
+    const cashPool = all.filter(p => p.mode === 'cash').reduce((sum, p) => sum + p.amount, 0);
+
+    const charityPlayers = all.filter(p => p.mode === 'charity').length;
+    const charityPool = all.filter(p => p.mode === 'charity').reduce((sum, p) => sum + p.amount, 0);
+
+    const prizePlayers = all.filter(p => p.mode === 'prize').length;
+    const uniqueCharities = Math.floor(charityPlayers / 2); // Or update with real data if needed
+
+    const newPoolData: PoolData = {
+      funPlayers,
+      cashPlayers,
+      cashPool,
+      charityPlayers,
+      charityPool,
+      uniqueCharities,
+      prizePlayers
+    };
+
+    alert(
+      `🎮 Current Game Pools:\n\n` +
+      `👾 Fun Players: ${newPoolData.funPlayers}\n` +
+      `💰 Cash Players: ${newPoolData.cashPlayers} | Pool: $${newPoolData.cashPool}\n` +
+      `🎗 Charity Players: ${newPoolData.charityPlayers} | Pool: $${newPoolData.charityPool} | Unique Charities: ${newPoolData.uniqueCharities}\n` +
+      `🏆 Prize Players: ${newPoolData.prizePlayers}`
+    );
+
+    setPoolData(newPoolData);
+    setTotalPlayers(uniquePlayers.size);
+  } catch (err) {
+    console.error('Unexpected error:', err);
+  }
+};
+
 
   fetchData();
   const interval = setInterval(fetchData, 5000);
