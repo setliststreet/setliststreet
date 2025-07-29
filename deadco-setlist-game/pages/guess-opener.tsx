@@ -7,6 +7,7 @@ import ShowSelector from '../components/ShowSelector';
 import { Show } from '../components/ShowSelector';
 import { createClient } from '@supabase/supabase-js';
 import { getGuestEmail,  getOpenerWinnerStatus , storeOpenerWinnerStatus } from '@/lib/guestHelpers';
+import { fetchUserPredictions } from './api/fetchUserPredictions';
 
 
 
@@ -32,7 +33,7 @@ const GuessOpenerPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isWinner, setIsWinner] = useState<boolean | null>(null);
-
+  const [predictions, setPredictions] = useState<any[]>([]);
 
   const prizeInfo = [
     { sponsor: 'Dead Merch Co.', prize: 'Vintage Poster', value: '$75' },
@@ -151,6 +152,57 @@ const GuessOpenerPage = () => {
   }, []);
 
 
+useEffect(() => {
+  const loadGuestPredictions = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const userId = session?.user?.id || null;
+
+    let guestEmail: string | null = null;
+    let guestUserId: string | null = null;
+
+    // If not logged in, use guest email
+    if (!userId) {
+      guestEmail = getGuestEmail();
+      if (!guestEmail) {
+        alert('Please log in or enter your email to continue.');
+        return;
+      }
+
+      const { data: guestData, error: guestError } = await supabase
+        .from('guest_users')
+        .select('id')
+        .eq('email', guestEmail)
+        .single();
+
+      if (guestError || !guestData) {
+        console.error('❌ Guest user not found:', guestError);
+        alert('❌ No guest account found with that email.');
+        return;
+      }
+
+      guestUserId = guestData.id;
+    }
+
+    const finalUserId = userId || guestUserId;
+
+    if (!finalUserId) {
+      alert('User ID not found.');
+      return;
+    }
+
+    const data = await fetchUserPredictions(finalUserId);
+
+    // alert(`✅ Fetched ${data.length} predictions total`);
+    setPredictions(data);
+  };
+
+  loadGuestPredictions();
+}, []);
+
+
 
 useEffect(() => {
   const winner = getOpenerWinnerStatus();
@@ -172,7 +224,7 @@ useEffect(() => {
   };
 
 
- const handleSubmission = async (playMode: string, amount?: number) => {
+const handleSubmission = async (playMode: string, amount?: number) => {
   if (!selectedSong || !selectedShow) {
     alert('Please select a show and song first');
     return;
@@ -188,6 +240,7 @@ useEffect(() => {
   let guestEmail: string | null = null;
   let guestUserId: string | null = null;
 
+  // Guest flow
   if (!userId) {
     guestEmail = getGuestEmail();
     if (!guestEmail) {
@@ -197,12 +250,12 @@ useEffect(() => {
 
     const { data: guestData, error: guestError } = await supabase
       .from('guest_users')
-      .select('id, email')
+      .select('id')
       .eq('email', guestEmail)
       .single();
 
     if (guestError || !guestData) {
-      console.error('Guest user not found:', guestError);
+      console.error('❌ Guest user not found:', guestError);
       alert('❌ No guest account found with that email.');
       return;
     }
@@ -210,39 +263,57 @@ useEffect(() => {
     guestUserId = guestData.id;
   }
 
-  // Get the actual opener from the setlist
+  // Get opener + timing info
   const { data: setlistData, error: setlistError } = await supabase
-    .from("setlists")
-    .select("opener")
-    .eq("show_id", selectedShow.id)
+    .from('setlists')
+    .select('opener, show_opens_at, winner_decision_time')
+    .eq('show_id', selectedShow.id)
     .single();
 
-  if (setlistError) {
-    console.error("Error fetching setlist:", setlistError);
-    alert("❌ Could not verify the winner. Try again later.");
+  if (setlistError || !setlistData) {
+    console.error('❌ Error fetching setlist:', setlistError);
+    alert('❌ Could not verify the winner. Try again later.');
     return;
   }
 
-  const actualOpener = setlistData?.opener?.trim().toLowerCase();
+  const actualOpener = setlistData.opener?.trim().toLowerCase();
   const guessedSong = selectedSong.trim().toLowerCase();
+  const now = new Date();
+  const showOpensAt = new Date(setlistData.show_opens_at);
+  const winnerDecisionTime = new Date(setlistData.winner_decision_time);
 
-  // Logic to determine is_winner
   let isUserWinner: boolean | null = null;
 
-  if (playMode === "fun") {
-    isUserWinner = actualOpener === guessedSong;
-    setIsWinner(isUserWinner);
-    storeOpenerWinnerStatus(isUserWinner);
+  // 🎮 Determine winner
+  if (playMode === 'fun') {
+  
+    if (now >= showOpensAt) {
+      isUserWinner = actualOpener === guessedSong;
+      setIsWinner(isUserWinner);
+      storeOpenerWinnerStatus(isUserWinner);
+    } else {
+      setIsWinner(null);
+      storeOpenerWinnerStatus(null);
+    }
   } else {
-    // Defer winner decision for cash/charity/prize
-    isUserWinner = null;
-    setIsWinner(null);
-    storeOpenerWinnerStatus(null);
+
+    // For cash/prize/charity
+    if (now >= winnerDecisionTime) {
+
+      const status = actualOpener === guessedSong;
+      setIsWinner(status);
+      storeOpenerWinnerStatus(status);
+      isUserWinner = status;
+    } else {
+      const localStatus = getOpenerWinnerStatus();
+      setIsWinner(localStatus);
+      isUserWinner = localStatus;
+    }
   }
 
   const submission = {
-    user_id: userId || null,
-    guest_user_id: !userId ? guestUserId : null,
+    user_id: userId,
+    guest_user_id: guestUserId,
     show_id: selectedShow.id,
     song: selectedSong,
     play_mode: playMode,
@@ -252,31 +323,26 @@ useEffect(() => {
   };
 
   const { error: insertError } = await supabase
-    .from("opener_guesses")
+    .from('opener_guesses')
     .insert([submission]);
 
   if (insertError) {
-    console.error("Insert error:", insertError);
-    alert("❌ There was a problem submitting your prediction.");
+    console.error('Insert error:', insertError);
+    alert('❌ There was a problem submitting your prediction.');
     return;
   }
 
-  // ✅ Final user feedback
   const venue = selectedShow.venue;
   const city = selectedShow.city;
   const date = new Date(selectedShow.date).toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
   });
-  const amountText = amount ? ` ($${amount})` : "";
 
-  alert(
-    `✅ Prediction submitted!\n\n🎵 Song: ${selectedSong}\n📍 Venue: ${venue}, ${city}\n📅 Date: ${date}\n🎮 Mode: ${playMode}${amountText}\n`
-  );
+  const amountText = amount ? ` ($${amount})` : '';
+  alert(`✅ Prediction submitted!\n\n🎵 Song: ${selectedSong}\n📍 Venue: ${venue}, ${city}\n📅 Date: ${date}\n🎮 Mode: ${playMode}${amountText}`);
 };
-
-
 
 
 
@@ -317,6 +383,7 @@ useEffect(() => {
     }`}
   >
     <div className="flex items-center justify-center space-x-3">
+     
       {isWinner ? (
         <>
       
@@ -352,14 +419,12 @@ useEffect(() => {
           <div className='countdown-outer'></div>
           {/* Header with Sponsor Logos */}
           <div className="flex items-center justify-center mb-8 gap-8 perspective-1500 rotateX-12">
-            <div className="w-32 h-32 bg-gradient-to-br from-yellow-300 to-orange-300 rounded-full flex items-center justify-center text-5xl font-extrabold text-purple-900 shadow-cartoon">
-              🎸
-            </div>
+
+🎵
+
           
             <h1 className="logo-text">Guess the Opener</h1>
-            <div className="w-32 h-32 bg-gradient-to-br from-yellow-300 to-orange-300 rounded-full flex items-center justify-center text-5xl font-extrabold text-purple-900 shadow-cartoon">
-              🎵
-            </div>
+            🎵
           </div>
           <div className="text-center text-white text-2xl font-cartoon drop-shadow-md mb-12">
             Guess the opener for each show! Each show is its own game.
@@ -409,16 +474,10 @@ useEffect(() => {
           )}
 
           {/* Show Selector */}
-          <div className="mb-12 perspective-1500 rotateX-12">
-            <ShowSelector
+          <ShowSelector
               selectedShow={selectedShow || undefined}
               onShowSelect={handleShowSelect}
-            />
-         
-
-  
-
-          </div>
+            />  
 
           {/* Sponsor Section */}
           {selectedShow && (
@@ -434,12 +493,18 @@ useEffect(() => {
           {selectedShow ? (
             <>
               {/* Live Pool Size Display */}
-              <PoolSizeDisplay
-                gameId="guess-opener"
-                showId={selectedShow.id}
-                onPrizeInfoClick={handlePrizeInfoClick}
-                showDate={selectedShow.date}
-              />
+            
+             
+
+                    <PoolSizeDisplay
+  gameId="guess-opener"
+   showId={selectedShow.id}
+  showDate={selectedShow.date}
+  table="opener_guesses" 
+  onPrizeInfoClick={handlePrizeInfoClick}
+/>
+
+      
 
 <div className="flex items-center justify-center mb-8 gap-6 perspective-1500 rotateY-10">
               <div className=" green-game-card  bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
@@ -455,8 +520,10 @@ useEffect(() => {
             </div>
           )}
 
+
           {/* Main Game Grid Title */}
           <h2 className="logo-small-text mb-10 text-center">Opener Guess</h2>
+
 
           {/* Main Game Grid */}
           <div className="grid grid-cols-7 gap-6 mb-12">
@@ -465,8 +532,10 @@ useEffect(() => {
             {/* Col 2: Song Selection (List + Type-in) */}
             <div>
               <div className="game-card p-6 perspective-1500 rotateX-12">
-                <h4 className="font-display font-extrabold text-3xl gradient-text-deadco mb-4">Song Selection</h4>
+                <h4 className="logo-small-text">Song Selection</h4>
                 {/* Search Input */}
+
+                
                 <input
                   type="text"
                   placeholder="Search songs..."
@@ -477,9 +546,13 @@ useEffect(() => {
                   }}
                   className="w-full px-4 py-3 bg-white rounded-2xl shadow-inner-cartoon focus:ring-4 focus:ring-yellow-400 mb-4 text-purple-900 placeholder-gray-500 font-cartoon"
                 />
+
+                
+            
                 {/* Song List (drag/click to select) */}
                 <div className="mb-4">
                   <div className="h-48 overflow-y-auto bg-white rounded-2xl p-3 shadow-inner-cartoon">
+                  
                     {pageSongs.map(song => (
                       <div
                         key={song.name}
@@ -498,6 +571,7 @@ useEffect(() => {
                     )}
                   </div>
                 </div>
+              
                 {/* Type-in input for drag-and-drop */}
                 <input
                   type="text"
@@ -512,6 +586,7 @@ useEffect(() => {
                   }}
                   onDragOver={(e) => e.preventDefault()}
                 />
+                
                 {/* Pagination */}
                 <div className="flex justify-between items-center mt-4">
                   <button
@@ -546,8 +621,11 @@ useEffect(() => {
                 )}
               </div>
             </div>
+            
             {/* Col 5: Small Padding */}
             <div className="w-2"></div>
+
+
             {/* Col 6: Opener Statistics */}
             <div>
               <div className="game-card p-6 perspective-1500 rotateX-12">
@@ -573,7 +651,9 @@ useEffect(() => {
             </div>
             {/* Col 7: Padding */}
             <div></div>
+
           </div>
+
 
           {/* Four Ways to Play */}
           <div className="mt-8 mb-8 perspective-1500 rotateX-12">
@@ -584,6 +664,31 @@ useEffect(() => {
               disabled={!selectedSong}
             />
           </div>
+
+
+          {predictions.length > 0 && (
+  <div className="mt-6">
+    <h2 className="text-xl font-semibold mb-2">Your Past Predictions</h2>
+    <div className="space-y-2">
+      {predictions.map((p) => (
+        <div
+          key={p.id}
+          className="border border-gray-300 p-4 rounded-md shadow-sm bg-white"
+        >
+          <p><strong>Song:</strong> {p.song}</p>
+          <p><strong>Mode:</strong> {p.play_mode}</p>
+          <p>
+            <strong>Winner:</strong>{' '}
+            {p.is_winner === true ? '✅ Yes' : p.is_winner === false ? '❌ No' : '⏳ Pending'}
+          </p>
+          <p className="text-xs text-gray-500">
+            Submitted: {new Date(p.submitted_at).toLocaleString()}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
         </div>
       </div>
     </MainLayout>

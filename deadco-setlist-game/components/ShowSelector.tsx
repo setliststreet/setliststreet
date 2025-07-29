@@ -76,76 +76,7 @@ const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow 
   const handleShowSelect = async (selectedShow: Show) => {
     setShow(selectedShow);
     onShowSelect?.(selectedShow);
-
-
-    
-      try {
-        // Convert date from YYYY-MM-DD to DD-MM-YYYY
-        const [year, month, day] = selectedShow.date.split('-');
-        const formattedDate = `${day}-${month}-${year}`;
-
-      
-       const res = await fetch(
-  `/api/liveSetlist?date=${formattedDate}&city=${encodeURIComponent(selectedShow.city)}`
-);
-
-        if (!res.ok) {
-          const errorText = await res.text();
-          console.error(`setlist.fm API error: Status ${res.status}, ${errorText}`);
-          alert(`Error fetching setlist from setlist.fm: Status ${res.status} - ${errorText}`);
-          return;
-        }
-
-        const data = await res.json();
-
-        if (!data.setlist?.[0]) {
-          console.error('No setlist found for the specified show');
-          alert( `No setlist found for the show on ${formattedDate} in Las Vegas`);
-          return;
-        }
-
-        const setlist = data.setlist[0];
-
-        const songs = setlist.sets.set.flatMap((set: any) =>
-          set.song.map((song: any) => ({
-            name: song.name,
-            cover: song.cover?.name,
-            info: song.info,
-            tape: song.tape,
-          }))
-        );
-        const opener = setlist.sets.set[0]?.song[0]?.name || '';
-
-        const { error } = await supabase
-          .from('setlists')
-          .upsert(
-            {
-              show_id: selectedShow.id,
-              date: setlist.eventDate,
-              venue: setlist.venue.name,
-              city: setlist.venue.city.name,
-              state: setlist.venue.city.state,
-              songs: songs,
-              opener: opener,
-            },
-            { onConflict: ['show_id', 'date'] }
-          );
-
-        if (error) {
-          console.error('Supabase error:', error);
-          alert(`Error storing setlist in Supabase: ${error.message}`);
-          return;
-        }
-
-        console.log('Setlist stored successfully for show:', selectedShow.id);
-        // alert(`Setlist successfully stored in Supabase for show on ${formattedDate} in Las Vegas`);
-      } catch (err) {
-        console.error('Failed to fetch or store setlist:', err);
-        // alert(`Failed to fetch or store setlist: ${err instanceof Error ? err.message : 'Unknown error'}`);
-      }
-    
-
-
+  
   };
 
   const formatShowDate = (dateString: string) => {
@@ -166,7 +97,8 @@ const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow 
         </div>
       ) : (
         <>
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 text-center font-display">
+        <div className='countdown-outer'></div>
+          <h3 className="logo-extra-small-text  text-center">
             Choose Your Show
           </h3>
           <div className="flex flex-row justify-center gap-x-5 overflow-x-auto pb-2">
@@ -197,6 +129,7 @@ const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow 
               </button>
             ))}
           </div>
+            <div className='countdown-outer'></div>
         </>
       )}
     </div>

@@ -1,29 +1,31 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+const setlistFmApiKey = '9b6iZdnkEmlkq9Ip_INb3sZUDNtmwixddcWr';
+
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { artistName, year } = req.query;
+   const { date, city } = req.query;
 
-  if (!artistName || !year) {
-    return res.status(400).json({ error: 'Missing artistName or year' });
+  if (!date || !city) {
+    return res.status(400).json({ error: 'Missing date or city in query params' });
   }
 
   try {
     const response = await fetch(
-      `https://api.setlist.fm/rest/1.0/search/setlists?artistName=${encodeURIComponent(
-        artistName as string
-      )}&year=${encodeURIComponent(year as string)}`,
+      `https://api.setlist.fm/rest/1.0/search/setlists?artistName=Dead%20%26%20Company&date=${date}&cityName=${encodeURIComponent(city as string)}`,
       {
         headers: {
           Accept: 'application/json',
-          'x-api-key': process.env.SETLISTFM_API_KEY || '9b6iZdnkEmlkq9Ip_INb3sZUDNtmwixddcWr',
+          'x-api-key': setlistFmApiKey,
         },
       }
     );
 
     const text = await response.text();
+console.log('Setlist.fm response text:', text);
 
     if (!response.ok) {
       console.error('Upstream Setlist.fm error:', response.status, text);
@@ -38,6 +40,7 @@ export default async function handler(
     try {
       data = JSON.parse(text);
     } catch (jsonError) {
+
       console.error('Failed to parse JSON from upstream:', jsonError);
       return res.status(502).json({ error: 'Invalid JSON from upstream' });
     }

@@ -268,7 +268,7 @@ const GameCard = ({
 }) => {
   return (
     <Link href={game.href} className="group no-underline block w-full h-full">
-      <div className="show-selector-button">
+      <div className="game-card">
               <div className="countdown-inner"></div>
 
         <h3 className="text-xl font-bold mb-3">{game.title}</h3>
@@ -428,9 +428,7 @@ const GameCard = ({
       >
                   <div className="countdown-outer"
                   >
-
-
-
+                                 
        <div className="w-full max-w-4xl mx-auto">
          <div className="padding-between mb-20"></div>
 
