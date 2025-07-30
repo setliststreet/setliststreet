@@ -25,7 +25,6 @@ export default async function handler(
     );
 
     const text = await response.text();
-console.log('Setlist.fm response text:', text);
 
     if (!response.ok) {
       console.error('Upstream Setlist.fm error:', response.status, text);

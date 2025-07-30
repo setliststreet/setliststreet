@@ -81,7 +81,7 @@ export default function AdminSetlistPage() {
         setOpener(set1?.song?.[0]?.name || '');
         setSet1Closer(set1?.song?.at(-1)?.name || '');
         setSet2Opener(set2?.song?.[0]?.name || '');
-        setSet2Closer(set2?.song?.at(-1)?.name || '');
+        setSet2Closer(set2?.song?.at(-3)?.name || '');
 
         const drumsIndex = set2?.song?.findIndex((s) => s.name.toLowerCase().includes('drum'));
         if (drumsIndex !== -1) {
@@ -107,7 +107,7 @@ export default function AdminSetlistPage() {
           opener: set1?.song?.[0]?.name || '',
           set1_closer: set1?.song?.at(-1)?.name || '',
           set2_opener: set2?.song?.[0]?.name || '',
-          set2_closer: set2?.song?.at(-1)?.name || '',
+          set2_closer: set2?.song?.at(-3)?.name || '',
           set2_pre_drums: set2PreDrums,
           set2_post_drums: set2PostDrums,
           encore_closer: set2?.song?.at(-1)?.name || '',

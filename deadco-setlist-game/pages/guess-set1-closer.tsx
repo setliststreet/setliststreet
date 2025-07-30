@@ -177,12 +177,7 @@ const GuessSet1CloserPage = () => {
 
 
   let isUserWinner: boolean | null = null;
-
-
-
-
-
-
+  
   // 🎮 Determine winner
   if (playMode === 'fun') {
     if (now >= showOpensAt) {

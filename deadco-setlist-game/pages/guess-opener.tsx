@@ -42,88 +42,61 @@ const GuessOpenerPage = () => {
     { sponsor: 'Artist Print', prize: 'Signed Setlist Print', value: '$150' },
   ];
 
-  useEffect(() => {
-    const fetchSongs = async () => {
-      try {
-        const res = await fetch(`/api/fetchSetlists?artistName=Dead%20%26%20Company&year=2025`);
-        const data = await res.json();
-        if (data.error) {
-          console.error('API error:', data);
-          return;
-        }
-        
 
-        // Collect all unique songs from all sets
-        const allSongsSet = new Set<string>();
-        data.setlist.forEach((setlist: any) => {
-          if (setlist.sets?.set) {
-            setlist.sets.set.forEach((set: any) => {
-              if (set.song?.length) {
-                set.song.forEach((song: any) => {
-                  if (song.name) allSongsSet.add(song.name);
-                });
-              }
-            });
-          }
-        });
+useEffect(() => {
+  const fetchSongsFromSupabase = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('songs')
+        .select('name, frequency');
 
-        // Collect opener stats
-        const songMap: Record<string, { count: number; lastOpener: string }> = {};
-        data.setlist.forEach((setlist: any) => {
-          const showDate = setlist.eventDate;
-          if (setlist.sets?.set) {
-            const firstSet = setlist.sets.set[0];
-            if (firstSet?.song?.length) {
-              const opener = firstSet.song[0].name;
-              if (opener) {
-                if (!songMap[opener]) {
-                  songMap[opener] = { count: 0, lastOpener: '' };
-                }
-                songMap[opener].count += 1;
-
-                const prev = new Date(songMap[opener].lastOpener.split('-').reverse().join('-'));
-                const curr = new Date(showDate.split('-').reverse().join('-'));
-                if (!songMap[opener].lastOpener || curr > prev) {
-                  songMap[opener].lastOpener = showDate;
-                }
-              }
-            }
-          }
-        });
-
-        const total = Object.values(songMap).reduce((sum, s) => sum + s.count, 0);
-
-        // Merge all unique songs with opener stats
-        const processedSongs = Array.from(allSongsSet).sort().map(name => {
-          const stats = songMap[name];
-          let probability = 0;
-          let lastOpener = '';
-          let frequency = 'Low';
-          if (stats) {
-            probability = parseFloat(((stats.count / total) * 100).toFixed(1));
-            lastOpener = stats.lastOpener;
-            if (stats.count >= 5) frequency = 'Very High';
-            else if (stats.count >= 3) frequency = 'High';
-            else if (stats.count >= 2) frequency = 'Medium';
-          } else {
-            frequency = 'Never Opened';
-          }
-          return {
-            name,
-            openerProbability: probability,
-            lastOpener,
-            frequency,
-          };
-        });
-
-        setSongs(processedSongs);
-      } catch (err) {
-        console.error('Failed to fetch songs:', err);
+      if (error) {
+        console.error('Error fetching songs from Supabase:', error.message);
+        return;
       }
-    };
 
-    fetchSongs();
-  }, []);
+      if (!data) return;
+
+      // Remove duplicates based on lowercase name
+      const seen = new Set<string>();
+      const uniqueData = data.filter((song) => {
+        if (!song?.name) return false;
+        const name = song.name.trim().toLowerCase();
+        if (seen.has(name)) return false;
+        seen.add(name);
+        return true;
+      });
+
+      const maxFrequency = Math.max(...uniqueData.map((s) => s.frequency || 0), 1);
+
+      const processed: ProcessedSong[] = uniqueData.map((song) => {
+        const frequencyVal = song.frequency || 0;
+
+        let frequencyLabel = 'Never Opened';
+        if (frequencyVal >= 5) frequencyLabel = 'Very High';
+        else if (frequencyVal >= 3) frequencyLabel = 'High';
+        else if (frequencyVal >= 2) frequencyLabel = 'Medium';
+        else if (frequencyVal >= 1) frequencyLabel = 'Low';
+
+        return {
+          name: song.name.trim(),
+          openerProbability: parseFloat(((frequencyVal / maxFrequency) * 100).toFixed(1)),
+          lastOpener: '', // Placeholder
+          frequency: frequencyLabel,
+        };
+      });
+
+      processed.sort((a, b) => a.name.localeCompare(b.name));
+      setSongs(processed);
+    } catch (err) {
+      console.error('Unexpected error fetching songs:', err);
+    }
+  };
+
+  fetchSongsFromSupabase();
+}, []);
+
+
 
   useEffect(() => {
     const calcDeadline = () => {

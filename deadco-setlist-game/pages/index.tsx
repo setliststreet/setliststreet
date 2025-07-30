@@ -323,8 +323,9 @@ const GameCard = ({
         )}
       </div>
 
+
       {isGuestRegistered ? (
-        <div className="text-green-600">🎉 You are logged in as a guest!</div>
+        <div className="text-green-600">🎉 You are logged in!</div>
       ) : (
         <div className="text-yellow-600">⚠️ Please register or enter your email.</div>
       )}

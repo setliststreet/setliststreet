@@ -2,8 +2,202 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import MainLayout from '../components/MainLayout';
+  import { useEffect, useState } from 'react';
+  import { createClient } from '@supabase/supabase-js';
+  import { getGuestEmail } from '@/lib/guestHelpers';
+  
+  const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+
 
 const SongGamesHub = () => {
+
+ 
+  const [playerCountOpener, setPlayerCountOpener] = useState(0);
+  const [playerCountSet1Closer, setPlayerCountSet1Closer] = useState(0);    
+  const [playerCountSet2Opener, setPlayerCountSet2Opener] = useState(0); 
+  const [playerCountPreDrumsOpener, setPlayerCountPreDrumsOpener] = useState(0); 
+  const [playerCountPostDrumsOpener, setPlayerCountPostDrumsOpener] = useState(0); 
+  const [playerCountSet2Closer, setPlayerCountSet2Closer] = useState(0);    
+  const [playerCountEncoreCloser, setPlayerCountEncoreCloser] = useState(0);    
+
+
+  useEffect(() => {
+    const fetchUniquePlayerCount = async () => {
+      const { data, error } = await supabase
+        .from('opener_guesses')
+        .select('user_id, guest_user_id');
+
+      if (error || !data) {
+        console.error('Error fetching players:', error);
+        setPlayerCountOpener(0);
+        return;
+      }
+
+      const uniqueIds = new Set<string>();
+      data.forEach((entry) => {
+        if (entry.user_id) uniqueIds.add(entry.user_id);
+        else if (entry.guest_user_id) uniqueIds.add(entry.guest_user_id);
+      });
+
+      setPlayerCountOpener(uniqueIds.size);
+    };
+
+    fetchUniquePlayerCount();
+  }, []);
+
+  useEffect(() => {
+    const fetchUniquePlayerCount = async () => {
+      const { data, error } = await supabase
+        .from('set1_closer_guesses')
+        .select('user_id, guest_user_id');
+
+      if (error || !data) {
+        console.error('Error fetching players:', error);
+        setPlayerCountSet1Closer(0);
+        return;
+      }
+
+      const uniqueIds = new Set<string>();
+      data.forEach((entry) => {
+        if (entry.user_id) uniqueIds.add(entry.user_id);
+        else if (entry.guest_user_id) uniqueIds.add(entry.guest_user_id);
+      });
+
+      setPlayerCountSet1Closer(uniqueIds.size);
+    };
+
+    fetchUniquePlayerCount();
+  }, []);
+
+   useEffect(() => {
+    const fetchUniquePlayerCount = async () => {
+      const { data, error } = await supabase
+        .from('set2_opener_guesses')
+        .select('user_id, guest_user_id');
+
+      if (error || !data) {
+        console.error('Error fetching players:', error);
+        setPlayerCountSet2Opener(0);
+        return;
+      }
+
+      const uniqueIds = new Set<string>();
+      data.forEach((entry) => {
+        if (entry.user_id) uniqueIds.add(entry.user_id);
+        else if (entry.guest_user_id) uniqueIds.add(entry.guest_user_id);
+      });
+
+      setPlayerCountSet2Opener(uniqueIds.size);
+    };
+
+    fetchUniquePlayerCount();
+  }, []);
+
+
+  useEffect(() => {
+    const fetchUniquePlayerCount = async () => {
+      const { data, error } = await supabase
+        .from('set2_pre_drums_guesses')
+        .select('user_id, guest_user_id');
+
+      if (error || !data) {
+        console.error('Error fetching players:', error);
+        setPlayerCountPreDrumsOpener(0);
+        return;
+      }
+
+      const uniqueIds = new Set<string>();
+      data.forEach((entry) => {
+        if (entry.user_id) uniqueIds.add(entry.user_id);
+        else if (entry.guest_user_id) uniqueIds.add(entry.guest_user_id);
+      });
+
+      setPlayerCountPreDrumsOpener(uniqueIds.size);
+    };
+
+    fetchUniquePlayerCount();
+  }, []);
+
+  useEffect(() => {
+    const fetchUniquePlayerCount = async () => {
+      const { data, error } = await supabase
+        .from('set2_post_drums_guesses')
+        .select('user_id, guest_user_id');
+
+      if (error || !data) {
+        console.error('Error fetching players:', error);
+        setPlayerCountPostDrumsOpener(0);
+        return;
+      }
+
+      const uniqueIds = new Set<string>();
+      data.forEach((entry) => {
+        if (entry.user_id) uniqueIds.add(entry.user_id);
+        else if (entry.guest_user_id) uniqueIds.add(entry.guest_user_id);
+      });
+
+      setPlayerCountPostDrumsOpener(uniqueIds.size);
+    };
+
+    fetchUniquePlayerCount();
+  }, []);
+
+
+   useEffect(() => {
+    const fetchUniquePlayerCount = async () => {
+      const { data, error } = await supabase
+        .from('set2_closer_guesses')
+        .select('user_id, guest_user_id');
+
+      if (error || !data) {
+        console.error('Error fetching players:', error);
+        setPlayerCountSet2Closer(0);
+        return;
+      }
+
+      const uniqueIds = new Set<string>();
+      data.forEach((entry) => {
+        if (entry.user_id) uniqueIds.add(entry.user_id);
+        else if (entry.guest_user_id) uniqueIds.add(entry.guest_user_id);
+      });
+
+      setPlayerCountSet2Closer(uniqueIds.size);
+    };
+
+    fetchUniquePlayerCount();
+  }, []);
+
+
+  useEffect(() => {
+    const fetchUniquePlayerCount = async () => {
+      const { data, error } = await supabase
+        .from('encore_closer_guesses')
+        .select('user_id, guest_user_id');
+
+      if (error || !data) {
+        console.error('Error fetching players:', error);
+        setPlayerCountEncoreCloser(0);
+        return;
+      }
+
+      const uniqueIds = new Set<string>();
+      data.forEach((entry) => {
+        if (entry.user_id) uniqueIds.add(entry.user_id);
+        else if (entry.guest_user_id) uniqueIds.add(entry.guest_user_id);
+      });
+
+      setPlayerCountEncoreCloser(uniqueIds.size);
+    };
+
+    fetchUniquePlayerCount();
+  }, []);
+
+
+
+
   const gamesBySection = {
     set1: [
       {
@@ -11,7 +205,7 @@ const SongGamesHub = () => {
         description: 'Predict which song will open the first set',
         href: '/guess-opener',
         difficulty: 'Medium',
-        players: '247 active',
+        players: `${playerCountOpener} active`,
         bgColor: '#ffdf2b'
       },
       {
@@ -19,7 +213,7 @@ const SongGamesHub = () => {
         description: 'Predict which song will close the first set',
         href: '/guess-set1-closer',
         difficulty: 'Medium',
-        players: '203 active',
+         players: `${playerCountSet1Closer} active`,
         bgColor: '#ffdf2b'
       }
     ],
@@ -29,7 +223,7 @@ const SongGamesHub = () => {
         description: 'Predict which song will open the second set',
         href: '/guess-set2-opener',
         difficulty: 'Medium',
-        players: '178 active',
+         players: `${playerCountSet2Opener} active`,
         bgColor: '#fbbf24'
       },
       {
@@ -37,7 +231,7 @@ const SongGamesHub = () => {
         description: 'Predict the last song before Drums/Space',
         href: '/guess-pre-drums-song',
         difficulty: 'Hard',
-        players: '134 active',
+         players: `${playerCountPreDrumsOpener} active`,
         bgColor: '#fbbf24'
       },
       {
@@ -45,7 +239,7 @@ const SongGamesHub = () => {
         description: 'Predict the first song after Drums/Space',
         href: '/guess-post-drums-song',
         difficulty: 'Hard',
-        players: '142 active',
+         players: `${playerCountPostDrumsOpener} active`,
         bgColor: '#fbbf24'
       },
       {
@@ -53,7 +247,7 @@ const SongGamesHub = () => {
         description: 'Predict which song will close the second set',
         href: '/guess-set2-closer',
         difficulty: 'Hard',
-        players: '165 active',
+         players: `${playerCountSet2Closer} active`,
         bgColor: '#fbbf24'
       }
     ],
@@ -63,7 +257,7 @@ const SongGamesHub = () => {
         description: 'Predict the encore song(s)',
         href: '/guess-encore',
         difficulty: 'Hard',
-        players: '189 active',
+         players: `${playerCountEncoreCloser} active`,
         bgColor: '#a5f3fc'
       }
     ],
@@ -73,7 +267,7 @@ const SongGamesHub = () => {
         description: 'Predict rare songs that haven\'t been played recently',
         href: '/guess-bust-out',
         difficulty: 'Expert',
-        players: '156 active',
+        players: '0 active',
         bgColor: '#c4b5fd'
       },
       {
@@ -81,7 +275,7 @@ const SongGamesHub = () => {
         description: 'Predict which popular songs WON\'T be played',
         href: '/guess-songs-not-played',
         difficulty: 'Expert',
-        players: '98 active',
+        players: '0 active',
         bgColor: '#c4b5fd'
       }
     ]

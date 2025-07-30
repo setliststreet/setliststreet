@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+
 
 interface FourWaysToPlayProps {
   onSubmissionClick: (playMode: string, amount?: number, song?: string) => void;
@@ -18,21 +20,67 @@ const FourWaysToPlay: React.FC<FourWaysToPlayProps> = ({
   const [isCustomAmount, setIsCustomAmount] = useState<boolean>(false);
   const [customInput, setCustomInput] = useState<string>('');
 
-  const handleModeSelection = (modeId: string) => {
-    if (disabled) return;
-    setSelectedMode(modeId);
+
+
+
+
+
+const handleModeSelection = async (modeId: string) => {
+  if (disabled) return;
+  setSelectedMode(modeId);
+
+  // Fun and Prize modes – no payment needed
+  if (modeId === 'fun' || modeId === 'prize') {
     setTimeout(() => {
-      if (modeId === 'charity' || modeId === 'cash') {
-        if (customAmount >= 1 && customAmount <= 1000) {
-          onSubmissionClick(modeId, customAmount, selectedSong);
-        } else {
-          console.log('Invalid amount, not submitting');
-        }
-      } else {
-        onSubmissionClick(modeId, undefined, selectedSong);
-      }
+      onSubmissionClick(modeId, undefined, selectedSong);
     }, 100);
-  };
+    return;
+  }
+
+  // Validate custom amount for cash/charity
+  if (customAmount < 1 || customAmount > 1000) {
+    alert('Amount must be between ₹1 and ₹1000');
+    return;
+  }
+
+  try {
+    // Create Stripe checkout session on backend
+    const res = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: customAmount * 100, // Stripe requires smallest currency unit (paise)
+        mode: modeId,
+        song: selectedSong || '',
+      }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('Failed to create session:', errText);
+      alert('Error creating payment session.');
+      return;
+    }
+
+    const { id: sessionId } = await res.json();
+    if (!sessionId) {
+      alert('No session ID returned.');
+      return;
+    }
+
+    const stripe = await loadStripe('pk_test_51OUuMQSDNquEEED5PjAikooexWblzyNgJoq260MNdHthqTIQ1Tu7WZB377cpYtjZZFBJnfOT0ywXUs9XhNyPDbBJ00XWaR4IUt');
+    if (!stripe) {
+      alert('Failed to initialize Stripe');
+      return;
+    }
+
+    await stripe.redirectToCheckout({ sessionId });
+  } catch (err) {
+    console.error('Stripe error:', err);
+    alert('Unexpected error during payment. Please try again.');
+  }
+};
+
 
   return (
     <div className="mt-6 mb-6">

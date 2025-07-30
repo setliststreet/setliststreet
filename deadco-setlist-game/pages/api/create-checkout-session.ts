@@ -3,7 +3,7 @@
 import Stripe from 'stripe';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const stripe = new Stripe('sk_test_51Ri2LURt7kddWHkOGqJjJ9ziQbEViWVNiZTix3Dnz7s74SRsG1lOPosqDXZRNmXOyYRa832MILHGOE36pXCSaqCY00qQPk7u70', {
+const stripe = new Stripe('sk_test_51OUuMQSDNquEEED5oGqJgbnOADlaaTh152Xrv50XPNrGeMqicVDxhQBCDkSO4k86VCIxy6OGClcbCQxGobF1BoPy006Q510lRY', {
   apiVersion: '2022-11-15',
 });
 
@@ -20,30 +20,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    const origin = req.headers.origin || 'http://localhost:3000';
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: 'inr', // Change to your desired currency
             product_data: {
               name: `Guess Game - ${mode}`,
               description: `Your song choice: ${song}`,
             },
-            unit_amount: amount, // Amount in cents
+            unit_amount: amount,
           },
           quantity: 1,
         },
       ],
-      success_url: `${req.headers.origin}/success`,
-      cancel_url: `${req.headers.origin}/cancel`,
+      success_url: `${origin}/success`,
+      cancel_url: `${origin}/cancel`,
     });
 
     return res.status(200).json({ id: session.id });
   } catch (err) {
-    console.error('Stripe session error:', err);
+console.error('Stripe session error:', JSON.stringify(err, null, 2));
     return res.status(500).json({ error: 'Failed to create session' });
   }
 }
+
 

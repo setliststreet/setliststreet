@@ -45,57 +45,126 @@ const PoolSizeDisplay: React.FC<PoolSizeDisplayProps> = ({
   const [totalPlayers, setTotalPlayers] = useState(0);
   const [lastUpdated, setLastUpdated] = useState<string>('');
 
+
   useEffect(() => {
-    if (!showId || !table) return;
+  if (!showId || !table) return;
 
-    const fetchData = async () => {
-      try {
-        const { data, error } = await supabase
-          .from(table)
-          .select('play_mode')
-          .eq('show_id', showId);
+  const fetchData = async () => {
+    try {
+      const { data, error } = await supabase
+        .from(table)
+        .select('user_id, guest_user_id, play_mode')
+        .eq('show_id', showId);
 
-        if (error) {
-          console.error(`Error fetching from ${table}:`, error.message);
-          return;
-        }
-
-        const modeCounts: Record<string, number> = {
-          fun: 0,
-          cash: 0,
-          charity: 0,
-          prize: 0
-        };
-
-        data.forEach((row: any) => {
-          const mode = row.play_mode;
-          if (mode && modeCounts.hasOwnProperty(mode)) {
-            modeCounts[mode]++;
-          }
-        });
-
-        const newPoolData: PoolData = {
-          funPlayers: modeCounts.fun,
-          cashPlayers: modeCounts.cash,
-          cashPool: modeCounts.cash * 20,
-          charityPlayers: modeCounts.charity,
-          charityPool: modeCounts.charity * 15,
-          uniqueCharities: Math.floor(modeCounts.charity / 2),
-          prizePlayers: modeCounts.prize
-        };
-
-        setPoolData(newPoolData);
-        setTotalPlayers(Object.values(modeCounts).reduce((a, b) => a + b, 0));
-        setLastUpdated(new Date().toLocaleTimeString());
-      } catch (err) {
-        console.error('Unexpected error:', err);
+      if (error) {
+        console.error(`Error fetching from ${table}:`, error.message);
+        return;
       }
-    };
 
-    fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return () => clearInterval(interval);
-  }, [showId, table]);
+      // Create a Map to ensure each user/guest is only counted once
+      const uniqueUsersMap = new Map<string, string>(); // key: id, value: play_mode
+
+      data.forEach((row: any) => {
+        const id = row.user_id || row.guest_user_id;
+        const mode = row.play_mode;
+
+        // Only add first occurrence for a user (ignores later duplicate guesses)
+        if (id && mode && !uniqueUsersMap.has(id)) {
+          uniqueUsersMap.set(id, mode);
+        }
+      });
+
+      // Count play_modes from unique users
+      const modeCounts: Record<string, number> = {
+        fun: 0,
+        cash: 0,
+        charity: 0,
+        prize: 0
+      };
+
+      for (const mode of uniqueUsersMap.values()) {
+        if (modeCounts.hasOwnProperty(mode)) {
+          modeCounts[mode]++;
+        }
+      }
+
+      const newPoolData: PoolData = {
+        funPlayers: modeCounts.fun,
+        cashPlayers: modeCounts.cash,
+        cashPool: modeCounts.cash * 20,
+        charityPlayers: modeCounts.charity,
+        charityPool: modeCounts.charity * 15,
+        uniqueCharities: Math.floor(modeCounts.charity / 2),
+        prizePlayers: modeCounts.prize
+      };
+
+      setPoolData(newPoolData);
+      setTotalPlayers(
+        modeCounts.fun + modeCounts.cash + modeCounts.charity + modeCounts.prize
+      );
+      setLastUpdated(new Date().toLocaleTimeString());
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    }
+  };
+
+  fetchData();
+  const interval = setInterval(fetchData, 5000);
+  return () => clearInterval(interval);
+}, [showId, table]);
+
+
+  // useEffect(() => {
+  //   if (!showId || !table) return;
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const { data, error } = await supabase
+  //         .from(table)
+  //         .select('play_mode')
+  //         .eq('show_id', showId);
+
+  //       if (error) {
+  //         console.error(`Error fetching from ${table}:`, error.message);
+  //         return;
+  //       }
+
+  //       const modeCounts: Record<string, number> = {
+  //         fun: 0,
+  //         cash: 0,
+  //         charity: 0,
+  //         prize: 0
+  //       };
+
+  //       data.forEach((row: any) => {
+  //         const mode = row.play_mode;
+  //         if (mode && modeCounts.hasOwnProperty(mode)) {
+  //           modeCounts[mode]++;
+  //         }
+  //       });
+
+  //       const newPoolData: PoolData = {
+  //         funPlayers: modeCounts.fun,
+  //         cashPlayers: modeCounts.cash,
+  //         cashPool: modeCounts.cash * 20,
+  //         charityPlayers: modeCounts.charity,
+  //         charityPool: modeCounts.charity * 15,
+  //         uniqueCharities: Math.floor(modeCounts.charity / 2),
+  //         prizePlayers: modeCounts.prize
+  //       };
+
+  //       setPoolData(newPoolData);
+  //       setTotalPlayers(Object.values(modeCounts).reduce((a, b) => a + b, 0));
+  //       setLastUpdated(new Date().toLocaleTimeString());
+  //     } catch (err) {
+  //       console.error('Unexpected error:', err);
+  //     }
+  //   };
+
+  //   fetchData();
+  //   const interval = setInterval(fetchData, 5000);
+  //   return () => clearInterval(interval);
+  // }, [showId, table]);
 
   const formatShowDate = (dateStr: string) => {
     const date = new Date(dateStr);

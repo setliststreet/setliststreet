@@ -2,7 +2,8 @@ import React, { useState, useRef, useCallback } from 'react';
 
 interface SetlistDragDropPickerProps {
   onSetlistChange?: (setlist: string[]) => void;
-  availableSongs?: string[];
+    availableSongs?: { name: string }[]; // Changed here ✅
+
   maxSongs?: number;
 }
 
@@ -22,10 +23,15 @@ export default function SetlistDragDropPicker({
   const [draggedItem, setDraggedItem] = useState<DragItem | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
-  const filteredSongs = availableSongs.filter(song => 
+const filteredSongs = availableSongs
+  .filter(song =>
     song.toLowerCase().includes(searchTerm.toLowerCase()) &&
     !setlist.includes(song)
   );
+
+
+
+
 
   const updateSetlist = useCallback((newSetlist: string[]) => {
     setSetlist(newSetlist);
@@ -139,13 +145,7 @@ export default function SetlistDragDropPicker({
                     {song}
                   </div>
                 ))}
-                {filteredSongs.length > 5 && (
-                  <div className="text-center py-2">
-                    <p className="text-xs text-gray-500">
-                      +{filteredSongs.length - 5} more songs (search to filter)
-                    </p>
-                  </div>
-                )}
+               
               </div>
             )}
           </div>

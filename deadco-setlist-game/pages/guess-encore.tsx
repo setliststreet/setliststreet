@@ -6,6 +6,12 @@ import ShowSelector from '../components/ShowSelector';
 import PoolSizeDisplay from '../components/PoolSizeDisplay';
 import SetlistDragDropPicker from '../components/SetlistDragDropPicker';
 import { Show } from '../types/show';
+import { getEncoreCloserWinnerStatus, getGuestEmail, storeEncoreCloserWinnerStatus } from '@/lib/guestHelpers';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 
 const PAGE_SIZE = 5; 
@@ -47,6 +53,8 @@ export default function GuessTheEncore() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showPrizeInfo, setShowPrizeInfo] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+    const [isWinner, setIsWinner] = useState<boolean | null>(null);
+  
 
   const prizeInfo = [
     { sponsor: 'Dead Merch Co.', prize: 'Vintage Poster', value: '$75' },
@@ -119,6 +127,13 @@ export default function GuessTheEncore() {
   }, []);
 
  
+ 
+  useEffect(() => {
+    const winner = getEncoreCloserWinnerStatus();
+    if (winner !== null) {
+      setIsWinner(winner);
+    }
+  }, []);
 
     const filteredSongs = availableSongs.filter(song =>
       song.toLowerCase().includes(searchTerm.toLowerCase())
@@ -155,14 +170,178 @@ export default function GuessTheEncore() {
     setSelectedPlayMode(mode);
   };
 
+
+
+  const handleSubmission = async (playMode: string, amount?: number) => {
+    if (!selectedSong || !selectedShow) {
+      alert('Please select a show and song first');
+      return;
+    }
+  
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+  
+    const userId = session?.user?.id || null;
+  
+    let guestEmail: string | null = null;
+    let guestUserId: string | null = null;
+  
+    // Guest flow
+    if (!userId) {
+      guestEmail = getGuestEmail();
+      if (!guestEmail) {
+        alert('Please log in or enter your email to continue.');
+        return;
+      }
+  
+      const { data: guestData, error: guestError } = await supabase
+        .from('guest_users')
+        .select('id')
+        .eq('email', guestEmail)
+        .single();
+  
+      if (guestError || !guestData) {
+        console.error('❌ Guest user not found:', guestError);
+        alert('❌ No guest account found with that email.');
+        return;
+      }
+  
+      guestUserId = guestData.id;
+    }
+  
+    // Get opener + timing info
+    const { data: setlistData, error: setlistError } = await supabase
+      .from('setlists')
+      .select('encore_closer, show_opens_at, winner_decision_time')
+      .eq('show_id', selectedShow.id)
+      .single();
+  
+    if (setlistError || !setlistData) {
+      console.error('❌ Error fetching setlist:', setlistError);
+      alert('❌ Could not verify the winner. Try again later.');
+      return;
+    }
+  
+    const actualOpener = setlistData.encore_closer?.trim().toLowerCase();
+    const guessedSong = selectedSong.trim().toLowerCase();
+    const now = new Date();
+    const showOpensAt = new Date(setlistData.show_opens_at);
+    const winnerDecisionTime = new Date(setlistData.winner_decision_time);
+  
+    let isUserWinner: boolean | null = null;
+  
+    // 🎮 Determine winner
+    if (playMode === 'fun') {
+    
+      if (now >= showOpensAt) {
+        isUserWinner = actualOpener === guessedSong;
+        setIsWinner(isUserWinner);
+        storeEncoreCloserWinnerStatus(isUserWinner);
+      } else {
+        setIsWinner(null);
+        storeEncoreCloserWinnerStatus(null);
+      }
+    } else {
+  
+      // For cash/prize/charity
+      if (now >= winnerDecisionTime) {
+  
+        const status = actualOpener === guessedSong;
+        setIsWinner(status);
+        storeEncoreCloserWinnerStatus(status);
+        isUserWinner = status;
+      } else {
+        const localStatus = getEncoreCloserWinnerStatus();
+        setIsWinner(localStatus);
+        isUserWinner = localStatus;
+      }
+    }
+  
+    const submission = {
+      user_id: userId,
+      guest_user_id: guestUserId,
+      show_id: selectedShow.id,
+      song: selectedSong,
+      play_mode: playMode,
+      amount: amount || null,
+      submitted_at: new Date().toISOString(),
+      is_winner: isUserWinner,
+    };
+  
+    const { error: insertError } = await supabase
+      .from('encore_closer_guesses')
+      .insert([submission]);
+  
+    if (insertError) {
+      console.error('Insert error:', insertError);
+      alert('❌ There was a problem submitting your prediction.');
+      return;
+    }
+  
+    const venue = selectedShow.venue;
+    const city = selectedShow.city;
+    const date = new Date(selectedShow.date).toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  
+    const amountText = amount ? ` ($${amount})` : '';
+    alert(`✅ Prediction submitted!\n\n🎵 Song: ${selectedSong}\n📍 Venue: ${venue}, ${city}\n📅 Date: ${date}\n🎮 Mode: ${playMode}${amountText}`);
+  };
+
   return (
     <MainLayout>
+
+      {isWinner !== null && (
+    <div className="countdown-outer mb-6">
+
+  <div className="countdown-outer mb-6">
+<div className="countdown-outer mb-6">
+
+  {isWinner !== null && (
+  <div
+    className={`fixed top-0 left-0 w-full z-50 p-4 shadow-lg text-white text-center text-xl font-semibold transition-transform duration-500 ${
+      isWinner ? 'bg-green-600 animate-bounce' : 'bg-red-600 animate-shake'
+    }`}
+  >
+    <div className="flex items-center justify-center space-x-3">
+     
+      {isWinner ? (
+        <>
+      
+             <div className="inline-block bg-gradient-to-br from-yellow-400 to-yellow-600 text-black px-10 py-5 rounded-[20px] max-w-[600px] mb-[30px]  transition-all duration-200 relative text-center font-black text-[22px] uppercase tracking-[1.5px]">
+ 🎉 Congratulations! You won the game! 🏆
+</div>
+    
+        </>
+      ) : (
+        <>
+        <div className="inline-block bg-gradient-to-br from-yellow-400 to-yellow-600 text-black px-10 py-5 rounded-[20px] max-w-[600px] mb-[30px]  transition-all duration-200 relative text-center font-black text-[22px] uppercase tracking-[1.5px]">
+ 😞 Oops! Better luck next time. 🎵
+</div>
+
+      
+        </>
+      )}
+    </div>
+  </div>
+)}
+
+
+  </div>
+   </div>
+    </div>
+)}
+
       <div>
         {/* Header with sponsor logos */}
         <div className="flex items-center justify-center mb-2 gap-4">
           <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
           <div className="w-2"></div>
-          <h1 className="text-4xl font-bold text-gray-800 text-center">Guess the Encore</h1>
+          <h1 className="logo-text">Guess the Encore</h1>
           <div className="w-2"></div>
           <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
         </div>
@@ -223,12 +402,15 @@ export default function GuessTheEncore() {
             </div>
           
 
-             <PoolSizeDisplay
-                                                          gameId="guess-encore"
-                                                          showId={selectedShow.id}
-                                                          onPrizeInfoClick={handlePrizeInfoClick}
-                                                          showDate={selectedShow.date}
-                                                        />
+        
+
+                    <PoolSizeDisplay
+  gameId="guess-encore"
+   showId={selectedShow.id}
+  showDate={selectedShow.date}
+  table="encore_closer_guesses" 
+  onPrizeInfoClick={handlePrizeInfoClick}
+/>
           </div>
         )}
 
@@ -313,22 +495,16 @@ export default function GuessTheEncore() {
                
                </div>
 
-        {/* Four Ways to Play */}
-        <div className="mt-4 mb-4">
-          <FourWaysToPlay 
-            onSubmissionClick={(playMode, amount) => {
-              console.log('Submitting encore prediction:', {
-                song: selectedSong,
-                playMode: playMode,
-                amount: amount,
-                game: 'guess-encore'
-              });
-              alert(`Encore prediction submitted: ${selectedSong} (${playMode} mode)`);
-            }}
-            gameType="encore prediction"
-            disabled={!selectedSong}
-          />
-        </div>
+     
+      {/* Four Ways to Play */}
+          <div className="mt-8 mb-8 perspective-1500 rotateX-12">
+            <FourWaysToPlay
+              selectedSong={selectedShow ? selectedSong : ''}
+              onSubmissionClick={handleSubmission}
+              gameType="opener prediction"
+              disabled={!selectedSong}
+            />
+          </div>
       </div>
     </MainLayout>
   );
