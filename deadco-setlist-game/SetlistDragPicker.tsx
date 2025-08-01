@@ -104,6 +104,7 @@ export default function SetlistDragDropPicker({
         <h3 className="text-lg font-semibold text-gray-900">
           Build Your Setlist ({setlist.length}/{maxSongs})
         </h3>
+        
         {setlist.length > 0 && (
           <button
             onClick={clearSetlist}
@@ -113,6 +114,8 @@ export default function SetlistDragDropPicker({
           </button>
         )}
       </div>
+                  <div className='countdown-outer'></div>
+
 
       <div className="grid grid-cols-5 gap-4">
         {/* Available Songs - Left Side (2/5 width) */}
@@ -121,6 +124,15 @@ export default function SetlistDragDropPicker({
                         <div className='countdown-outer'></div>
 
         
+          <input
+            type="text"
+            placeholder="Search songs..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-lg mb-3 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+          />
+          <div className='countdown-outer'></div>
+
           {/* Limited Song Display - Show only 5 at a time */}
           <div className="h-48 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-gray-50">
             {filteredSongs.length === 0 ? (
@@ -131,7 +143,7 @@ export default function SetlistDragDropPicker({
               <div className="space-y-1">
 
 
-                {filteredSongs.slice(0, 3).map((song, index) => (
+                {filteredSongs.slice(0, 2).map((song, index) => (
 
                   <div
                     key={`${song}-${index}`}
@@ -223,7 +235,7 @@ export default function SetlistDragDropPicker({
 
       {setlist.length > 0 && (
         <div className="mt-4 p-3 bg-purple-50 rounded-lg text-sm border border-purple-200">
-          <h5 className="font-medium text-purple-800 mb-2">Current Order:</h5>
+          <h5 className="font-medium text-purple-800 mb-2">Selected Song:</h5>
           <p className="text-purple-700 leading-relaxed">
             {setlist.slice(0, 4).join(' → ')}
             {setlist.length > 4 && ` → ... (+${setlist.length - 4} more)`}

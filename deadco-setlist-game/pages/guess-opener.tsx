@@ -43,6 +43,7 @@ const GuessOpenerPage = () => {
   ];
 
 
+
 useEffect(() => {
   const fetchSongsFromSupabase = async () => {
     try {
@@ -349,7 +350,7 @@ const handleSubmission = async (playMode: string, amount?: number) => {
   <div className="countdown-outer mb-6">
 <div className="countdown-outer mb-6">
 
-  {isWinner !== null && (
+  {/* {isWinner !== null && (
   <div
     className={`fixed top-0 left-0 w-full z-50 p-4 shadow-lg text-white text-center text-xl font-semibold transition-transform duration-500 ${
       isWinner ? 'bg-green-600 animate-bounce' : 'bg-red-600 animate-shake'
@@ -361,7 +362,7 @@ const handleSubmission = async (playMode: string, amount?: number) => {
         <>
       
              <div className="inline-block bg-gradient-to-br from-yellow-400 to-yellow-600 text-black px-10 py-5 rounded-[20px] max-w-[600px] mb-[30px]  transition-all duration-200 relative text-center font-black text-[22px] uppercase tracking-[1.5px]">
- 🎉 Congratulations! You won the game! 🏆
+ 🎉 Congratulations! You won the game! 
 </div>
     
         </>
@@ -372,11 +373,13 @@ const handleSubmission = async (playMode: string, amount?: number) => {
 </div>
 
       
+
+      
         </>
       )}
     </div>
   </div>
-)}
+)} */}
 
 
   </div>
@@ -391,18 +394,38 @@ const handleSubmission = async (playMode: string, amount?: number) => {
         <div className="container mx-auto px-4 py-8">
           <div className='countdown-outer'></div>
           {/* Header with Sponsor Logos */}
+
+                                    <div className='countdown-outer'></div>
+
           <div className="flex items-center justify-center mb-8 gap-8 perspective-1500 rotateX-12">
 
-🎵
+
 
           
             <h1 className="logo-text">Guess the Opener</h1>
-            🎵
+            
           </div>
           <div className="text-center text-white text-2xl font-cartoon drop-shadow-md mb-12">
             Guess the opener for each show! Each show is its own game.
           </div>
 
+    {/* Countdown */}
+                    <div className='countdown-outer'></div>
+
+          <div className='center-wrapper'>
+          <div className="custom-button bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              Next Submission Deadline
+            </h2>
+            <div className="text-3xl font-bold text-purple-600">
+              {timeToDeadline}
+            </div>
+            <p className="text-sm text-gray-600 mt-2">
+              Submissions close at 7:00 PM PT before each show
+            </p>
+          </div>
+          </div>
+          <div className='countdown-outer'></div>
 
           {/* Prize Info Modal */}
           {showPrizeInfo && (
@@ -499,12 +522,14 @@ const handleSubmission = async (playMode: string, amount?: number) => {
 
 
           {/* Main Game Grid */}
+
+          
           <div className="grid grid-cols-7 gap-6 mb-12">
             {/* Col 1: Padding */}
             <div></div>
             {/* Col 2: Song Selection (List + Type-in) */}
             <div>
-              <div className="game-card p-6 perspective-1500 rotateX-12">
+              <div className="selection-game-card p-6 perspective-1500 rotateX-12">
                 <h4 className="logo-small-text">Song Selection</h4>
                 {/* Search Input */}
 
@@ -586,7 +611,7 @@ const handleSubmission = async (playMode: string, amount?: number) => {
             <div className="w-2"></div>
             {/* Col 4: Selected Song */}
             <div>
-              <div className="game-card p-6 min-h-[140px] flex flex-col items-center justify-center perspective-1500 rotateY-12">
+              <div className="selection-game-card p-6 min-h-[140px] flex flex-col items-center justify-center perspective-1500 rotateY-12">
                 {selectedSong ? (
                   <div className="text-2xl song-title text-yellow-400 drop-shadow-md">{selectedSong}</div>
                 ) : (
@@ -601,7 +626,7 @@ const handleSubmission = async (playMode: string, amount?: number) => {
 
             {/* Col 6: Opener Statistics */}
             <div>
-              <div className="game-card p-6 perspective-1500 rotateX-12">
+              <div className="selection-game-card p-6 perspective-1500 rotateX-12">
                 <h4 className="font-display font-extrabold text-3xl gradient-text-deadco mb-4">Opener Statistics</h4>
                 {selectedSong && getSelectedSongData() ? (
                   <>
@@ -626,6 +651,8 @@ const handleSubmission = async (playMode: string, amount?: number) => {
             <div></div>
 
           </div>
+
+
 
 
           {/* Four Ways to Play */}
@@ -669,4 +696,5 @@ const handleSubmission = async (playMode: string, amount?: number) => {
 };
 
 export default GuessOpenerPage;
+
 

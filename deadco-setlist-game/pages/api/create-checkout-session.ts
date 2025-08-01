@@ -3,7 +3,7 @@
 import Stripe from 'stripe';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const stripe = new Stripe('sk_test_51OUuMQSDNquEEED5oGqJgbnOADlaaTh152Xrv50XPNrGeMqicVDxhQBCDkSO4k86VCIxy6OGClcbCQxGobF1BoPy006Q510lRY', {
+const stripe = new Stripe('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', {
   apiVersion: '2022-11-15',
 });
 
@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       line_items: [
         {
           price_data: {
-            currency: 'inr', // Change to your desired currency
+            currency: 'usd', // Change to your desired currency
             product_data: {
               name: `Guess Game - ${mode}`,
               description: `Your song choice: ${song}`,

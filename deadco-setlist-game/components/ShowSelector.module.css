@@ -1,0 +1,13 @@
+/* components/ShowSelector.module.css */
+
+.wrapper {
+  padding: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}

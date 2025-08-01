@@ -301,12 +301,13 @@ export default function GuessTheEncore() {
   <div className="countdown-outer mb-6">
 <div className="countdown-outer mb-6">
 
-  {isWinner !== null && (
+  {/* {isWinner !== null && (
   <div
     className={`fixed top-0 left-0 w-full z-50 p-4 shadow-lg text-white text-center text-xl font-semibold transition-transform duration-500 ${
       isWinner ? 'bg-green-600 animate-bounce' : 'bg-red-600 animate-shake'
     }`}
   >
+    
     <div className="flex items-center justify-center space-x-3">
      
       {isWinner ? (
@@ -323,12 +324,14 @@ export default function GuessTheEncore() {
  😞 Oops! Better luck next time. 🎵
 </div>
 
+
+
       
         </>
       )}
     </div>
   </div>
-)}
+)} */}
 
 
   </div>
@@ -337,13 +340,13 @@ export default function GuessTheEncore() {
 )}
 
       <div>
+                                  <div className='countdown-outer'></div>
+
         {/* Header with sponsor logos */}
         <div className="flex items-center justify-center mb-2 gap-4">
-          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
           <div className="w-2"></div>
           <h1 className="logo-text">Guess the Encore</h1>
           <div className="w-2"></div>
-          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
         </div>
 
            {/* Prize Info Modal */}
@@ -385,6 +388,23 @@ export default function GuessTheEncore() {
             </div>
           </div>
         )}
+            {/* Countdown */}
+                    <div className='countdown-outer'></div>
+
+          <div className='center-wrapper'>
+          <div className="custom-button bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              Next Submission Deadline
+            </h2>
+            <div className="text-3xl font-bold text-purple-600">
+              {timeToDeadline}
+            </div>
+            <p className="text-sm text-gray-600 mt-2">
+              Submissions close at 7:00 PM PT before each show
+            </p>
+          </div>
+          </div>
+          <div className='countdown-outer'></div>
         
         {/* Show Selection */}
         <div className="max-w-md mx-auto mb-8">
@@ -432,6 +452,8 @@ export default function GuessTheEncore() {
                                value={searchTerm}
                                onChange={e => setSearchTerm(e.target.value)}
                              />
+                                                       <div className='countdown-outer'></div>
+
                              <SetlistDragDropPicker
                                availableSongs={pageSongs}
                                maxSongs={1}
@@ -446,6 +468,8 @@ export default function GuessTheEncore() {
                                  value={selectedSong}
                                  onChange={e => setSelectedSong(e.target.value)}
                                />
+                                                         <div className='countdown-outer'></div>
+
                                <p className="text-xs text-gray-500 mt-2 text-center">
                                  You can select from the list above or type any song name.
                                </p>

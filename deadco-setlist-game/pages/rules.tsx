@@ -158,8 +158,10 @@ const RulesPage = () => {
             <div className="countdown-outer">
               <div className="w-full max-w-4xl mx-auto px-4">
                 <div className="flex justify-center mb-8">
-                  <div className="game-card">Quick Start Guide</div>
+                  <div className="choose-game-card">Quick Start Guide</div>
                 </div>
+
+                <div className='center-wrapper'>
                 <motion.div
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
                   initial={{ opacity: 0, y: 20 }}
@@ -174,7 +176,7 @@ const RulesPage = () => {
                   ].map((item, index) => (
                     <div
                       key={index}
-                      className={`game-card game-card--color${(index % 4) + 1} text-center`}
+                      className={`selection-game-card text-center`}
                       style={{
                         background: SetlistStreetTheme.backgrounds.card,
                         border: `1px solid ${SetlistStreetTheme.components.card.border}`,
@@ -191,6 +193,7 @@ const RulesPage = () => {
                   ))}
                 </motion.div>
               </div>
+              </div>
             </div>
           </div>
         </div>
@@ -198,16 +201,18 @@ const RulesPage = () => {
 
       {/* Game Rules */}
       <div className="mb-12">
-        <div className="countdown-outer">
+        <div className="countdown-outer ">
           <div className="flex justify-center mb-8">
-            <div className="game-card">Game Rules</div>
+            <div className="choose-game-card">Game Rules</div>
           </div>
+      
           <div className="w-full max-w-4xl mx-auto px-4">
+                <div className='center-wrapper'>
             <div className="grid gap-6">
               {gameRules.map((game, index) => (
                 <motion.div
                   key={index}
-                  className="game-card game-card--color1"
+                  className="selection-game-card"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -231,6 +236,8 @@ const RulesPage = () => {
               ))}
             </div>
           </div>
+
+          </div>
         </div>
       </div>
 
@@ -238,14 +245,18 @@ const RulesPage = () => {
       <div className="mb-12">
         <div className="countdown-outer">
           <div className="flex justify-center mb-8">
-            <div className="game-card">Scoring & Prizes</div>
+            <div className="choose-game-card">Scoring & Prizes</div>
           </div>
+
           <div className="w-full max-w-4xl mx-auto px-4">
+                
+
             <div className="grid gap-6 lg:grid-cols-2">
+              <div className='center-wrapper'>
               {scoringRules.map((section, index) => (
                 <motion.div
                   key={index}
-                  className="game-card game-card--color2"
+                  className="selection-game-card"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
@@ -267,7 +278,9 @@ const RulesPage = () => {
                 </motion.div>
               ))}
             </div>
-          </div>
+
+
+          </div></div>
         </div>
       </div>
 
@@ -275,11 +288,12 @@ const RulesPage = () => {
       <div className="mb-12">
         <div className="countdown-outer">
           <div className="flex justify-center mb-8">
-            <div className="game-card">Fair Play Guidelines</div>
+            <div className="choose-game-card">Fair Play Guidelines</div>
           </div>
           <div className="w-full max-w-4xl mx-auto px-4">
+  <div className='center-wrapper'>
             <motion.div
-              className="game-card game-card--color3 max-w-3xl mx-auto"
+              className="selection-game-card"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -298,7 +312,10 @@ const RulesPage = () => {
                 ))}
               </ul>
             </motion.div>
+
+
           </div>
+            </div>
         </div>
       </div>
 

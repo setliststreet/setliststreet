@@ -261,24 +261,24 @@ const SongGamesHub = () => {
         bgColor: '#a5f3fc'
       }
     ],
-    special: [
-      {
-        title: 'Guess the Bust Out',
-        description: 'Predict rare songs that haven\'t been played recently',
-        href: '/guess-bust-out',
-        difficulty: 'Expert',
-        players: '0 active',
-        bgColor: '#c4b5fd'
-      },
-      {
-        title: 'Songs NOT Played',
-        description: 'Predict which popular songs WON\'T be played',
-        href: '/guess-songs-not-played',
-        difficulty: 'Expert',
-        players: '0 active',
-        bgColor: '#c4b5fd'
-      }
-    ]
+    // special: [
+    //   {
+    //     title: 'Guess the Bust Out',
+    //     description: 'Predict rare songs that haven\'t been played recently',
+    //     href: '/guess-bust-out',
+    //     difficulty: 'Expert',
+    //     players: '0 active',
+    //     bgColor: '#c4b5fd'
+    //   },
+    //   {
+    //     title: 'Songs NOT Played',
+    //     description: 'Predict which popular songs WON\'T be played',
+    //     href: '/guess-songs-not-played',
+    //     difficulty: 'Expert',
+    //     players: '0 active',
+    //     bgColor: '#c4b5fd'
+    //   }
+    // ]
   };
 
   const GameCard = ({ game }) => (
@@ -323,13 +323,13 @@ const SongGamesHub = () => {
                 set1: '🎵 Set 1 Predictions',
                 set2: '🎶 Set 2 Predictions',
                 encore: '🎤 Encore Predictions',
-                special: '💡 Special Predictions'
+                // special: '💡 Special Predictions'
               };
               const bgMap = {
                 set1: 'bg-red-200',
                 set2: 'bg-yellow-200',
                 encore: 'bg-blue-200',
-                special: 'bg-purple-200'
+                // special: 'bg-purple-200'
               };
               return (
 
@@ -338,8 +338,12 @@ const SongGamesHub = () => {
                             <div className="countdown-outer"></div>
           <div className="countdown-outer"></div>
 
-                  <h2 className="text-4xl font-bold text-center mb-6  drop-shadow-cartoon">{sectionTitleMap[sectionKey]}</h2>
-          <div className="countdown-outer"></div>
+
+<div className="center-wrapper">
+                  <h2 className="choose-game-card">{sectionTitleMap[sectionKey]}</h2>
+
+                  </div>
+
 
                <div className="flex flex-wrap justify-center gap-8 mx-auto max-w-6xl px-4 py-8 rounded-[2rem] bg-white/80  shadow-3xl-cartoon">
 
@@ -352,6 +356,8 @@ const SongGamesHub = () => {
                      justify-center
                      min-w-[260px]
                      max-w-[300px]
+                        min-h-[200px]
+                     max-h-[10px]
                      w-full
                      px-4
                      py-4

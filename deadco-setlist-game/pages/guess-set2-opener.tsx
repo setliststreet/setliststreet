@@ -243,7 +243,7 @@ const GuessSet2OpenerPage = () => {
         <meta name="description" content="Predict which song will open the second set" />
       </Head>
 
-      {isWinner !== null && (
+      {/* {isWinner !== null && (
     <div className="countdown-outer mb-6">
 
   <div className="countdown-outer mb-6">
@@ -261,7 +261,7 @@ const GuessSet2OpenerPage = () => {
         <>
       
              <div className="inline-block bg-gradient-to-br from-yellow-400 to-yellow-600 text-black px-10 py-5 rounded-[20px] max-w-[600px] mb-[30px]  transition-all duration-200 relative text-center font-black text-[22px] uppercase tracking-[1.5px]">
- 🎉 Congratulations! You won the game! 🏆
+ 🎉 Congratulations! You won the game! 
 </div>
     
         </>
@@ -282,27 +282,29 @@ const GuessSet2OpenerPage = () => {
   </div>
    </div>
     </div>
-)}
+)} */}
 
       <div className="bg-white min-h-screen">
         <div className="container mx-auto px-6 py-8">
           <div className='countdown-outer'></div>
 
           {/* Header with sponsor logos */}
+          
           <div className="flex items-center justify-center mb-2 gap-4">
-            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
             <div className="w-2"></div>
             <h1 className="logo-text">Guess the Set 2 Opener</h1>
             <div className="w-2"></div>
-            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
           </div>
 
           <div className="text-center text-white text-2xl font-cartoon drop-shadow-md mb-12">
             Predict which song will open the second set for Dead & Company
           </div>
 
-          {/* Countdown */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
+               {/* Countdown */}
+                    <div className='countdown-outer'></div>
+
+          <div className='center-wrapper'>
+          <div className="custom-button bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
               Next Submission Deadline
             </h2>
@@ -313,6 +315,8 @@ const GuessSet2OpenerPage = () => {
               Submissions close at 7:00 PM PT before each show
             </p>
           </div>
+          </div>
+          <div className='countdown-outer'></div>
 
           {/* Prize Info Modal */}
           {showPrizeInfo && (
@@ -401,45 +405,80 @@ const GuessSet2OpenerPage = () => {
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                 />
+                                        <div className='countdown-outer'></div>
+
                 <SetlistDragDropPicker
                   availableSongs={pageSongs}
                   maxSongs={1}
                   onSetlistChange={(setlist) => setSelectedSong(setlist[0] || '')}
                 />
-                {/* Pagination Controls */}
-                <div className="flex justify-center items-center mt-4 gap-2">
-                  <button
-                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                    disabled={currentPage === 1}
-                  >
-                    Prev
-                  </button>
-                  <span className="mx-2 text-gray-700">
-                    Page {currentPage} of {pageCount}
-                  </span>
-                  <button
-                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-                    onClick={() => setCurrentPage(p => Math.min(pageCount, p + 1))}
-                    disabled={currentPage === pageCount}
-                  >
-                    Next
-                  </button>
-                </div>
+
+
+
+                {/* Manual song entry */}
+              <div className="mt-6">
+                              <div className='countdown-outer'></div>
+
+                <input
+                  type="text"
+                  className="w-full px-6 py-4 rounded-xl border-2 border-purple-300 bg-gradient-to-br from-purple-50 via-white to-purple-100 shadow focus:outline-none focus:ring-4 focus:ring-purple-300 font-cartoon text-lg text-purple-900 placeholder:text-purple-400 transition-all duration-200"
+                  placeholder="Or type any song name..."
+                  value={selectedSong}
+                  onChange={e => setSelectedSong(e.target.value)}
+                />
+
+
+                
+                              <div className='countdown-outer'></div>
+
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  You can select from the list above or type any song name.
+                </p>
               </div>
-              {/* Col 3: Small Padding */}
-              <div className="w-2"></div>
-              {/* Col 4: Selected Song */}
-              <div>
-                <div className="bg-white border border-gray-200 rounded-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
-                  <h4 className="font-semibold mb-2 text-gray-800">Selected Song</h4>
-                  {selectedSong ? (
-                    <span className="text-lg font-bold text-purple-700">{selectedSong}</span>
-                  ) : (
-                    <span className="text-gray-400">No song selected</span>
-                  )}
-                </div>
+
+              {/* Pagination Controls */}
+              <div className="flex justify-center items-center mt-4 gap-2">
+                <button
+                  className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
+                <span className="mx-2 text-gray-700">
+                  Page {currentPage} of {pageCount}
+                </span>
+                <button
+                  className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                  onClick={() => setCurrentPage(p => Math.min(pageCount, p + 1))}
+                  disabled={currentPage === pageCount}
+                >
+                  Next
+                </button>
               </div>
+            </div>
+            
+            {/* Col 3: Small Padding */}
+            <div className="w-2"></div>
+            {/* Col 4: Selected Song */}
+            <div>
+              <div className="bg-white border border-gray-200 rounded-lg p-4 min-h-[120px] flex flex-col items-center justify-center">
+                <h4 className="font-semibold mb-2 text-gray-800">Selected Song</h4>
+                {selectedSong ? (
+                  <span className="text-lg font-bold text-purple-700">{selectedSong}</span>
+                ) : (
+                  <span className="text-gray-400">No song selected</span>
+                )}
+              </div>
+            </div>
+                          <div className='countdown-outer'></div>
+
+                          
+
+
+
+
+
               {/* Col 5: Small Padding */}
               <div className="w-2"></div>
               {/* Col 6: Stats (optional) */}

@@ -251,7 +251,7 @@ const GuessSet1CloserPage = () => {
       </Head>
 
       
-{isWinner !== null && (
+{/* {isWinner !== null && (
     <div className="countdown-outer mb-6">
 
   <div className="countdown-outer mb-6">
@@ -290,7 +290,7 @@ const GuessSet1CloserPage = () => {
   </div>
    </div>
     </div>
-)}
+)} */}
 
 
 
@@ -301,20 +301,21 @@ const GuessSet1CloserPage = () => {
 
           {/* Header with sponsor logos */}
           <div className="flex items-center justify-center mb-2 gap-4">
-            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
             <div className="w-2"></div>
                         <h1 className="logo-text">Guess the Set 1 Closer</h1>
 
             <div className="w-2"></div>
-            <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
           </div>
 
             <div className="text-center text-white text-2xl font-cartoon drop-shadow-md mb-12">
             Predict which song will close the first set for Dead & Company
           </div>
          
-          {/* Countdown */}
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
+              {/* Countdown */}
+                    <div className='countdown-outer'></div>
+
+          <div className='center-wrapper'>
+          <div className="custom-button bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
               Next Submission Deadline
             </h2>
@@ -325,6 +326,8 @@ const GuessSet1CloserPage = () => {
               Submissions close at 7:00 PM PT before each show
             </p>
           </div>
+          </div>
+          <div className='countdown-outer'></div>
 
           
 
@@ -413,6 +416,7 @@ const GuessSet1CloserPage = () => {
             <div></div>
             {/* Col 2: Song Selection (Drag & Drop) */}
             <div>
+              <div className='countdown-outer'></div>
               {/* Search Input */}
               <input
                 type="text"
@@ -421,6 +425,9 @@ const GuessSet1CloserPage = () => {
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
               />
+
+                            <div className='countdown-outer'></div>
+
               <SetlistDragDropPicker
                 availableSongs={pageSongs}
                 maxSongs={1}
@@ -428,6 +435,8 @@ const GuessSet1CloserPage = () => {
               />
               {/* Manual song entry */}
               <div className="mt-6">
+                              <div className='countdown-outer'></div>
+
                 <input
                   type="text"
                   className="w-full px-6 py-4 rounded-xl border-2 border-purple-300 bg-gradient-to-br from-purple-50 via-white to-purple-100 shadow focus:outline-none focus:ring-4 focus:ring-purple-300 font-cartoon text-lg text-purple-900 placeholder:text-purple-400 transition-all duration-200"
@@ -435,10 +444,16 @@ const GuessSet1CloserPage = () => {
                   value={selectedSong}
                   onChange={e => setSelectedSong(e.target.value)}
                 />
+
+
+                
+                              <div className='countdown-outer'></div>
+
                 <p className="text-xs text-gray-500 mt-2 text-center">
                   You can select from the list above or type any song name.
                 </p>
               </div>
+
               {/* Pagination Controls */}
               <div className="flex justify-center items-center mt-4 gap-2">
                 <button
@@ -460,6 +475,7 @@ const GuessSet1CloserPage = () => {
                 </button>
               </div>
             </div>
+            
             {/* Col 3: Small Padding */}
             <div className="w-2"></div>
             {/* Col 4: Selected Song */}
@@ -473,6 +489,10 @@ const GuessSet1CloserPage = () => {
                 )}
               </div>
             </div>
+                          <div className='countdown-outer'></div>
+
+
+
             {/* Col 5: Small Padding */}
             <div className="w-2"></div>
             {/* Col 6: Stats (optional) */}

@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import MainLayout from '../components/MainLayout';
-import SetlistDragDropPicker from '../components/SetlistDragDropPicker';
 import FourWaysToPlay from '../components/FourWaysToPlay';
 import ShowSelector from '../components/ShowSelector';
 import type { Show } from '../components/ShowSelector';
 import PoolSizeDisplay from '../components/PoolSizeDisplay';
+import { handleFantasySetlistSubmission } from '@/components/FantasySetlistSubmitter';
+import FantasyWinners from '@/components/FantasyWinners';
+import SetlistDragDropPicker from '@/SetlistDragPicker';
+
+  import { loadStripe } from '@stripe/stripe-js';
+import PlayModeSelector from '@/components/PlayModeSelector';
+const stripePromise = loadStripe('pk_live_51Rq6NDLht2OhDAwlqCLvlD9JiXtiz7QDNl6T9vdkSHNvLeYjnEzAFQ0MZccrqgglSMUX2eqJJvmrya060zmD8oX900VrQOpNLU');
 
 // Mock database of ~200 songs (simplified for demo)
 const allSongs = [
@@ -35,6 +41,13 @@ const allSongs = [
   'I Need a Miracle', 'From the Heart of Me', 'Stagger Lee', 'All New Minglewood Blues'
 ];
 
+  const prizeInfo = [
+    { sponsor: 'Dead Merch Co.', prize: 'Vintage Poster', value: '$75' },
+    { sponsor: 'Tour Threads', prize: 'Exclusive Tour T-Shirt', value: '$50' },
+    { sponsor: 'VIP Access', prize: 'VIP Show Pass', value: '$200' },
+    { sponsor: 'Artist Print', prize: 'Signed Setlist Print', value: '$150' },
+  ];
+  
 interface SetlistStructure {
   set1: string[];
   set2Before: string[];
@@ -42,16 +55,26 @@ interface SetlistStructure {
   encores: string[][];
 }
 
-export default function SetlistBuilder() {
-  const [setlist, setSetlist] = useState<SetlistStructure>({
+
+const SetlistBuilder = () =>{
+
+
+
+   const [setlist, setSetlist] = useState<SetlistStructure>({
     set1: [],
     set2Before: [],
     set2After: [],
-    encores: [[]]
+    encores: []
   });
-  
+
   const [selectedPlayMode, setSelectedPlayMode] = useState('');
   const [selectedShow, setSelectedShow] = useState<Show | null>(null);
+  const [showPrizeInfo, setShowPrizeInfo] = useState(false);
+    const [timeToDeadline, setTimeToDeadline] = useState('');
+  
+
+
+    
 
   const updateSetSection = (section: keyof SetlistStructure, songs: string[]) => {
     setSetlist(prev => ({
@@ -60,23 +83,88 @@ export default function SetlistBuilder() {
     }));
   };
 
-  const handleSubmit = () => {
-    const totalSongs = setlist.set1.length + setlist.set2Before.length + setlist.set2After.length + 
-                      setlist.encores.reduce((sum, encore) => sum + encore.length, 0);
-    
-    if (totalSongs === 0) {
-      alert('Please add at least one song to your setlist!');
+  
+
+
+const handleSubmit = async (amount?: number) => {
+  const totalSongs =
+    setlist.set1.length +
+    setlist.set2Before.length +
+    setlist.set2After.length +
+    setlist.encores.length;
+
+  if (!selectedShow) {
+    alert('Please select a show!');
+    return;
+  }
+
+  if (totalSongs === 0) {
+    alert('Please add at least one song to your setlist!');
+    return;
+  }
+
+  if (!selectedPlayMode) {
+    alert('Please select a play mode!');
+    return;
+  }
+
+  const playMode = selectedPlayMode;
+
+  // If cash or charity, trigger Stripe Checkout
+  if ((playMode === 'cash' || playMode === 'charity') && amount) {
+    try {
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: amount * 100, // converting ₹ to paise/cents
+          mode: playMode,
+          song: setlist.set1[0]?.name || 'Unknown song', // or any song string
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.id) {
+        alert('Error creating payment session.');
+        return;
+      }
+
+      const stripe = await stripePromise;
+      if (!stripe) {
+        alert('Stripe failed to load');
+        return;
+      }
+
+      await stripe.redirectToCheckout({ sessionId: data.id });
+      return;
+    } catch (error) {
+      console.error('Stripe Checkout error:', error);
+      alert('Something went wrong with payment.');
       return;
     }
+  }
 
-    if (!selectedPlayMode) {
-      alert('Please select a play mode!');
-      return;
-    }
+  // For free/prize modes or fallback after payment
+  await handleFantasySetlistSubmission({
+    showId: selectedShow.id,
+    set1: setlist.set1,
+    set2_pre_drums: setlist.set2Before,
+    set2_post_drums: setlist.set2After,
+    encore: setlist.encores,
+    playMode: playMode as any,
+    amount: amount ?? null,
+  });
+};
 
-    console.log('Setlist submitted:', setlist);
-    alert('Setlist submitted successfully!');
+
+
+   const handlePrizeInfoClick = () => {
+    setShowPrizeInfo(true);
   };
+
+
+  
 
   const renderStatsAndHints = () => (
     <div className="space-y-6">
@@ -139,16 +227,108 @@ export default function SetlistBuilder() {
     </div>
   );
 
+
+    useEffect(() => {
+    const calcDeadline = () => {
+      const now = new Date();
+      const showDates = [
+        new Date('2025-07-28T19:00:00-07:00'),
+        new Date('2025-07-28T19:00:00-07:00'),
+        new Date('2025-07-28T19:00:00-07:00'),
+      ];
+      const next = showDates.find(d => d > now);
+      if (!next) {
+        setTimeToDeadline('All shows completed');
+        return;
+      }
+      const diff = next.getTime() - now.getTime();
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      setTimeToDeadline(`${d}d ${h}h ${m}m ${s}s`);
+    };
+
+    calcDeadline();
+    const interval = setInterval(calcDeadline, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <MainLayout>
       {/* Header with sponsor logos */}
+              <div className="countdown-outer"></div>
+
       <div className="flex items-center justify-center mb-8 gap-4">
-        <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
+        
+        <h1 className="logo-text">Fantasy Setlist Builder</h1>
         <div className="w-2"></div>
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">Fantasy Setlist Builder</h1>
-        <div className="w-2"></div>
-        <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-2xl">[Logo]</div>
       </div>
+
+
+ {/* Countdown */}
+                    <div className='countdown-outer'></div>
+
+          <div className='center-wrapper'>
+          <div className="custom-button bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-center">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              Next Submission Deadline
+            </h2>
+            <div className="text-3xl font-bold text-purple-600">
+              {timeToDeadline}
+            </div>
+            <p className="text-sm text-gray-600 mt-2">
+              Submissions close at 7:00 PM PT before each show
+            </p>
+          </div>
+          </div>
+          <div className='countdown-outer'></div>
+
+
+
+   {/* Prize Info Modal */}
+          {showPrizeInfo && (
+            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+              <div className="game-card p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto perspective-1500 rotateY-12">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-4xl font-display font-extrabold gradient-text-deadco">Available Prizes - Guess the Opener</h3>
+                  <button
+                    onClick={() => setShowPrizeInfo(false)}
+                    className="cartoon-button text-4xl"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  {prizeInfo.map((prize, index) => (
+                    <div
+                      key={index}
+                      className="bg-gradient-to-r from-pink-200 to-blue-200 rounded-2xl p-4 shadow-inner-cartoon"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h4 className="font-display font-extrabold text-xl gradient-text-deadco">{prize.prize}</h4>
+                          <p className="text-sm text-gray-600 font-cartoon">Sponsored by: {prize.sponsor}</p>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-xl font-bold text-green-500 font-cartoon">{prize.value}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                 <div className="mt-4 text-center">
+                                  <p className="text-sm text-gray-500">
+                                    Prizes awarded based on accuracy and random selection from prize pool participants.
+                                  </p>
+                                </div>
+
+              </div>
+            </div>
+          )}
+
+
 
       {/* Show Selection */}
       <div className="max-w-md mx-auto mb-8">
@@ -164,13 +344,22 @@ export default function SetlistBuilder() {
             <span className="text-lg font-semibold text-gray-700">[PLACEHOLDER SPONSOR NAME]</span>
             <span className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-2xl">[PLACEHOLDER SPONSOR LOGO]</span>
           </div>
-          <PoolSizeDisplay 
-            gameId="setlist-builder" 
-            showId={selectedShow.id}
-            showDate={selectedShow.date}
-          />
+
+       
+
+
+                    <PoolSizeDisplay
+  gameId="setlist-builder"
+   showId={selectedShow.id}
+  showDate={selectedShow.date}
+  table="fantasy_setlist_guesses" 
+  onPrizeInfoClick={handlePrizeInfoClick}
+/>
+
         </div>
       )}
+
+
 
       {/* Live Preview - Centered and Prominent */}
       {(setlist.set1.length > 0 || setlist.set2Before.length > 0 || setlist.set2After.length > 0 || setlist.encores.some(e => e.length > 0)) && (
@@ -203,11 +392,12 @@ export default function SetlistBuilder() {
               {setlist.encores.some(e => e.length > 0) && (
                 <div>
                   <h3 className="font-semibold text-gray-700 mb-1">Encore{setlist.encores.length > 1 ? 's' : ''}</h3>
-                  {setlist.encores.map((encore, idx) => (
-                    encore.length > 0 && (
-                      <p key={idx} className="text-gray-800">{encore.join(' → ')}</p>
-                    )
-                  ))}
+                 {setlist.encores?.map((encore, idx) => (
+  Array.isArray(encore) && encore.length > 0 && (
+    <p key={idx} className="text-gray-800">{encore.join(' → ')}</p>
+  )
+))}
+
                 </div>
               )}
             </div>
@@ -216,14 +406,16 @@ export default function SetlistBuilder() {
       )}
 
       {/* Main Fantasy Setlist Builder - 5 Column Layout */}
-      <div className="grid grid-cols-12 gap-4 max-w-7xl mx-auto mb-8 mt-8">
+      <div className=" grid grid-cols-12 gap-4 max-w-7xl mx-auto mb-8 mt-8">
         {/* Column 1: Left Padding (1/12) */}
         <div className="col-span-1"></div>
         {/* Column 2: Setlist Builder (7/12, centered) */}
         <div className="col-span-7 space-y-6 px-2">
           {/* Set 1 */}
-          <div className="space-y-4">
+          <div className="game-card space-y-4">
             <h2 className="text-xl font-bold text-gray-800">Set 1</h2>
+                        <div className='countdown-outer'></div>
+
             <SetlistDragDropPicker
               availableSongs={allSongs}
               maxSongs={12}
@@ -231,8 +423,10 @@ export default function SetlistBuilder() {
             />
           </div>
           {/* Set 2 Before Drums/Space */}
-          <div className="space-y-4">
+          <div className="game-card space-y-4">
             <h2 className="text-xl font-bold text-gray-800">Set 2 (Before Drums/Space)</h2>
+                        <div className='countdown-outer'></div>
+
             <SetlistDragDropPicker
               availableSongs={allSongs}
               maxSongs={8}
@@ -240,8 +434,9 @@ export default function SetlistBuilder() {
             />
           </div>
           {/* Set 2 After Drums/Space */}
-          <div className="space-y-4">
+          <div className="game-card space-y-4">
             <h2 className="text-xl font-bold text-gray-800">Set 2 (After Drums/Space)</h2>
+            <div className='countdown-outer'></div>
             <SetlistDragDropPicker
               availableSongs={allSongs}
               maxSongs={8}
@@ -249,8 +444,10 @@ export default function SetlistBuilder() {
             />
           </div>
           {/* Encore */}
-          <div className="space-y-4">
+          <div className="game-card space-y-4">
             <h2 className="text-xl font-bold text-gray-800">Encore</h2>
+                        <div className='countdown-outer'></div>
+
             <SetlistDragDropPicker
               availableSongs={allSongs}
               maxSongs={3}
@@ -268,17 +465,27 @@ export default function SetlistBuilder() {
         <div className="col-span-1"></div>
       </div>
 
+
+
+{/* {selectedShow?.id && <FantasyWinners showId={selectedShow.id} />} */}
+
+
       {/* Play Mode Selection & Auto-Submit - Moved to Bottom */}
       <div className="mt-8">
         {/* Standardized Payment Component */}
-        <FourWaysToPlay 
-          onSubmissionClick={(playMode, amount) => {
-            setSelectedPlayMode(playMode);
-            handleSubmit();
-          }}
-          gameType="setlist"
-        />
+     
+<PlayModeSelector
+  onSubmissionClick={(mode, amount) => {
+    setSelectedPlayMode(mode);
+    handleSubmit(amount);
+  }}
+  gameType="setlist"
+/>
+
+
       </div>
     </MainLayout>
   );
 } 
+
+export default SetlistBuilder;

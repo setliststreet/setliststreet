@@ -26,46 +26,54 @@ const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow 
   const [isLoading, setIsLoading] = useState(false);
 
   const upcomingShows: Show[] = [
-    {
-      id: '1',
-      date: '2025-05-15',
-      venue: 'Sphere at The Venetian Resort',
-      city: 'Las Vegas',
-      state: 'NV',
-      guest: 'Dead & Company',
-    },
-    {
-      id: '2',
-      date: '2025-05-16',
-      venue: 'Sphere at The Venetian Resort',
-      city: 'Las Vegas',
-      state: 'NV',
-      guest: 'Dead & Company',
-    },
-    {
-      id: '3',
-      date: '2025-05-17',
-      venue: 'Sphere at The Venetian Resort',
-      city: 'Las Vegas',
-      state: 'NV',
-      guest: 'Dead & Company',
-    },
+    // {
+    //   id: '1',
+    //   date: '2025-05-15',
+    //   venue: 'Sphere at The Venetian Resort',
+    //   city: 'Las Vegas',
+    //   state: 'NV',
+    //   guest: 'Dead & Company',
+    // },
     // {
     //   id: '2',
-    //   date: '2025-08-02',
-    //   venue: 'Golden Gate Park',
-    //   city: 'San Francisco',
-    //   state: 'CA',
-    //   guest: 'Sturgill “Johnny Blue Skies” Simpson',
+    //   date: '2025-05-16',
+    //   venue: 'Sphere at The Venetian Resort',
+    //   city: 'Las Vegas',
+    //   state: 'NV',
+    //   guest: 'Dead & Company',
     // },
     // {
     //   id: '3',
-    //   date: '2025-08-03',
-    //   venue: 'Golden Gate Park',
-    //   city: 'San Francisco',
-    //   state: 'CA',
-    //   guest: 'Trey Anastasio Band',
+    //   date: '2025-05-17',
+    //   venue: 'Sphere at The Venetian Resort',
+    //   city: 'Las Vegas',
+    //   state: 'NV',
+    //   guest: 'Dead & Company',
     // },
+    {
+    id: '1',
+    date: '2025-08-01',
+    venue: 'Golden Gate Park',
+    city: 'San Francisco',
+    state: 'CA',
+    guest: 'Billy Strings',
+  },
+    {
+      id: '2',
+      date: '2025-08-02',
+      venue: 'Golden Gate Park',
+      city: 'San Francisco',
+      state: 'CA',
+      guest: 'Sturgill “Johnny Blue Skies” Simpson',
+    },
+    {
+      id: '3',
+      date: '2025-08-03',
+      venue: 'Golden Gate Park',
+      city: 'San Francisco',
+      state: 'CA',
+      guest: 'Trey Anastasio Band',
+    },
   ];
 
   useEffect(() => {
@@ -101,33 +109,40 @@ const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow 
           <h3 className="logo-extra-small-text  text-center">
             Choose Your Show
           </h3>
-          <div className="flex flex-row justify-center gap-x-5 overflow-x-auto pb-2">
-            {upcomingShows.map((upcomingShow) => (
-              <button
-                key={upcomingShow.id}
-                onClick={() => handleShowSelect(upcomingShow)}
-                className={`show-selector-button flex-shrink-0 max-w-[120px] sm:max-w-[140px] text-xs sm:text-sm ${
-                  show?.id === upcomingShow.id ? 'aria-selected' : ''
-                }`}
-                aria-label={`Select show on ${formatShowDate(upcomingShow.date)} with ${upcomingShow.guest}`}
-                aria-selected={show?.id === upcomingShow.id}
-              >
-                <div className="font-semibold text-sm sm:text-base mb-0.5 font-display">
-                  {new Date(upcomingShow.date).toLocaleDateString('en-US', { weekday: 'short' })}
-                </div>
-                <div className="text-xs sm:text-sm mb-0.5">
-                  {new Date(upcomingShow.date).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </div>
-                <div className="h-1"></div>
-                <div className="text-xs text-blue-700 font-semibold mb-0.5">{upcomingShow.guest}</div>
-                <div className="h-1"></div>
-                <div className="text-xs text-gray-500">4 pm</div>
-                <div className="text-xs text-gray-500">{upcomingShow.city}</div>
-              </button>
-            ))}
+          <div className="flex justify-evenly gap-x-5 pb-2">
+          
+          {upcomingShows.map((upcomingShow) => (
+   
+   
+   <button
+      key={upcomingShow.id}
+      onClick={() => handleShowSelect(upcomingShow)}
+      className={`sfs-game-card flex-shrink-0 max-w-[120px] sm:max-w-[140px] text-xs sm:text-sm ${
+        show?.id === upcomingShow.id ? 'aria-selected' : ''
+      }`}
+      aria-label={`Select show on ${formatShowDate(upcomingShow.date)} with ${upcomingShow.guest}`}
+      aria-selected={show?.id === upcomingShow.id}
+    >
+      <div className="font-semibold text-sm sm:text-base mb-0.5 font-display">
+        {new Date(upcomingShow.date).toLocaleDateString('en-US', { weekday: 'short' })}
+      </div>
+      <div className="text-xs sm:text-sm mb-0.5">
+        {new Date(upcomingShow.date).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+        })}
+      </div>
+      <div className="h-1"></div>
+      <div className="text-xs text-blue-700 font-semibold mb-0.5">{upcomingShow.guest}</div>
+      <div className="h-1"></div>
+      <div className="text-xs text-gray-500">4 pm</div>
+      <div className="text-xs text-gray-500">{upcomingShow.city}</div>
+    </button>
+
+
+  ))}
+
+
           </div>
             <div className='countdown-outer'></div>
         </>

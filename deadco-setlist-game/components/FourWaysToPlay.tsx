@@ -68,7 +68,7 @@ const handleModeSelection = async (modeId: string) => {
       return;
     }
 
-    const stripe = await loadStripe('pk_test_51OUuMQSDNquEEED5PjAikooexWblzyNgJoq260MNdHthqTIQ1Tu7WZB377cpYtjZZFBJnfOT0ywXUs9XhNyPDbBJ00XWaR4IUt');
+    const stripe = await loadStripe('pk_live_51Rq6NDLht2OhDAwlqCLvlD9JiXtiz7QDNl6T9vdkSHNvLeYjnEzAFQ0MZccrqgglSMUX2eqJJvmrya060zmD8oX900VrQOpNLU');
     if (!stripe) {
       alert('Failed to initialize Stripe');
       return;
@@ -132,21 +132,35 @@ const handleModeSelection = async (modeId: string) => {
         <div className="w-4"></div>
       </div>
 
-      {(selectedMode === 'charity' || selectedMode === 'cash') && !disabled && (
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-6 max-w-2xl mx-auto">
+  <div className='countdown-outer'></div>
+      {(selectedMode === 'charity' || selectedMode === 'cash') 
+      && !disabled
+       && (
+
+      
+        
+        <div className="center-wrapper">
+          
+        <div className="sfs-game-card bg-gray-50 border border-gray-200 rounded-lg p-4 mt-6 max-w-2xl mx-auto">
           <h4 className="font-medium text-gray-800 mb-3 text-center">
             {selectedMode === 'charity' ? 'Donation Amount' : 'Entry Amount'}
           </h4>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-4">
+            <div className='countdown-outer'></div>
+
+          <div className="custom-button grid grid-cols-2 md:grid-cols-6 gap-2 mb-4">
             {[1, 2, 5, 10, 15, 20].map((amount) => (
-              <button
+            
+            
+            <button
                 key={amount}
                 onClick={() => {
                   setCustomAmount(amount);
                   setIsCustomAmount(false);
                   setCustomInput('');
                 }}
-                className={`py-2 px-3 rounded text-sm font-medium transition-colors ${
+
+              
+                className={`custom-button py-2 px-3 rounded text-sm font-medium transition-colors ${
                   customAmount === amount && !isCustomAmount
                     ? 'bg-purple-600 text-white'
                     : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'
@@ -154,17 +168,26 @@ const handleModeSelection = async (modeId: string) => {
               >
                 ${amount}
               </button>
+
+
+
             ))}
           </div>
+            <div className='countdown-outer'></div>
+
           <div className="border-t border-gray-200 pt-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">Or enter custom amount:</label>
+            <div className='countdown-outer'></div>
+
             <div className="flex items-center gap-2">
               <span className="text-gray-500">$</span>
               <input
+              
                 type="number"
                 min="1"
                 max="1000"
-                step="1"
+              
+               
                 value={customInput}
                 onChange={(e) => {
                   const value = e.target.value;
@@ -174,13 +197,21 @@ const handleModeSelection = async (modeId: string) => {
                     setIsCustomAmount(true);
                   }
                 }}
+
+
+               
+          
+                                  className="w-full px-4 py-3 bg-white rounded-2xl shadow-inner-cartoon focus:ring-4 focus:ring-yellow-400 mb-4 text-purple-900 placeholder-gray-500 font-cartoon"
+
                 placeholder="Enter amount"
-                className={`flex-1 px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                  isCustomAmount ? 'border-purple-500 bg-purple-50' : 'border-gray-300'
-                }`}
+               
               />
               {isCustomAmount && customInput && (
-                <span className="text-purple-600 text-sm font-medium">Selected: ${customAmount}</span>
+
+<span className="text-purple-600 text-sm font-medium pl-4">
+  Selected: ${customAmount}
+</span>
+             
               )}
             </div>
             {isCustomAmount && customInput && (customAmount < 1 || customAmount > 1000) && (
@@ -188,10 +219,14 @@ const handleModeSelection = async (modeId: string) => {
             )}
           </div>
         </div>
+ </div>
+
       )}
 
       {selectedMode && !disabled && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center mt-6 max-w-2xl mx-auto">
+
+        <div className="center-wrapper">
+        <div className="sfs-game-card bg-green-50 border border-green-200 rounded-lg p-3 text-center mt-6 max-w-2xl mx-auto">
           <p className="text-green-800 text-sm font-medium">
             {selectedMode === 'fun' && `✓ Playing for fun! Your ${gameType} has been submitted${selectedSong ? ` with "${selectedSong}"` : ''}.`}
             {selectedMode === 'charity' && `✓ Thank you! Your $${customAmount} donation and ${gameType} have been submitted${selectedSong ? ` with "${selectedSong}"` : ''}.`}
@@ -199,6 +234,7 @@ const handleModeSelection = async (modeId: string) => {
             {selectedMode === 'prize' && `✓ Competing for prizes! Your ${gameType} has been submitted${selectedSong ? ` with "${selectedSong}"` : ''}.`}
           </p>
         </div>
+           </div>
       )}
     </div>
   );
