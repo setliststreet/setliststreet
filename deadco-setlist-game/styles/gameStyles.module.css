@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Montserrat+Alternates:wght@400;600&display=swap');
+
+:root {
+  --font-title: 'Fredoka', sans-serif;
+  --font-body: 'Montserrat Alternates', sans-serif;
+
+  --color-title: #184B5F;
+  --color-body: #332A1F;
+  --color-bubble: #F4A300;
+  --color-bubble-outline: #000000;
+}
+
+.setlist-title {
+  font-family: var(--font-title);
+  color: var(--color-title);
+  font-weight: 700;
+  font-size: 3rem;
+  letter-spacing: -1px;
+}
+
+.setlist-body {
+  font-family: var(--font-body);
+  color: var(--color-body);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.setlist-bubble {
+  background-color: var(--color-bubble);
+  border: 2px solid var(--color-bubble-outline);
+  padding: 1rem;
+  border-radius: 1rem;
+  display: inline-block;
+}

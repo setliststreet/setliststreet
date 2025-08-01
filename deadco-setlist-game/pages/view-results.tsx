@@ -97,7 +97,9 @@ export default function ViewResults() {
   return (
     <MainLayout>
       <div>
-        <h1>View Game Results</h1>
+                  <div className="countdown-outer"></div>
+
+         <h1 className="logo-small-text">View Game Results</h1>
         
         <section>
           <ShowSelector

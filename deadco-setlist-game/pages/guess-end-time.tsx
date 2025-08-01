@@ -6,7 +6,7 @@ import ShowSelector from '../components/ShowSelector';
 
 const GuessEndTimePage = () => {
   const [selectedShow, setSelectedShow] = useState(null);
-  const [predictionMode, setPredictionMode] = useState('endTime'); // 'endTime' or 'showLength'
+  const [predictionMode, setPredictionMode] = useState('endTime');
   const [endTime, setEndTime] = useState('');
   const [showLength, setShowLength] = useState('');
   const [timeToDeadline, setTimeToDeadline] = useState('');

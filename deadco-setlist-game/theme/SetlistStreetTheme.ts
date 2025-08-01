@@ -5,7 +5,7 @@ export const SetlistStreetTheme = {
     primary: {
       // Sophisticated neutrals with subtle Dead & Company inspired accents
       deadRed: '#8B0000',        // Deep burgundy red
-      steelBlue: '#2C3E50',      // Professional blue-gray
+      steelBlue: '#2C3E50',      
       charcoal: '#2C2C2C',       // Deep charcoal
       gold: '#D4AF37',           // Subtle gold accent
       rust: '#8B4513',           // Earth tone rust

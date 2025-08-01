@@ -1,61 +1,50 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-
+ 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+ 
   return (
-    <header className="bg-white border-b-2 border-gray-200 sticky top-0 z-[999] w-full shadow-md">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="flex justify-between items-center h-16">
+    <header className="bg-white border-gray-200 sticky top-0 z-[999] w-full shadow-md">
+      <div className="max-w-7xl mx-auto margin-right-10 px-6 sm:px-8 lg:px-12">
+ 
+ 
+        <div className="countdown-inner"></div>
+        <div className="flex justify-between items-center h-16 mb-4">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold text-gray-900 hover:text-purple-600 transition-colors">
-              Setlist Street
-            </Link>
-          </div>
-
-          {/* Desktop Navigation Links - Always visible, right justified */}
-          <nav className="flex items-center gap-4 lg:gap-6">
-            <Link 
-              href="/rules" 
-              className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
-            >
-              How to Play
-            </Link>
-            <Link 
-              href="/faq" 
-              className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
-            >
-              FAQ
-            </Link>
-            <Link 
-              href="/setlist-hints" 
-              className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
-            >
-              Setlist Hints
-            </Link>
-            <Link 
-              href="/view-results" 
-              className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
-            >
-              Live Results
-            </Link>
-            <Link 
-              href="/login" 
-              className="text-gray-800 hover:text-purple-600 px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold transition-all border-2 border-transparent hover:border-purple-200 rounded-lg hover:bg-purple-50"
-            >
-              Sign In
-            </Link>
-            <Link 
-              href="/register" 
-              className="bg-purple-600 text-white hover:bg-purple-700 px-3 lg:px-4 py-2 text-xs lg:text-sm font-semibold rounded-lg transition-all border-2 border-purple-600 hover:border-purple-700 shadow-md hover:shadow-lg"
-            >
-              Sign Up
-            </Link>
+ 
+          <Link href="/" className="logo-button">SETLIST STREET</Link>
+ 
+          {/* Desktop Navigation Links */}
+          <nav className="flex items-center gap-8 lg:gap-14">
+            <div className="button-container">
+              <Link href="/rules" className="custom-button">How to Play</Link>
+            </div>
+ 
+            <div className="button-container">
+              <Link href="/faq" className="custom-button">FAQ</Link>
+            </div>
+ 
+            <div className="button-container">
+              <Link href="/setlist-hints" className="custom-button">Setlist Hints</Link>
+            </div>
+ 
+            {/* <div className="button-container">
+              <Link href="/view-results" className="custom-button">Live Results</Link>
+            </div> */}
+ 
+            <div className="button-container">
+              <Link href="/login" className="custom-button">Sign In</Link>
+            </div>
+ 
+            <div className="button-container">
+              <Link href="/register" className="custom-button">Sign Up</Link>
+            </div>
           </nav>
         </div>
+       
       </div>
+   
     </header>
   );
-} 
+}

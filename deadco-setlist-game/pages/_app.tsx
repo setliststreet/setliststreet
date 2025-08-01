@@ -9,6 +9,8 @@ export default function App({ Component, pageProps, router }: AppProps) {
   return (
     <DndProvider backend={HTML5Backend}>
       <Head>
+              <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet" />
+
         <title>Dead & Co Setlist Showdown</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>

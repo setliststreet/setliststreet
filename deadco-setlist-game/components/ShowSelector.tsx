@@ -1,4 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+
 
 export interface Show {
   id: string;
@@ -6,7 +13,7 @@ export interface Show {
   venue: string;
   city: string;
   state: string;
-  guest?: string; // Added guest property
+  guest?: string;
 }
 
 interface ShowSelectorProps {
@@ -14,116 +21,134 @@ interface ShowSelectorProps {
   selectedShow?: Show;
 }
 
-export default function ShowSelector({ onShowSelect, selectedShow }: ShowSelectorProps) {
+const ShowSelector: React.FC<ShowSelectorProps> = ({ onShowSelect, selectedShow }) => {
   const [show, setShow] = useState<Show | null>(selectedShow || null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Only these three shows for the toggle
   const upcomingShows: Show[] = [
+    // {
+    //   id: '1',
+    //   date: '2025-05-15',
+    //   venue: 'Sphere at The Venetian Resort',
+    //   city: 'Las Vegas',
+    //   state: 'NV',
+    //   guest: 'Dead & Company',
+    // },
+    // {
+    //   id: '2',
+    //   date: '2025-05-16',
+    //   venue: 'Sphere at The Venetian Resort',
+    //   city: 'Las Vegas',
+    //   state: 'NV',
+    //   guest: 'Dead & Company',
+    // },
+    // {
+    //   id: '3',
+    //   date: '2025-05-17',
+    //   venue: 'Sphere at The Venetian Resort',
+    //   city: 'Las Vegas',
+    //   state: 'NV',
+    //   guest: 'Dead & Company',
+    // },
     {
-      id: '1',
-      date: '2025-08-01', // Friday
-      venue: 'Golden Gate Park',
-      city: 'San Francisco',
-      state: 'CA',
-      guest: 'Billy Strings'
-    },
+    id: '1',
+    date: '2025-08-01',
+    venue: 'Golden Gate Park',
+    city: 'San Francisco',
+    state: 'CA',
+    guest: 'Billy Strings',
+  },
     {
       id: '2',
-      date: '2025-08-02', // Saturday
+      date: '2025-08-02',
       venue: 'Golden Gate Park',
       city: 'San Francisco',
       state: 'CA',
-      guest: 'Sturgill “Johnny Blue Skies” Simpson'
+      guest: 'Sturgill “Johnny Blue Skies” Simpson',
     },
     {
       id: '3',
-      date: '2025-08-03', // Sunday
+      date: '2025-08-03',
       venue: 'Golden Gate Park',
       city: 'San Francisco',
       state: 'CA',
-      guest: 'Trey Anastasio Band'
-    }
+      guest: 'Trey Anastasio Band',
+    },
   ];
 
-  const handleShowSelect = (selectedShow: Show) => {
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 10);
+  }, []);
+
+  const handleShowSelect = async (selectedShow: Show) => {
     setShow(selectedShow);
     onShowSelect?.(selectedShow);
+  
   };
 
-  // Custom formatter to ensure correct weekday
   const formatShowDate = (dateString: string) => {
     const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = {
+    return date.toLocaleDateString('en-US', {
       weekday: 'long',
       month: 'long',
       day: 'numeric',
-      year: 'numeric'
-    };
-    return date.toLocaleDateString('en-US', options);
+      year: 'numeric',
+    });
   };
 
   return (
-    <div className="mt-6 mb-6 bg-white p-6 rounded-lg border border-gray-200">
-      {/* Center the Choose Your Show header */}
-      <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
-        Choose Your Show
-      </h3>
-      <div className="grid grid-cols-[minmax(100px,1fr)_minmax(120px,150px)_minmax(120px,150px)_minmax(120px,150px)_minmax(100px,1fr)] items-center w-full gap-x-2">
-        {/* Left margin column */}
-        <div></div>
-        {/* Show 1 Button */}
-        <button
-          onClick={() => handleShowSelect(upcomingShows[0])}
-          className={`w-full min-h-[140px] flex flex-col items-center justify-center p-3 rounded-lg border border-gray-300 hover:border-blue-300 transition-colors ${show?.id === '1' ? 'bg-blue-50 border-blue-200' : ''}`}
-        >
-          <div className="font-semibold text-base mb-0.5">Friday</div>
-          <div className="text-sm mb-0.5">August 1, 2025</div>
-          <div className="h-2"></div>
-          <div className="text-xs text-blue-700 font-semibold mb-0.5">Guest: Billy Strings</div>
-          <div className="h-2"></div>
-          <div className="text-xs text-gray-500 mb-0.5">Music starts 4 pm</div>
-          <div className="text-xs text-gray-500">Golden Gate Park, San Francisco</div>
-        </button>
-        {/* Show 2 Button */}
-        <button
-          onClick={() => handleShowSelect(upcomingShows[1])}
-          className={`w-full min-h-[140px] flex flex-col items-center justify-center p-3 rounded-lg border border-gray-300 hover:border-blue-300 transition-colors ${show?.id === '2' ? 'bg-blue-50 border-blue-200' : ''}`}
-        >
-          <div className="font-semibold text-base mb-0.5">Saturday</div>
-          <div className="text-sm mb-0.5">August 2, 2025</div>
-          <div className="h-2"></div>
-          <div className="text-xs text-blue-700 font-semibold mb-0.5">Guest: Sturgill “Johnny Blue Skies” Simpson</div>
-          <div className="h-2"></div>
-          <div className="text-xs text-gray-500 mb-0.5">Music starts 4 pm</div>
-          <div className="text-xs text-gray-500">Golden Gate Park, San Francisco</div>
-        </button>
-        {/* Show 3 Button */}
-        <button
-          onClick={() => handleShowSelect(upcomingShows[2])}
-          className={`w-full min-h-[140px] flex flex-col items-center justify-center p-3 rounded-lg border border-gray-300 hover:border-blue-300 transition-colors ${show?.id === '3' ? 'bg-blue-50 border-blue-200' : ''}`}
-        >
-          <div className="font-semibold text-base mb-0.5">Sunday</div>
-          <div className="text-sm mb-0.5">August 3, 2025</div>
-          <div className="h-2"></div>
-          <div className="text-xs text-blue-700 font-semibold mb-0.5">Guest: Trey Anastasio Band</div>
-          <div className="h-2"></div>
-          <div className="text-xs text-gray-500 mb-0.5">Music starts 4 pm</div>
-          <div className="text-xs text-gray-500">Golden Gate Park, San Francisco</div>
-        </button>
-        {/* Right margin column */}
-        <div></div>
-      </div>
-      {/* Remove the selected show text section at the bottom */}
-      {/* {show && (
-        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-          <div className="text-sm font-medium text-green-800">
-            Selected: {formatShowDate(show.date)}
-          </div>
-          <div className="text-sm text-green-600">
-            {show.venue}, {show.city}, {show.state}
-          </div>
+    <div className="mt-6 mb-6 bg-white p-4 sm:p-6 rounded-lg border border-gray-200 max-w-full mx-auto">
+      {isLoading ? (
+        <div className="flex justify-center">
+          <div className="animate-spin h-5 w-5 border-2 border-t-blue-500 rounded-full"></div>
         </div>
-      )} */}
+      ) : (
+        <>
+        <div className='countdown-outer'></div>
+          <h3 className="logo-extra-small-text  text-center">
+            Choose Your Show
+          </h3>
+          <div className="flex justify-evenly gap-x-5 pb-2">
+          
+          {upcomingShows.map((upcomingShow) => (
+   
+   
+   <button
+      key={upcomingShow.id}
+      onClick={() => handleShowSelect(upcomingShow)}
+      className={`sfs-game-card flex-shrink-0 max-w-[120px] sm:max-w-[140px] text-xs sm:text-sm ${
+        show?.id === upcomingShow.id ? 'aria-selected' : ''
+      }`}
+      aria-label={`Select show on ${formatShowDate(upcomingShow.date)} with ${upcomingShow.guest}`}
+      aria-selected={show?.id === upcomingShow.id}
+    >
+      <div className="font-semibold text-sm sm:text-base mb-0.5 font-display">
+        {new Date(upcomingShow.date).toLocaleDateString('en-US', { weekday: 'short' })}
+      </div>
+      <div className="text-xs sm:text-sm mb-0.5">
+        {new Date(upcomingShow.date).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+        })}
+      </div>
+      <div className="h-1"></div>
+      <div className="text-xs text-blue-700 font-semibold mb-0.5">{upcomingShow.guest}</div>
+      <div className="h-1"></div>
+      <div className="text-xs text-gray-500">4 pm</div>
+      <div className="text-xs text-gray-500">{upcomingShow.city}</div>
+    </button>
+
+
+  ))}
+
+
+          </div>
+            <div className='countdown-outer'></div>
+        </>
+      )}
     </div>
   );
-} 
+};
+
+export default ShowSelector;
