@@ -4,7 +4,7 @@ import MainLayout from '../components/MainLayout';
 import FourWaysToPlay from '../components/FourWaysToPlay';
 import ShowSelector from '../components/ShowSelector';
 
-const GuessEndTimePage = () => {
+  const GuessEndTimePage = () => {
   const [selectedShow, setSelectedShow] = useState(null);
   const [predictionMode, setPredictionMode] = useState('endTime');
   const [endTime, setEndTime] = useState('');

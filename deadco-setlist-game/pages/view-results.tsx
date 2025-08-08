@@ -1,91 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import MainLayout from '../components/MainLayout';
 import ShowSelector from '../components/ShowSelector';
+import { createClient } from '@supabase/supabase-js';
+import { data } from 'framer-motion/client';
 
-// Mock leaderboard data
-const mockLeaderboards = {
-  'guess-opener': [
-    { username: 'DeadHead42', playType: 'cash', score: 95, position: 1 },
-    { username: 'GratefulFan88', playType: 'prize', score: 92, position: 2 },
-    { username: 'TouchOfGrey', playType: 'charity', score: 88, position: 3 },
-    { username: 'SugarMagnolia', playType: 'fun', score: 85, position: 4 },
-    { username: 'UncleJohns', playType: 'cash', score: 82, position: 5 }
-  ],
-  'guess-encore': [
-    { username: 'RippleFan', playType: 'prize', score: 97, position: 1 },
-    { username: 'FireMountain', playType: 'cash', score: 94, position: 2 },
-    { username: 'ScarletBegonias', playType: 'charity', score: 91, position: 3 },
-    { username: 'StellaBlueFan', playType: 'fun', score: 87, position: 4 },
-    { username: 'TruckinAlong', playType: 'cash', score: 84, position: 5 }
-  ],
-  'guess-bust-out': [
-    { username: 'DarkStarGazer', playType: 'prize', score: 89, position: 1 },
-    { username: 'TerrapinTunes', playType: 'cash', score: 86, position: 2 },
-    { username: 'MorningDewDrop', playType: 'charity', score: 83, position: 3 },
-    { username: 'EyesOfWorld', playType: 'fun', score: 80, position: 4 },
-    { username: 'FranklinsTower', playType: 'cash', score: 77, position: 5 }
-  ],
-  'setlist-bingo': [
-    { username: 'BingoMaster', playType: 'cash', score: 93, position: 1 },
-    { username: 'FullHouseFan', playType: 'prize', score: 90, position: 2 },
-    { username: 'CornerWinner', playType: 'charity', score: 87, position: 3 },
-    { username: 'LineCompleter', playType: 'fun', score: 84, position: 4 },
-    { username: 'BlackoutChamp', playType: 'cash', score: 81, position: 5 }
-  ],
-  'setlist-builder': [
-    { username: 'SetlistPro', playType: 'prize', score: 96, position: 1 },
-    { username: 'PerfectPredict', playType: 'cash', score: 93, position: 2 },
-    { username: 'OrderMaster', playType: 'charity', score: 90, position: 3 },
-    { username: 'SequenceKing', playType: 'fun', score: 87, position: 4 },
-    { username: 'SetlistSage', playType: 'cash', score: 84, position: 5 }
-  ]
-};
+
+const supabaseUrl = 'https://cxfyeuwosrplubgaluwv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4ZnlldXdvc3JwbHViZ2FsdXd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI4MTczNDUsImV4cCI6MjA2ODM5MzM0NX0.vvmhblExlhQu8QAd8NwAGxbu-eJzjsaRA6912XuQgTM';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function ViewResults() {
   const [selectedShow, setSelectedShow] = useState(null);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const shows = [
-    { id: 'show1', label: 'Show 1: Friday, August 1' },
-    { id: 'show2', label: 'Show 2: Saturday, August 2' },
-    { id: 'show3', label: 'Show 3: Sunday, August 3' }
-  ];
+  const fetchTopFiveWinners = async (showId) => {
+    setLoading(true);
+    try {
+      const { data: guesses, error: guessesError } = await supabase
+        .from('opener_guesses')
+        .select('id,user_id,guest_user_id,song,play_mode,amount,submitted_at,prize_rank')
+      .eq('show_id', String(showId).trim())
+        .eq('is_winner', true)
+        .order('amount', { ascending: false })
+        .limit(5);
 
-  const games = [
-    {
-      id: 'guess-opener',
-      title: 'Guess the Opener',
-      description: 'Predict the opening song',
-      resultsLink: '/guess-song-results'
-    },
-    {
-      id: 'guess-encore',
-      title: 'Guess the Encore',
-      description: 'Predict the encore song',
-      resultsLink: '/guess-song-results'
-    },
-    {
-      id: 'guess-bust-out',
-      title: 'Guess the Bust Out',
-      description: 'Predict rare/never played songs',
-      resultsLink: '/guess-song-results'
-    },
-    {
-      id: 'setlist-bingo',
-      title: 'Setlist Bingo',
-      description: 'Fill your bingo card with setlist songs',
-      resultsLink: '/setlist-bingo-results'
-    },
-    {
-      id: 'setlist-builder',
-      title: 'Setlist Builder',
-      description: 'Predict the entire setlist order',
-      resultsLink: '/setlist-builder-results'
+      if (guessesError) {
+        console.error('Error fetching opener_guesses:', guessesError);
+        setLeaderboard([]);
+        setLoading(false);
+        return;
+      }
+      alert(JSON.stringify(guesses, null, 2)); 
+
+
+
+      const guestIds = Array.from(new Set(guesses.filter(g => g.guest_user_id).map(g => g.guest_user_id)));
+      let guestMap = {};
+      if (guestIds.length) {
+        const { data: guests, error: guestsError } = await supabase
+          .from('guest_users')
+          .select('id,email')
+          .in('id', guestIds);
+        if (!guestsError && guests) {
+          guestMap = guests.reduce((acc, g) => {
+            acc[g.id] = g.email || null;
+            return acc;
+          }, {});
+        }
+      }
+
+      const formatted = guesses.map((row, idx) => {
+        const display = row.guest_user_id ? (guestMap[row.guest_user_id] || 'Guest') : (row.user_id ? `user:${String(row.user_id).slice(0,8)}` : 'Guest');
+        return {
+          position: idx + 1,
+          id: row.id,
+          display,
+          song: row.song,
+          amount: row.amount ?? 0,
+          play_mode: row.play_mode,
+          prize_rank: row.prize_rank ?? null,
+          submitted_at: row.submitted_at
+        };
+      });
+
+      setLeaderboard(formatted);
+    } catch (err) {
+      console.error('Unexpected error fetching top winners:', err);
+      setLeaderboard([]);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const getPlayTypeColor = (playType: string) => {
-    switch (playType) {
+  useEffect(() => {
+    if (selectedShow && selectedShow.id) {
+      fetchTopFiveWinners(selectedShow.id);
+    } else {
+      setLeaderboard([]);
+    }
+  }, [selectedShow]);
+
+  const playModeColor = (mode) => {
+    if (!mode) return 'black';
+    switch (mode.toLowerCase()) {
       case 'cash': return 'green';
       case 'prize': return 'gold';
       case 'charity': return 'blue';
@@ -96,151 +95,63 @@ export default function ViewResults() {
 
   return (
     <MainLayout>
-      <div>
-                  <div className="countdown-outer"></div>
+      <>
+      <div className='countdown-outer'>
+      <div className='center-wrapper'>
+      <div className="p-6 game-card">
+        <h1 className="text-2xl font-bold mb-4">View Game Results</h1>
 
-         <h1 className="logo-small-text">View Game Results</h1>
-        
-        <section>
-          <ShowSelector
-            selectedShow={selectedShow}
-            onShowSelect={setSelectedShow}
-          />
-          <p>Viewing results for: {selectedShow ? `${selectedShow.date} - ${selectedShow.guest}` : 'None'}</p>
+        <section className="mb-6">
+          <ShowSelector selectedShow={selectedShow} onShowSelect={setSelectedShow} />
+          <p className="mt-2 text-sm text-gray-600">
+            Viewing results for: {selectedShow ? `${selectedShow.date || selectedShow.label || selectedShow.id}` : 'None'}
+          </p> 
         </section>
 
-        <section>
-          <h2>Game Results</h2>
-          
-          <div>
-            {games.map((game) => (
-              <div key={game.id}>
-                <div>
-                  <h3>{game.title}</h3>
-                  <p>{game.description}</p>
-                  
-                  <div>
-                    <h4>Top 5 Players</h4>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Rank</th>
-                          <th>Username</th>
-                          <th>Score</th>
-                          <th>Play Type</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {mockLeaderboards[game.id as keyof typeof mockLeaderboards]?.map((player) => (
-                          <tr key={player.username}>
-                            <td>{player.position}</td>
-                            <td>{player.username}</td>
-                            <td>{player.score}</td>
-                            <td style={{ color: getPlayTypeColor(player.playType) }}>
-                              {player.playType}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  
-                  <div>
-                    <Link href={game.resultsLink}>
-                      <button>View Full {game.title} Results</button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <h2>Overall Statistics</h2>
-          <div>
-            <h3>Show Summary</h3>
-            <p>Total Participants: 2,847</p>
-            <p>Total Prize Pool: $12,450</p>
-            <p>Charity Donations: $3,280</p>
-            <p>Fun Players: 1,654</p>
+        <section className="mb-8">
+          <h2 className="text-xl font-semibold mb-3">Guess the Opener — Top 5 Winners</h2>
+          {loading && <p className="text-sm text-gray-600">Loading top 5 winners…</p>}
+          {!loading && leaderboard.length === 0 && <p className="text-sm text-gray-600">No winners found.</p>}
+          {!loading && leaderboard.length > 0 && (
+            <div className="overflow-x-auto border rounded">
+              <table className="min-w-full">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-3 py-2 border">Rank</th>
+                    <th className="px-3 py-2 border">Email / User</th>
+                    <th className="px-3 py-2 border">Song</th>
+                    <th className="px-3 py-2 border">Amount</th>
+                    <th className="px-3 py-2 border">Play Mode</th>
+                    <th className="px-3 py-2 border">Prize Rank</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leaderboard.map(p => (
+                    <tr key={p.id} className="hover:bg-gray-50">
+                      <td className="px-3 py-2 border text-center">{p.position}</td>
+                      <td className="px-3 py-2 border">{p.display}</td>
+                      <td className="px-3 py-2 border">{p.song}</td>
+                      <td className="px-3 py-2 border text-right">{p.amount}</td>
+                      <td className="px-3 py-2 border" style={{ color: playModeColor(p.play_mode) }}>{p.play_mode}</td>
+                      <td className="px-3 py-2 border">{p.prize_rank || '-'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <div className="mt-4">
             
-            <h3>Game Popularity</h3>
-            <ul>
-              <li>Setlist Builder: 34% of players</li>
-              <li>Setlist Bingo: 28% of players</li>
-              <li>Guess the Opener: 16% of players</li>
-              <li>Guess the Encore: 14% of players</li>
-              <li>Guess the Bust Out: 8% of players</li>
-            </ul>
-          </div>
-        </section>
+            <Link href="/guess-song-results" className="text-blue-500 hover:underline">
+View Full Guess the Opener Results
+</Link>
 
-        <section>
-          <h2>Play Type Breakdown</h2>
-          <div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Play Type</th>
-                  <th>Players</th>
-                  <th>Percentage</th>
-                  <th>Total Pool</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{ color: 'gray' }}>
-                  <td>Fun</td>
-                  <td>1,654</td>
-                  <td>58.1%</td>
-                  <td>Free</td>
-                </tr>
-                <tr style={{ color: 'green' }}>
-                  <td>Cash</td>
-                  <td>782</td>
-                  <td>27.5%</td>
-                  <td>$12,450</td>
-                </tr>
-                <tr style={{ color: 'blue' }}>
-                  <td>Charity</td>
-                  <td>268</td>
-                  <td>9.4%</td>
-                  <td>$3,280</td>
-                </tr>
-                <tr style={{ color: 'gold' }}>
-                  <td>Prize</td>
-                  <td>143</td>
-                  <td>5.0%</td>
-                  <td>Various</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section>
-          <h2>Live Updates</h2>
-          <div>
-            <p>Results update in real-time during shows via setlist.fm API integration</p>
-            <p>Manual updates available if API access unavailable</p>
-            <p>Scoring calculated automatically as songs are confirmed</p>
-          </div>
-        </section>
-
-        <section>
-          <h2>Recent Activity</h2>
-          <div>
-            <h3>Latest Submissions:</h3>
-            <ul>
-              <li>DeadHead42 submitted Setlist Builder prediction - 2 minutes ago</li>
-              <li>RippleFan updated Bingo board - 5 minutes ago</li>
-              <li>TerrapinTunes guessed bust out: "Alligator" - 8 minutes ago</li>
-              <li>SugarMagnolia predicted opener: "Feel Like a Stranger" - 12 minutes ago</li>
-              <li>BingoMaster completed full bingo board - 15 minutes ago</li>
-            </ul>
           </div>
         </section>
       </div>
+      </div>
+      </div>
+      </>
     </MainLayout>
   );
-} 
+}

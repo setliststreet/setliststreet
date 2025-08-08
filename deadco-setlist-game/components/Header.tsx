@@ -29,9 +29,9 @@ export default function Header() {
               <Link href="/setlist-hints" className="custom-button">Setlist Hints</Link>
             </div>
  
-            {/* <div className="button-container">
+             <div className="button-container">
               <Link href="/view-results" className="custom-button">Live Results</Link>
-            </div> */}
+            </div>
  
             <div className="button-container">
               <Link href="/login" className="custom-button">Sign In</Link>
